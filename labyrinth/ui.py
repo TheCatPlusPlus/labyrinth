@@ -177,7 +177,7 @@ def modal_confirm(message):
         key = event[1].id
         if key == terminal.TK_Y:
             return True
-        elif key == terminal.TK_N:
+        elif key in (terminal.TK_N, terminal.TK_ESCAPE):
             return False
 
 @contextmanager
