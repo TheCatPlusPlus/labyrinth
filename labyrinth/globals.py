@@ -1,5 +1,6 @@
 from .log import *
 from .const import *
+from .utils import *
 
 _g_scene       = None
 _g_game        = None
@@ -29,7 +30,7 @@ def is_running():
     return _g_is_running
 
 def get_grid_width():
-    return 80
+    return 120
 
 def get_grid_height():
     return 25
@@ -116,23 +117,24 @@ def load_keymaps():
 
     _g_menu_keymap = KeyMap()
     _g_game_keymap = KeyMap()
+
     add_common(_g_menu_keymap)
     add_common(_g_game_keymap)
 
-    _g_menu_keymap.add(ACTION_PREVIOUS_ITEM, 'up',   'num-8')
-    _g_menu_keymap.add(ACTION_NEXT_ITEM,     'down', 'num-2')
-
+    _g_game_keymap.add(ACTION_QUIT,            'ctrl q')
     _g_game_keymap.add(ACTION_SAVE_QUIT,       'ctrl s')
-    _g_game_keymap.add(ACTION_MOVE_NORTH,      '8', 'num-8', 'up')
-    _g_game_keymap.add(ACTION_MOVE_SOUTH,      '2', 'num-2', 'down')
-    _g_game_keymap.add(ACTION_MOVE_WEST,       '4', 'num-4', 'left')
-    _g_game_keymap.add(ACTION_MOVE_EAST,       '6', 'num-6', 'right')
-    _g_game_keymap.add(ACTION_MOVE_NORTH_WEST, '7', 'num-7')
-    _g_game_keymap.add(ACTION_MOVE_SOUTH_WEST, '1', 'num-1')
-    _g_game_keymap.add(ACTION_MOVE_NORTH_EAST, '9', 'num-9')
-    _g_game_keymap.add(ACTION_MOVE_SOUTH_EAST, '3', 'num-3')
-    _g_game_keymap.add(ACTION_WAIT,            '5', 'num-5', '.')
-    _g_game_keymap.add(ACTION_TAKE_STAIRS,     '<', '>')
+    _g_menu_keymap.add(ACTION_PREVIOUS_ITEM,   'up',     'num-8')
+    _g_menu_keymap.add(ACTION_NEXT_ITEM,       'down',   'num-2')
+    _g_game_keymap.add(ACTION_MOVE_NORTH,      '8',      'num-8', 'up')
+    _g_game_keymap.add(ACTION_MOVE_SOUTH,      '2',      'num-2', 'down')
+    _g_game_keymap.add(ACTION_MOVE_WEST,       '4',      'num-4', 'left')
+    _g_game_keymap.add(ACTION_MOVE_EAST,       '6',      'num-6', 'right')
+    _g_game_keymap.add(ACTION_MOVE_NORTH_WEST, '7',      'num-7')
+    _g_game_keymap.add(ACTION_MOVE_SOUTH_WEST, '1',      'num-1')
+    _g_game_keymap.add(ACTION_MOVE_NORTH_EAST, '9',      'num-9')
+    _g_game_keymap.add(ACTION_MOVE_SOUTH_EAST, '3',      'num-3')
+    _g_game_keymap.add(ACTION_WAIT,            '5',      'num-5', '.')
+    _g_game_keymap.add(ACTION_TAKE_STAIRS,     '<',      '>')
     _g_game_keymap.add(ACTION_SHOW_INVENTORY,  'i')
     _g_game_keymap.add(ACTION_SHOW_CHARACTER,  '@')
 

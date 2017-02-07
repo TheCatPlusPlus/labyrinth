@@ -2,7 +2,7 @@ from .log import *
 
 import pickle, pickletools
 
-# TODO versioning, compatibility, etc
+# TODO versioning, compatibility, not pickle, etc
 
 def do_save_game(save_path, game):
     temp_path = save_path.with_suffix('.tmp')

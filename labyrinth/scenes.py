@@ -1,5 +1,5 @@
 from bearlibterminal import terminal
-from .ui import Menu, Input, modal_confirm
+from . import ui
 from .globals import *
 
 class Scene:
@@ -17,7 +17,7 @@ class Scene:
 
 class MainMenuScene(Scene):
     def __init__(self):
-        self._menu = Menu(
+        self._menu = ui.Menu(
             ('New game', self._on_new_game),
             ('Continue', self._on_load_game, has_saved_game),
             ('Quit',     signal_exit),
@@ -48,8 +48,8 @@ class MainMenuScene(Scene):
 
 class NewGameScene(Scene):
     def __init__(self):
-        self._player_name = Input(x = 25, y = 1, default = 'Player', max_width = 40)
-        self._menu = Menu(
+        self._player_name = ui.Input(x = 25, y = 1, default = 'Player', max_width = WIDTH_PLAYER_NAME)
+        self._menu = ui.Menu(
            ('Start the game', self._on_start_game),
            ('Change name',    self._player_name.focus),
            ('Randomise name', self._on_random_name, False),
@@ -61,7 +61,7 @@ class NewGameScene(Scene):
 
     def _on_start_game(self):
         if has_saved_game():
-            if not modal_confirm('[color=red]WARNING:[/color] This will overwrite the existing save. Are you sure?'):
+            if not ui.modal_confirm('[color=red]WARNING:[/color] This will overwrite the existing save. Are you sure?'):
                 return
 
         new_game(self._player_name.value)
@@ -86,4 +86,32 @@ class NewGameScene(Scene):
         self._menu.draw(1, 10)
 
 class GameScene(Scene):
-    pass
+    def __init__(self):
+        pass
+
+    def react(self, event, *args):
+        if event != EVENT_KEY:
+            return
+
+        action = get_game_keymap().query(args[0])
+
+        if action == ACTION_QUIT and ui.modal_confirm('Quit without saving? [color=red]NOTE[/color]: this will discard existing save!'):
+            discard_game()
+            signal_exit()
+        elif action == ACTION_SAVE_QUIT and ui.modal_confirm('Save and quit?'):
+            signal_exit()
+        else:
+            this_game().on_player_action(action)
+
+    def draw(self):
+        ui.vline(WIDTH_SIDEBAR, 0, get_grid_height())
+        ui.hline(WIDTH_SIDEBAR, get_grid_height() - HEIGHT_MESSAGES, get_grid_width() - WIDTH_SIDEBAR)
+        terminal.put(WIDTH_SIDEBAR, get_grid_height() - HEIGHT_MESSAGES, ui.BOX_VLINE_L_SPLIT)
+
+        player = this_game().player
+
+        with ui.foreground('grey'):
+            terminal.print(3, 1, f'{player.name}', align = terminal.TK_ALIGN_CENTER, width = WIDTH_PLAYER_NAME)
+            ui.gauge(3, 'HP', player.hp, 'dark green', 'red', 'light green')
+            ui.gauge(4, 'MP', player.mp, 'blue', 'light blue', 'light blue')
+            ui.gauge(5, 'ST', player.stamina, 'dark yellow', 'light yellow', 'light yellow')

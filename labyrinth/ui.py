@@ -133,18 +133,24 @@ class Input:
             terminal.print(self._x, self._y, self._value)
 
 def box(x, y, w, h):
+    vline(x,     y, h)
+    vline(x + w, y, h)
+
+    hline(x, y,     w)
+    hline(x, y + h, w)
+
     terminal.put(x,     y,     BOX_UL_CORNER)
     terminal.put(x + w, y,     BOX_UR_CORNER)
     terminal.put(x,     y + h, BOX_DL_CORNER)
     terminal.put(x + w, y + h, BOX_DR_CORNER)
 
-    for i in range(1, w):
-        terminal.put(x + i, y,     BOX_HLINE)
-        terminal.put(x + i, y + h, BOX_HLINE)
+def vline(x, y, h, ch = BOX_VLINE):
+    for i in range(0, h):
+        terminal.put(x, y + i, ch)
 
-    for i in range(1, h):
-        terminal.put(x,     y + i, BOX_VLINE)
-        terminal.put(x + w, y + i, BOX_VLINE)
+def hline(x, y, w, ch = BOX_HLINE):
+    for i in range(0, w):
+        terminal.put(x + i, y, ch)
 
 def modal_confirm(message):
     # TODO multiline maybe
@@ -199,3 +205,37 @@ def colors(fg, bg):
     with foreground(fg):
         with background(bg):
             yield
+
+def hbar(x, y, w, bg):
+    with background(bg):
+        hline(x, y, w, ' ')
+
+def gauge(y, label, g, color, loss_color, gain_color):
+    if g.percent < 0.25:
+        value_fg = 'red'
+    elif g.percent < 0.5:
+        value_fg = 'yellow'
+    else:
+        value_fg = 'white'
+
+    if g.prev_value > g.value:
+        change_color = loss_color
+    else:
+        change_color = gain_color
+
+    last_width = int(round(g.prev_percent * WIDTH_GAUGES))
+    current_width = int(round(g.percent * WIDTH_GAUGES))
+    x = WIDTH_SIDEBAR - WIDTH_GAUGES - 1
+
+    value = f'{label}: [color={value_fg}]{g.value}[/color] / {g.max_value}'
+    terminal.print(1, y, value)
+
+    hbar(x, y, WIDTH_GAUGES, 'dark grey')
+
+    if last_width < current_width:
+        # if we gained value, we want to render the gained part differently
+        # so swap current with last
+        current_width, last_width = last_width, current_width
+
+    hbar(x, y, last_width, change_color)
+    hbar(x, y, current_width, color)

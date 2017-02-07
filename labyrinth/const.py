@@ -24,3 +24,8 @@ ACTION_WAIT            = 'wait'
 
 ACTION_SHOW_INVENTORY = 'show-inventory'
 ACTION_SHOW_CHARACTER = 'show-character'
+
+WIDTH_SIDEBAR     = 30
+WIDTH_PLAYER_NAME = WIDTH_SIDEBAR - 6
+WIDTH_GAUGES      = 10
+HEIGHT_MESSAGES   = 6

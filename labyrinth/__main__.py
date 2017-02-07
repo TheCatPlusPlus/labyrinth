@@ -21,6 +21,8 @@ def main():
 
     terminal.open()
     terminal.set(config)
+    terminal.color('white')
+    terminal.bkcolor('black')
     terminal.refresh()
 
     set_next_scene(MainMenuScene)
@@ -46,6 +48,9 @@ def main():
                     signal_exit()
                 else:
                     scene.react(event[0], *event[1:])
+
+        if not is_running():
+            break
 
         terminal.clear()
         scene.draw()
