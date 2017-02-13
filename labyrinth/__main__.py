@@ -40,31 +40,25 @@ def main():
     while is_running():
         scene = this_scene()
 
-        if not has_event():
-            time.sleep(0.05)
-        else:
-            event = read_event()
-
-            if event is not None:
-                event_type, event_args = event[0], event[1:]
-
-                #if event_args:
-                #    event_args = ', '.join(str(x) for x in event_args)
-                #    log_debug(f'Event: {event_type}: {event_args}')
-                #else:
-                #    log_debug(f'Event: {event_type}')
-
-                if event[0] == EVENT_CLOSE or event[0] == EVENT_KEY and event[1] == parse_key('alt f4'):
-                    signal_exit()
-                else:
-                    scene.react(event[0], *event[1:])
-
-        if not is_running():
-            break
-
         terminal.clear()
         scene.draw()
         terminal.refresh()
+
+        event = read_event()
+
+        if event is not None:
+            event_type, event_args = event[0], event[1:]
+
+            #if event_args:
+            #    event_args = ', '.join(str(x) for x in event_args)
+            #    log_debug(f'Event: {event_type}: {event_args}')
+            #else:
+            #    log_debug(f'Event: {event_type}')
+
+            if event[0] == EVENT_CLOSE or event[0] == EVENT_KEY and event[1] == parse_key('alt f4'):
+                signal_exit()
+            else:
+                scene.react(event[0], *event[1:])
 
     if is_game_loaded():
         save_game()
