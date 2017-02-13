@@ -94,6 +94,14 @@ class Tile:
     def base_move_cost(self):
         return -1 if not self.is_walkable else data_tile(self.type).base_move_cost
 
+    @property
+    def monster(self):
+        return self._monster
+
+    @property
+    def items(self):
+        return self._items
+
     def add_entity(self, entity):
         from .game import Monster, Item
 
@@ -148,7 +156,18 @@ class Level:
         return (tile.x, tile.y)
 
 def move(entity, x, y):
-    pass
+    current_tile = entity.level.grid[entity.x, entity.y]
+
+    try:
+        new_tile = entity.level.grid[x, y]
+    except OutOfBounds:
+        return False
+
+    if not new_tile.is_walkable:
+        return False
+
+    current_tile.remove_entity(entity)
+    new_tile.add_entity(entity)
 
 def despawn(entity):
     assert entity.level is not None, 'Trying to despawn unspawned entity'

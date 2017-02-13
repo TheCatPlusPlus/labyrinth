@@ -52,14 +52,20 @@ class Entity:
         self.level = None
 
 class Monster(Entity):
-    pass
+    def __init__(self, type):
+        super().__init__()
+
+        self.type = type
 
 class Item(Entity):
-    pass
+    def __init__(self, type):
+        super().__init__()
+
+        self.type = type
 
 class Player(Monster):
     def __init__(self, name):
-        super().__init__()
+        super().__init__(MONSTER_PLAYER)
 
         self._name = name
         self._hp = Gauge('HP', 100)
@@ -109,4 +115,6 @@ class Game:
         return self._last_action_cost
 
     def on_player_action(self, action):
-        pass
+        if action in MOVEMENT:
+            dx, dy = MOVEMENT[action]
+            move(self._player, self._player.x + dx, self._player.y + dy)

@@ -48,3 +48,8 @@ _(TILE_STAIRS_DOWN, '>')
 _(MONSTER_PLAYER,  '@', 'white')
 _(MONSTER_RAT,     'r', 'light grey')
 _(MONSTER_BIG_RAT, 'r', 'dark grey')
+
+#
+# items
+#
+_(ITEM_MULTIPLE, '%', 'white')

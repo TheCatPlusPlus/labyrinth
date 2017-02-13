@@ -2,6 +2,7 @@ from bearlibterminal import terminal
 from contextlib import contextmanager
 from .globals import *
 from .input import read_event
+from .data import data_glyph
 
 # single line box
 BOX_UL_CORNER      = '\u250C'
@@ -242,3 +243,8 @@ def sidebar_gauge(x, y, label, g, *args):
     value = f'{label}: [color={value_fg}]{g.value}[/color] / {g.max_value}'
     terminal.print(1, y, value)
     gauge(x, y, WIDTH_SIDEBAR_GAUGES, g, *args)
+
+def put_glyph(x, y, type):
+    glyph = data_glyph(type)
+    with colors(glyph.fg, glyph.bg):
+        terminal.put(x, y, glyph.glyph)

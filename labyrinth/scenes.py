@@ -1,6 +1,7 @@
 from bearlibterminal import terminal
 from . import ui
 from .data import data_glyph, data_tile
+from .level import OutOfBounds
 from .globals import *
 
 class Scene:
@@ -122,10 +123,47 @@ class GameScene(Scene):
         terminal.print(WIDTH_SIDEBAR + 2, 2, '[color=dark red]Boss Tagline[/color]', align = terminal.TK_ALIGN_CENTER, width = WIDTH_VIEWPORT)
         from .game import Gauge
         ui.gauge(WIDTH_SIDEBAR + 2, 3, WIDTH_VIEWPORT, Gauge('Boss', 1234), 'red', 'light red', 'light red')
-        terminal.put(WIDTH_SIDEBAR + 2, HEIGHT_BOSS_METER + 2, 'x')
 
     def _draw_viewport(self, player, level):
-        pass
+        def go(player_c, view_c, map_c):
+            if player_c < (view_c // 2):
+                return 0
+            elif player_c >= map_c - (view_c // 2):
+                return map_c - view_c
+            else:
+                return player_c - (view_c // 2)
+
+        if level.grid.width > WIDTH_VIEWPORT:
+            x0 = go(player.x, WIDTH_VIEWPORT, level.grid.width)
+        else:
+            x0 = 0
+
+        if level.grid.height > HEIGHT_VIEWPORT:
+            y0 = go(player.y, HEIGHT_VIEWPORT, level.grid.height)
+        else:
+            y0 = 0
+
+        for y in range(0, HEIGHT_VIEWPORT):
+            for x in range(0, WIDTH_VIEWPORT):
+                cx = WIDTH_SIDEBAR + 2 + x
+                cy = HEIGHT_BOSS_METER + 2 + y
+
+                try:
+                    tile = level.grid[x0 + x, y0 + y]
+                except OutOfBounds:
+                    ui.put_glyph(cx, cy, TILE_WALL_DEEP)
+                    continue
+
+                ui.put_glyph(cx, cy, tile.type)
+
+                if tile.monster is not None:
+                    ui.put_glyph(cx, cy, tile.monster.type)
+
+                if tile.items:
+                    if len(tile.items) == 1:
+                        ui.put_glyph(cx, cy, tile.items[0])
+                    else:
+                        ui.put_glyph(cx, cy, ITEM_MULTIPLE)
 
     def draw(self):
         game   = this_game()
