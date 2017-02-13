@@ -1,14 +1,23 @@
 #!/usr/bin/env python3.6
-import time
+import time, pdb, traceback
 from bearlibterminal import terminal
 
 from .globals import *
-from .log import setup_log
+from .log import setup_log, log_error
 from .input import read_event, has_event, parse_key
 from .scenes import *
 
-def main():
+def start():
     setup_log()
+
+    try:
+        main()
+    except Exception:
+        log_error('Unhandled exception:\n' + traceback.format_exc())
+
+        pdb.post_mortem()
+
+def main():
     log_info(f'User data path: {get_user_data_path()}')
 
     load_keymaps()
@@ -59,4 +68,4 @@ def main():
     if is_game_loaded():
         save_game()
 
-main()
+start()
