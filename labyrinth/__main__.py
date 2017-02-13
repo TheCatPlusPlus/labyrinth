@@ -34,6 +34,7 @@ def main():
     terminal.bkcolor('black')
     terminal.refresh()
 
+    from . import data
     set_next_scene(MainMenuScene)
 
     while is_running():
