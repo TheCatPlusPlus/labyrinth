@@ -39,6 +39,8 @@ _(TILE_WALL,        '#', '#7d7d7d')
 _(TILE_WALL_DEEP,   ' ', bg = 'black')
 _(TILE_DOOR_CLOSED, '+', '#c97600')
 _(TILE_DOOR_OPENED, '/', '#c97600')
+_(TILE_STAIRS_UP,   '<')
+_(TILE_STAIRS_DOWN, '>')
 
 #
 # monsters

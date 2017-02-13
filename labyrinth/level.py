@@ -62,7 +62,9 @@ class Tile:
         self._y       = y
         self._items   = []
         self._monster = None
-        self._type    = type
+
+        self.type = type
+        self.tag  = None
 
     @property
     def x(self):
@@ -73,16 +75,8 @@ class Tile:
         return self._y
 
     @property
-    def type(self):
-        return self._type
-
-    @type.setter
-    def type(self, value):
-        self._type = value
-
-    @property
     def is_walkable(self):
-        return self._monster is None and data_tile(self._type).is_walkable
+        return self._monster is None and data_tile(self.type).is_walkable
 
     @property
     def is_wall(self):
@@ -93,8 +87,12 @@ class Tile:
         return self.type in (TILE_DOOR_OPENED, TILE_DOOR_CLOSED)
 
     @property
+    def is_exit(self):
+        return self.type in (TILE_STARS_UP, TILE_STAIRS_DOWN)
+
+    @property
     def base_move_cost(self):
-        return -1 if not self.is_walkable else data_tile(self._type).base_move_cost
+        return -1 if not self.is_walkable else data_tile(self.type).base_move_cost
 
     def __str__(self):
         from .data import data_glyph

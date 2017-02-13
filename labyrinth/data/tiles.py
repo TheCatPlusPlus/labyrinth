@@ -1,3 +1,4 @@
+import collections
 from ..const import *
 
 class Tile:
@@ -18,14 +19,17 @@ class Tile:
     def base_move_cost(self):
         return self._base_move_cost
 
-_g_tiles = {}
+class TileDict(collections.defaultdict):
+    def __missing__(self, key):
+        self[key] = Tile(key)
+        return self[key]
+
+_g_tiles = TileDict()
 
 def _(id, *args, **kwargs):
     assert id not in _g_tiles, f'Duplicate tile {id}'
     _g_tiles[id] = Tile(id, *args, **kwargs)
 
-_(TILE_GROUND)
 _(TILE_WALL, is_walkable = False)
 _(TILE_WALL_DEEP, is_walkable = False)
-_(TILE_DOOR_OPENED)
 _(TILE_DOOR_CLOSED, is_walkable = False)

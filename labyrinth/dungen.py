@@ -122,14 +122,17 @@ class Generator:
         self._assign_wall_types()
         yield 'assigned wall types'
 
-        #self._place_stairs()
-        #yield 'placed stairs'
+        self._place_stairs()
+        yield 'placed stairs'
 
-        #self._place_items()
-        #yield 'placed items'
+        self._place_vaults()
+        yield 'placed vaults'
 
-        #self._spawn_monsters()
-        #yield 'spawned monsters'
+        self._spawn_items()
+        yield 'spawned items'
+
+        self._spawn_monsters()
+        yield 'spawned monsters'
 
     def _add_rooms(self):
         for _ in range(0, DUNGEN_ROOM_TRIES):
@@ -299,3 +302,39 @@ class Generator:
 
                     if not other.is_wall:
                         tile.type = TILE_WALL
+
+    def _place_stairs(self):
+        # TODO: depends on zone+level
+
+        candidates = [
+            tile
+            for tile in self._level.grid.cells
+            if tile.is_walkable
+        ]
+
+        random.shuffle(candidates)
+
+        for staircase in range(3):
+            up   = candidates.pop(-1)
+            down = candidates.pop(-1)
+            tag  = f'stairs:{staircase}'
+
+            up.type   = TILE_STAIRS_UP
+            down.type = TILE_STAIRS_DOWN
+
+            up.tag = down.tag = tag
+
+    def _place_vaults(self):
+        pass
+
+    def _spawn_items(self):
+        pass
+
+    def _spawn_monsters(self):
+        pass
+
+def generate_level(label, width, height):
+    g = Generator(width, height)
+    for progress in g():
+        log_info(f'Generating {label}: {progress}')
+    return g._level

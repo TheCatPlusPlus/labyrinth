@@ -38,6 +38,8 @@ TILE_WALL        = 't:wall'
 TILE_WALL_DEEP   = 't:wall-deep' # wall that's surrounded by other walls on all sides
 TILE_DOOR_CLOSED = 't:door-closed'
 TILE_DOOR_OPENED = 't:door-opened'
+TILE_STAIRS_UP   = 't:stairs-up'
+TILE_STAIRS_DOWN = 't:stairs-down'
 
 MONSTER_PLAYER  = 'm:player'
 MONSTER_RAT     = 'm:rat'
