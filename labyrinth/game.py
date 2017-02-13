@@ -1,4 +1,5 @@
 from .globals import *
+from .dungen import Generator
 
 class PlayerGauge:
     def __init__(self, label, max_value):
@@ -68,10 +69,26 @@ class Player:
 class Game:
     def __init__(self, player_name):
         self._player = Player(player_name)
+        self._turn_count = 0
+        self._last_action_cost = 0
+        self._generator = Generator(69, 25)
+        self._progress = self._generator()
 
     @property
     def player(self):
         return self._player
+
+    @property
+    def level(self):
+        return self._generator._level
+
+    @property
+    def turn_count(self):
+        return self._turn_count
+
+    @property
+    def last_action_cost(self):
+        return self._last_action_cost
 
     def on_player_action(self, action):
         pass
