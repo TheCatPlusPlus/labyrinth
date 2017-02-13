@@ -189,14 +189,16 @@ def modal_confirm(message):
 @contextmanager
 def background(bg):
     previous = terminal.state(terminal.TK_BKCOLOR)
-    terminal.bkcolor(bg)
+    if bg is not None:
+        terminal.bkcolor(bg)
     yield
     terminal.bkcolor(previous)
 
 @contextmanager
 def foreground(fg):
     previous = terminal.state(terminal.TK_COLOR)
-    terminal.color(fg)
+    if fg is not None:
+        terminal.color(fg)
     yield
     terminal.color(previous)
 
