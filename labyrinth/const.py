@@ -29,3 +29,16 @@ WIDTH_SIDEBAR     = 30
 WIDTH_PLAYER_NAME = WIDTH_SIDEBAR - 6
 WIDTH_GAUGES      = 10
 HEIGHT_MESSAGES   = 6
+
+SPEED_BASE     = 100 # baseline: one turn
+MOVE_COST_BASE = SPEED_BASE
+
+TILE_GROUND      = 't:ground'
+TILE_WALL        = 't:wall'
+TILE_WALL_DEEP   = 't:wall-deep' # wall that's surrounded by other walls on all sides
+TILE_DOOR_CLOSED = 't:door-closed'
+TILE_DOOR_OPENED = 't:door-opened'
+
+MONSTER_PLAYER  = 'm:player'
+MONSTER_RAT     = 'm:rat'
+MONSTER_BIG_RAT = 'm:big-rat'
