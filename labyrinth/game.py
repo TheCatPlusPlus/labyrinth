@@ -1,7 +1,9 @@
 from .globals import *
 from .dungen import generate_level
+from .level import spawn, move
+from .zone import Zone
 
-class PlayerGauge:
+class Gauge:
     def __init__(self, label, max_value):
         self._label      = label
         self._max_value  = max_value
@@ -43,12 +45,26 @@ class PlayerGauge:
     def __str__(self):
         return f'{self._label}: {self._value} / {self._max_value} ({self._prev_value})'
 
-class Player:
+class Entity:
+    def __init__(self):
+        self.x     = None
+        self.y     = None
+        self.level = None
+
+class Monster(Entity):
+    pass
+
+class Item(Entity):
+    pass
+
+class Player(Monster):
     def __init__(self, name):
+        super().__init__()
+
         self._name = name
-        self._hp = PlayerGauge('HP', 100)
-        self._mp = PlayerGauge('MP', 100)
-        self._stamina = PlayerGauge('Stamina', 50)
+        self._hp = Gauge('HP', 100)
+        self._mp = Gauge('MP', 100)
+        self._stamina = Gauge('Stamina', 50)
 
     @property
     def name(self):
@@ -68,10 +84,13 @@ class Player:
 
 class Game:
     def __init__(self, player_name):
+        self._zone = Zone('Test Zone', 2)
+        self._level = generate_level(self._zone, 0, 69, 25)
         self._player = Player(player_name)
         self._turn_count = 0
         self._last_action_cost = 0
-        self._level = generate_level('Test', 69, 25)
+
+        spawn(self._player, self._level, *self._level.find_spawn())
 
     @property
     def player(self):

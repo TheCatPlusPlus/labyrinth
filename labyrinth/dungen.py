@@ -119,13 +119,14 @@ _g_presets.add_octagon(9, 11, 3, rarity = 2)
 _g_presets.add_octagon(11, 11, 3, rarity = 2)
 
 class Generator:
-    def __init__(self, width, height):
-        assert width % 2 != 0 and height % 2 != 0, f'Level must be odd-sized, {width}x{height} given'
+    def __init__(self, level):
+        self._width  = level.grid.width
+        self._height = level.grid.height
 
-        self._width      = width
-        self._height     = height
-        self._level      = Level(width, height)
-        self._regions    = Grid(width, height, lambda x, y: 0)
+        assert self._width % 2 != 0 and self._height % 2 != 0, f'Level must be odd-sized, {width}x{height} given'
+
+        self._level      = level
+        self._regions    = Grid(self._width, self._height, lambda x, y: 0)
         self._rooms      = {}
         self._region_num = -1
         self._maze       = []
@@ -164,18 +165,6 @@ class Generator:
 
         self._assign_wall_types()
         yield 'assigned wall types'
-
-        self._place_stairs()
-        yield 'placed stairs'
-
-        self._place_vaults()
-        yield 'placed vaults'
-
-        self._spawn_items()
-        yield 'spawned items'
-
-        self._spawn_monsters()
-        yield 'spawned monsters'
 
     def _add_rooms(self):
         for _ in range(0, DUNGEN_ROOM_TRIES):
@@ -346,38 +335,16 @@ class Generator:
                     if not other.is_wall:
                         tile.type = TILE_WALL
 
-    def _place_stairs(self):
-        # TODO: depends on zone+level
 
-        candidates = [
-            tile
-            for tile in self._level.grid.cells
-            if tile.is_walkable
-        ]
+def generate_level(zone, depth, width, height):
+    level = Level(width, height)
 
-        random.shuffle(candidates)
+    level_gen = Generator(level)
+    for progress in level_gen():
+        log_info(f'Generating {zone.name}:{depth}: level structure: {progress}')
 
-        for staircase in range(3):
-            up   = candidates.pop(-1)
-            down = candidates.pop(-1)
-            tag  = f'stairs:{staircase}'
+    zone_gen = zone.get_generator(level, depth)
+    for progress in zone_gen():
+        log_info(f'Generating {zone.name}:{depth}: zone specifics: {progress}')
 
-            up.type   = TILE_STAIRS_UP
-            down.type = TILE_STAIRS_DOWN
-
-            up.tag = down.tag = tag
-
-    def _place_vaults(self):
-        pass
-
-    def _spawn_items(self):
-        pass
-
-    def _spawn_monsters(self):
-        pass
-
-def generate_level(label, width, height):
-    g = Generator(width, height)
-    for progress in g():
-        log_info(f'Generating {label}: {progress}')
-    return g._level
+    return level

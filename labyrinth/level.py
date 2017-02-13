@@ -94,6 +94,33 @@ class Tile:
     def base_move_cost(self):
         return -1 if not self.is_walkable else data_tile(self.type).base_move_cost
 
+    def add_entity(self, entity):
+        from .game import Monster, Item
+
+        if not self.is_walkable:
+            return False
+
+        if isinstance(entity, Monster):
+            self._monster = entity
+        elif isinstance(entity, Item):
+            self._items.append(entity)
+
+        entity.x = self.x
+        entity.y = self.y
+        return True
+
+    def remove_entity(self, entity):
+        from .game import Monster, Item
+
+        assert entity.x == self.x and entity.y == self.y, 'Given entity is not on this tile'
+        entity.x = None
+        entity.y = None
+
+        if isinstance(entity, Monster):
+            self._monster = None
+        elif isinstance(entity, Item):
+            self._items.remove(entity)
+
     def __str__(self):
         from .data import data_glyph
         glyph = data_glyph(self.type).glyph
@@ -106,3 +133,31 @@ class Level:
     @property
     def grid(self):
         return self._grid
+
+    @property
+    def walkable_tiles(self):
+        # TODO maybe cache this
+        return [
+            tile
+            for tile in self.grid.cells
+            if tile.is_walkable
+        ]
+
+    def find_spawn(self):
+        tile = random.choice(self.walkable_tiles)
+        return (tile.x, tile.y)
+
+def move(entity, x, y):
+    pass
+
+def despawn(entity):
+    assert entity.level is not None, 'Trying to despawn unspawned entity'
+    level.grid[entity.x, entity.y].remove_entity(entity)
+    entity.level = None
+
+def spawn(entity, level, x, y):
+    if entity.level is not None:
+        despawn(entity)
+
+    assert level.grid[x, y].add_entity(entity), 'Failed to spawn entity (taken spot)'
+    entity.level = level

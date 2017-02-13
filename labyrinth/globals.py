@@ -30,10 +30,10 @@ def is_running():
     return _g_is_running
 
 def get_grid_width():
-    return 120
+    return WIDTH_TOTAL
 
 def get_grid_height():
-    return 25
+    return HEIGHT_TOTAL
 
 def get_game_display_name():
     return 'The Labyrinth'

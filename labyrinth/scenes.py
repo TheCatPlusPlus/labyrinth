@@ -1,5 +1,6 @@
 from bearlibterminal import terminal
 from . import ui
+from .data import data_glyph, data_tile
 from .globals import *
 
 class Scene:
@@ -103,15 +104,39 @@ class GameScene(Scene):
         else:
             this_game().on_player_action(action)
 
-    def draw(self):
+    def _draw_sidebar(self, player, level):
         ui.vline(WIDTH_SIDEBAR, 0, get_grid_height())
         ui.hline(WIDTH_SIDEBAR, get_grid_height() - HEIGHT_MESSAGES, get_grid_width() - WIDTH_SIDEBAR)
         terminal.put(WIDTH_SIDEBAR, get_grid_height() - HEIGHT_MESSAGES, ui.BOX_VLINE_L_SPLIT)
 
-        player = this_game().player
-
+        gauge_x = WIDTH_SIDEBAR - WIDTH_SIDEBAR_GAUGES - 1
         with ui.foreground('grey'):
-            terminal.print(3, 1, f'{player.name}', align = terminal.TK_ALIGN_CENTER, width = WIDTH_PLAYER_NAME)
-            ui.gauge(3, 'HP', player.hp, 'dark green', 'red', 'light green')
-            ui.gauge(4, 'MP', player.mp, 'blue', 'light blue', 'light blue')
-            ui.gauge(5, 'ST', player.stamina, 'dark yellow', 'light yellow', 'light yellow')
+            terminal.print(2, 1, f'{player.name}', align = terminal.TK_ALIGN_CENTER, width = WIDTH_PLAYER_NAME)
+            ui.sidebar_gauge(gauge_x, 3, 'HP', player.hp, 'dark green', 'red', 'light green')
+            ui.sidebar_gauge(gauge_x, 4, 'MP', player.mp, 'blue', 'light blue', 'light blue')
+            ui.sidebar_gauge(gauge_x, 5, 'ST', player.stamina, 'dark yellow', 'light yellow', 'light yellow')
+
+    def _draw_boss_health(self):
+        # TODO
+        terminal.print(WIDTH_SIDEBAR + 2, 1, 'Boss Name', align = terminal.TK_ALIGN_CENTER, width = WIDTH_VIEWPORT)
+        terminal.print(WIDTH_SIDEBAR + 2, 2, '[color=dark red]Boss Tagline[/color]', align = terminal.TK_ALIGN_CENTER, width = WIDTH_VIEWPORT)
+        from .game import Gauge
+        ui.gauge(WIDTH_SIDEBAR + 2, 3, WIDTH_VIEWPORT, Gauge('Boss', 1234), 'red', 'light red', 'light red')
+        terminal.put(WIDTH_SIDEBAR + 2, HEIGHT_BOSS_METER + 2, 'x')
+
+    def _draw_viewport(self, player, level):
+        pass
+
+    def draw(self):
+        game   = this_game()
+        player = game.player
+        level  = game.level
+
+        self._draw_sidebar(player, level)
+        self._draw_boss_health()
+        self._draw_viewport(player, level)
+
+        #for tile in level.grid.cells:
+        #    glyph = data_glyph(tile.type)
+        #    with ui.colors(glyph.fg, glyph.bg):
+        #        terminal.put(tile.x, tile.y, glyph.glyph)
