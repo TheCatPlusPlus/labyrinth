@@ -43,15 +43,49 @@ class RectangleRoom:
             generator.add_connector(rect.x - 1, y)
             generator.add_connector(rect.x2,    y)
 
+class OctagonRoom:
+    def __init__(self, width, height, slope):
+        self.width  = width
+        self.height = height
+        self.slope  = slope
+
+    def place(self, generator, rect):
+        top_left     = (rect.x, rect.y)
+        top_right    = (rect.x2, rect.y)
+        bottom_left  = (rect.x, rect.y2)
+        bottom_right = (rect.x2, rect.y2)
+        slope        = self.slope
+
+        for pos in rect:
+            distance_tl = norm_l1(vec_sub(top_left, pos))
+            distance_tr = norm_l1(vec_sub(top_right, pos))
+            distance_bl = norm_l1(vec_sub(bottom_left, pos))
+            distance_br = norm_l1(vec_sub(bottom_right, pos))
+
+            if distance_tl < slope or distance_tr < slope + 1 or distance_bl < slope + 1 or distance_br < slope + 2:
+                generator._level.grid[pos].type = TILE_WALL_DEEP
+
+        center = (rect.x + (rect.width // 2), rect.y + (rect.height // 2))
+        generator.add_connector(center[0], rect.y - 1)
+        generator.add_connector(center[0], rect.y2)
+        generator.add_connector(rect.x - 1, center[1])
+        generator.add_connector(rect.x2, center[1])
+
 class RoomPresets:
     def __init__(self):
         self._presets = []
         self._weights = []
 
-    def add_rectangle(self, width, height, *args, rarity = 1):
-        self.add(RectangleRoom(width, height, *args), rarity)
+    def add_rectangle(self, width, height, rarity = 1):
+        self.add(RectangleRoom(width, height), rarity)
         if width != height:
-            self.add(RectangleRoom(height, width, *args), rarity)
+            self.add(RectangleRoom(height, width), rarity)
+
+    def add_octagon(self, width, height, slope, rarity = 1):
+        rarity *= 2
+        self.add(OctagonRoom(width, height, slope), rarity)
+        if width != height:
+            self.add(OctagonRoom(height, width, slope), rarity)
 
     def add(self, preset, rarity):
         self._presets.append(preset)
@@ -74,6 +108,15 @@ _g_presets.add_rectangle(9, 11)
 _g_presets.add_rectangle(11, 11, rarity = 2)
 _g_presets.add_rectangle(7, 13)
 _g_presets.add_rectangle(9, 13, rarity = 2)
+_g_presets.add_octagon(5, 5, 1)
+_g_presets.add_octagon(5, 7, 1, rarity = 2)
+_g_presets.add_octagon(7, 7, 2)
+_g_presets.add_octagon(7, 9, 2, rarity = 2)
+_g_presets.add_octagon(9, 9, 2)
+_g_presets.add_octagon(9, 9, 3)
+_g_presets.add_octagon(9, 11, 2, rarity = 2)
+_g_presets.add_octagon(9, 11, 3, rarity = 2)
+_g_presets.add_octagon(11, 11, 3, rarity = 2)
 
 class Generator:
     def __init__(self, width, height):

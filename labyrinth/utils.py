@@ -74,3 +74,10 @@ def irange(min, max, step = None):
         return range(min, max + 1, step)
     else:
         return range(min, max + 1)
+
+def norm_l1(v):
+    return abs(v[0]) + abs(v[1])
+
+# TODO: actual vector type and stuff maybe
+def vec_sub(v, u):
+    return (v[0] - u[0], v[1] - u[1])
