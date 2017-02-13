@@ -123,7 +123,7 @@ class Generator:
         self._width  = level.grid.width
         self._height = level.grid.height
 
-        assert self._width % 2 != 0 and self._height % 2 != 0, f'Level must be odd-sized, {width}x{height} given'
+        assert self._width % 2 != 0 and self._height % 2 != 0, f'Level must be odd-sized, {self._width}x{self._height} given'
 
         self._level      = level
         self._regions    = Grid(self._width, self._height, lambda x, y: 0)
@@ -337,7 +337,7 @@ class Generator:
 
 
 def generate_level(zone, depth, width, height):
-    level = Level(width, height)
+    level = Level(width | 1, height | 1)
 
     level_gen = Generator(level)
     for progress in level_gen():

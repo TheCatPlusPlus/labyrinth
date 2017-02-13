@@ -91,7 +91,7 @@ class Player(Monster):
 class Game:
     def __init__(self, player_name):
         self._zone = Zone('Test Zone', 2)
-        self._level = generate_level(self._zone, 0, 69, 25)
+        self._level = generate_level(self._zone, 0, WIDTH_VIEWPORT * 4, HEIGHT_VIEWPORT * 2)
         self._player = Player(player_name)
         self._turn_count = 0
         self._last_action_cost = 0
