@@ -36,7 +36,7 @@ def _(id, *args, **kwargs):
 #
 _(TILE_GROUND,      '.', '#252525')
 _(TILE_WALL,        '#', '#7d7d7d')
-_(TILE_WALL_DEEP,   ' ', bg = '#252525')
+_(TILE_WALL_DEEP,   ' ', bg = 'black')
 _(TILE_DOOR_CLOSED, '+', '#c97600')
 _(TILE_DOOR_OPENED, '/', '#c97600')
 

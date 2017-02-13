@@ -119,8 +119,8 @@ class Generator:
         self._remove_dead_ends()
         yield 'removed dead ends'
 
-        #self._assign_wall_types()
-        #yield 'assigned wall types'
+        self._assign_wall_types()
+        yield 'assigned wall types'
 
         #self._place_stairs()
         #yield 'placed stairs'
@@ -280,3 +280,22 @@ class Generator:
             self._level.grid[x, y].type = TILE_WALL_DEEP
             for dx, dy in CARDINALS:
                 to_check.appendleft((x + dx, y + dy))
+
+    def _assign_wall_types(self):
+        # transform walls that aren't surrounded on every side
+        # into normal TILE_WALL
+        for tile in self._level.grid.cells:
+            if tile.type != TILE_WALL_DEEP:
+                continue
+
+            x, y = tile.x, tile.y
+
+            for dy in irange(-1, 1):
+                for dx in irange(-1, 1):
+                    try:
+                        other = self._level.grid[x + dx, y + dy]
+                    except OutOfBounds:
+                        continue
+
+                    if not other.is_wall:
+                        tile.type = TILE_WALL
