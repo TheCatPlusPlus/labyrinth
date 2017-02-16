@@ -117,20 +117,22 @@ class Input:
     def focus(self):
         self._clear()
 
-        result, new_value = terminal.read_str(self._x, self._y, self._value, self._max_width)
+        with colors('white', 'dark grey'):
+            result, new_value = terminal.read_str(self._x, self._y, self._value, self._max_width)
+
         new_value = new_value.strip()
 
         if result != terminal.TK_INPUT_CANCELLED and len(new_value) > 0:
             self._value = new_value
 
     def _clear(self):
-        with background('dark grey'):
-            for x in range(self._x, self._x + self._max_width + 1):
+        with colors('white', 'dark grey'):
+            for x in range(self._x, self._x + self._max_width):
                 terminal.put(x, self._y, ' ')
 
     def draw(self):
         self._clear()
-        with background('dark grey'):
+        with colors('white', 'dark grey'):
             terminal.print(self._x, self._y, self._value)
 
 def box(x, y, w, h):
