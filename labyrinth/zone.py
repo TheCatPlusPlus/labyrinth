@@ -1,5 +1,7 @@
 import random
 from .globals import *
+from .dungen import Generator
+from .level import Level
 
 class Zone:
     def __init__(self, name, total_depth):
@@ -14,8 +16,26 @@ class Zone:
     def total_depth(self):
         return self._total_depth
 
-    def get_generator(self, level, depth):
-        return ZoneGenerator(self, level, depth)
+    @property
+    def _level_width(self):
+        return WIDTH_VIEWPORT * 4
+
+    @property
+    def _level_height(self):
+        return HEIGHT_VIEWPORT * 3
+
+    def make_level(self, depth):
+        level = Level(self._level_width | 1, self._level_height | 1, f'{self.name}:{depth + 1}')
+
+        level_gen = Generator(level)
+        for progress in level_gen():
+            log_info(f'Generating {level.name}: level structure: {progress}')
+
+        zone_gen = ZoneGenerator(self, level, depth)
+        for progress in zone_gen():
+            log_info(f'Generating {level.name}: zone specifics: {progress}')
+
+        return level
 
 class ZoneGenerator:
     def __init__(self, zone, level, depth):

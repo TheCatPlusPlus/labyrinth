@@ -135,12 +135,17 @@ class Tile:
         return f'({self.x}, {self.y}): {self.type} ({glyph})'
 
 class Level:
-    def __init__(self, width, height):
+    def __init__(self, width, height, name):
         self._grid = Grid(width, height, Tile)
+        self._name = name
 
     @property
     def grid(self):
         return self._grid
+
+    @property
+    def name(self):
+        return self._name
 
     @property
     def walkable_tiles(self):

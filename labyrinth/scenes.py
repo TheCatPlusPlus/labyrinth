@@ -111,6 +111,7 @@ class GameScene(Scene):
         terminal.put(WIDTH_SIDEBAR, get_grid_height() - HEIGHT_MESSAGES, ui.BOX_VLINE_L_SPLIT)
 
         gauge_x = WIDTH_SIDEBAR - WIDTH_SIDEBAR_GAUGES - 1
+
         with ui.foreground('grey'):
             terminal.print(2, 1, f'{player.name}', align = terminal.TK_ALIGN_CENTER, width = WIDTH_PLAYER_NAME)
             ui.sidebar_gauge(gauge_x, 3, 'HP', player.hp, 'dark green', 'red', 'light green')

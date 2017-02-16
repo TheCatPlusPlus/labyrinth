@@ -1,5 +1,4 @@
 from .globals import *
-from .dungen import generate_level
 from .level import spawn, move
 from .zone import Zone
 
@@ -91,7 +90,7 @@ class Player(Monster):
 class Game:
     def __init__(self, player_name):
         self._zone = Zone('Test Zone', 2)
-        self._level = generate_level(self._zone, 0, WIDTH_VIEWPORT * 4, HEIGHT_VIEWPORT * 2)
+        self._level = self._zone.make_level(0)
         self._player = Player(player_name)
         self._turn_count = 0
         self._last_action_cost = 0

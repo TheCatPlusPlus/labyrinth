@@ -27,7 +27,7 @@
 
 import collections, random
 from .globals import *
-from .level import Level, OutOfBounds, Grid
+from .level import OutOfBounds, Grid
 
 class RectangleRoom:
     def __init__(self, width, height):
@@ -334,17 +334,3 @@ class Generator:
 
                     if not other.is_wall:
                         tile.type = TILE_WALL
-
-
-def generate_level(zone, depth, width, height):
-    level = Level(width | 1, height | 1)
-
-    level_gen = Generator(level)
-    for progress in level_gen():
-        log_info(f'Generating {zone.name}:{depth}: level structure: {progress}')
-
-    zone_gen = zone.get_generator(level, depth)
-    for progress in zone_gen():
-        log_info(f'Generating {zone.name}:{depth}: zone specifics: {progress}')
-
-    return level
