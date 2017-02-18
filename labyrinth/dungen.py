@@ -288,7 +288,7 @@ class Generator:
 
     def _add_junction(self, x, y):
         if random.random() < DUNGEN_DOOR_CHANCE:
-            tile_type = TILE_DOOR_OPENED if random.random() < DUNGEN_DOOR_OPEN_CHANCE else TILE_DOOR_CLOSED
+            tile_type = TILE_DOOR_OPEN if random.random() < DUNGEN_DOOR_OPEN_CHANCE else TILE_DOOR_CLOSED
         else:
             tile_type = TILE_GROUND
 

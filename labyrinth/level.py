@@ -84,7 +84,7 @@ class Tile:
 
     @property
     def is_door(self):
-        return self.type in (TILE_DOOR_OPENED, TILE_DOOR_CLOSED)
+        return self.type in (TILE_DOOR_OPEN, TILE_DOOR_CLOSED)
 
     @property
     def is_exit(self):
