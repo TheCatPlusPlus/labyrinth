@@ -53,8 +53,12 @@ def get_user_data_path():
     import appdirs
     from pathlib import Path
 
-    path = appdirs.user_data_dir(get_game_internal_name(), '', roaming = True)
-    path = Path(path)
+    if Path('.git').exists():
+        path = Path('.').resolve() / '_userdata'
+    else:
+        path = appdirs.user_data_dir(get_game_internal_name(), '', roaming = True)
+        path = Path(path)
+
     path.mkdir(parents = True, exist_ok = True)
     return path
 
