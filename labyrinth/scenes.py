@@ -120,10 +120,11 @@ class GameScene(Scene):
 
     def _draw_boss_health(self):
         # TODO
-        terminal.print(WIDTH_SIDEBAR + 2, 1, 'Boss Name', align = terminal.TK_ALIGN_CENTER, width = WIDTH_VIEWPORT)
-        terminal.print(WIDTH_SIDEBAR + 2, 2, '[color=dark red]Boss Tagline[/color]', align = terminal.TK_ALIGN_CENTER, width = WIDTH_VIEWPORT)
-        from .game import Gauge
-        ui.gauge(WIDTH_SIDEBAR + 2, 3, WIDTH_VIEWPORT, Gauge('Boss', 1234), 'red', 'light red', 'light red')
+        #terminal.print(WIDTH_SIDEBAR + 2, 1, 'Boss Name', align = terminal.TK_ALIGN_CENTER, width = WIDTH_VIEWPORT)
+        #terminal.print(WIDTH_SIDEBAR + 2, 2, '[color=dark red]Boss Tagline[/color]', align = terminal.TK_ALIGN_CENTER, width = WIDTH_VIEWPORT)
+        #from .game import Gauge
+        #ui.gauge(WIDTH_SIDEBAR + 2, 3, WIDTH_VIEWPORT, Gauge('Boss', 1234), 'red', 'light red', 'light red')
+        pass
 
     def _draw_viewport(self, player, level):
         def go(player_c, view_c, map_c):
@@ -155,16 +156,28 @@ class GameScene(Scene):
                     ui.put_glyph(cx, cy, TILE_WALL_DEEP)
                     continue
 
-                ui.put_glyph(cx, cy, tile.type)
+                glyph  = data_glyph(tile.type)
+                fg, bg = glyph.fg, glyph.bg
 
-                if tile.monster is not None:
-                    ui.put_glyph(cx, cy, tile.monster.type)
+                if not tile.is_lit:
+                    unlit = data_glyph(TILE_UNLIT)
 
-                if tile.items:
-                    if len(tile.items) == 1:
-                        ui.put_glyph(cx, cy, tile.items[0])
-                    else:
-                        ui.put_glyph(cx, cy, ITEM_MULTIPLE)
+                    if fg is not None:
+                        fg = unlit.fg
+                    if bg is not None and bg != 'black':
+                        bg = unlit.bg
+
+                if tile.was_seen:
+                    ui.put_glyph(cx, cy, tile.type, fg, bg)
+
+                if tile.is_lit:
+                    if tile.monster is not None:
+                        ui.put_glyph(cx, cy, tile.monster.type)
+                    elif tile.items:
+                        if len(tile.items) == 1:
+                            ui.put_glyph(cx, cy, tile.items[0])
+                        else:
+                            ui.put_glyph(cx, cy, ITEM_MULTIPLE)
 
     def draw(self):
         game   = this_game()

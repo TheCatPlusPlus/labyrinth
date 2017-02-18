@@ -81,3 +81,9 @@ def norm_l1(v):
 # TODO: actual vector type and stuff maybe
 def vec_sub(v, u):
     return (v[0] - u[0], v[1] - u[1])
+
+def vec_add(v, u):
+    return (v[0] + u[0], v[1] + u[1])
+
+def vec_scale(v, s):
+    return (v[0] * s, v[1] * s)

@@ -246,7 +246,13 @@ def sidebar_gauge(x, y, label, g, *args):
     terminal.print(1, y, value)
     gauge(x, y, WIDTH_SIDEBAR_GAUGES, g, *args)
 
-def put_glyph(x, y, type):
+def put_glyph(x, y, type, fg = None, bg = None):
     glyph = data_glyph(type)
-    with colors(glyph.fg, glyph.bg):
+
+    if fg is None:
+        fg = glyph.fg
+    if bg is None:
+        bg = glyph.bg
+
+    with colors(fg, bg):
         terminal.put(x, y, glyph.glyph)

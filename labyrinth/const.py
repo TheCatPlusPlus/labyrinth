@@ -46,6 +46,7 @@ TILE_DOOR_CLOSED = 't:door-closed'
 TILE_DOOR_OPEN   = 't:door-open'
 TILE_STAIRS_UP   = 't:stairs-up'
 TILE_STAIRS_DOWN = 't:stairs-down'
+TILE_UNLIT       = 't:unlit' # special colour override for unlit tiles
 
 MONSTER_PLAYER  = 'm:player'
 MONSTER_RAT     = 'm:rat'
@@ -84,3 +85,5 @@ MOVEMENT = {
     ACTION_MOVE_NORTH_EAST: NORTH_EAST,
     ACTION_MOVE_SOUTH_EAST: SOUTH_EAST,
 }
+
+FOV_RADIUS = 8

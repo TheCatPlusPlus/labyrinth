@@ -1,6 +1,7 @@
 from .globals import *
 from .level import spawn, move
 from .zone import Zone
+from .fov import update_fov
 
 class Gauge:
     def __init__(self, label, max_value):
@@ -71,6 +72,8 @@ class Player(Monster):
         self._mp = Gauge('MP', 100)
         self._stamina = Gauge('Stamina', 50)
 
+        self.fov = []
+
     @property
     def name(self):
         return self._name
@@ -96,6 +99,7 @@ class Game:
         self._last_action_cost = 0
 
         spawn(self._player, self._level, *self._level.find_spawn())
+        update_fov(self._player, self._level)
 
     @property
     def player(self):
@@ -117,3 +121,5 @@ class Game:
         if action in MOVEMENT:
             dx, dy = MOVEMENT[action]
             move(self._player, self._player.x + dx, self._player.y + dy)
+
+        update_fov(self._player, self._level)

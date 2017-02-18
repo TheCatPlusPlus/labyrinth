@@ -58,10 +58,12 @@ class Grid:
 
 class Tile:
     def __init__(self, x, y, type = TILE_WALL_DEEP):
-        self._x       = x
-        self._y       = y
-        self._items   = []
-        self._monster = None
+        self._x        = x
+        self._y        = y
+        self._items    = []
+        self._monster  = None
+        self._is_lit   = False
+        self._was_seen = False
 
         self.type = type
         self.tag  = None
@@ -77,6 +79,10 @@ class Tile:
     @property
     def is_walkable(self):
         return self._monster is None and data_tile(self.type).is_walkable
+
+    @property
+    def is_transparent(self):
+        return data_tile(self.type).is_transparent
 
     @property
     def is_wall(self):
@@ -101,6 +107,20 @@ class Tile:
     @property
     def items(self):
         return self._items
+
+    @property
+    def is_lit(self):
+        return self._is_lit
+
+    @is_lit.setter
+    def is_lit(self, value):
+        self._is_lit = value
+        if value:
+            self._was_seen = True
+
+    @property
+    def was_seen(self):
+        return self._was_seen
 
     def add_entity(self, entity):
         from .game import Monster, Item
