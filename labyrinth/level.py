@@ -169,6 +169,8 @@ def move(entity, x, y):
         return False
 
     if not new_tile.is_walkable:
+        if new_tile.is_door:
+            new_tile.type = TILE_DOOR_OPEN
         return False
 
     current_tile.remove_entity(entity)
