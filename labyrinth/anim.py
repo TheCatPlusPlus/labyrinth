@@ -21,10 +21,10 @@ def animate(frames):
 
         terminal.refresh()
 
-        if not terminal.peek():
+        if terminal.peek() in (0, terminal.TK_MOUSE_MOVE):
             time.sleep(next_time / 1000)
 
-        if terminal.peek():
+        if terminal.peek() not in (0, terminal.TK_MOUSE_MOVE):
             return
 
 def _explosion_layers(radius):

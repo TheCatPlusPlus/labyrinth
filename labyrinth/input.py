@@ -48,10 +48,10 @@ def read_event():
     elif event == terminal.TK_MOUSE_MOVE:
         x = terminal.state(terminal.TK_MOUSE_X)
         y = terminal.state(terminal.TK_MOUSE_Y)
-        return (EVENT_MOUSE, x, y)
+        return (EVENT_MOUSE_MOVE, x, y)
     elif event == terminal.TK_MOUSE_SCROLL:
         wheel = terminal.state(terminal.TK_MOUSE_WHEEL)
-        return (EVENT_SCROLL, wheel)
+        return (EVENT_MOUSE_SCROLL, wheel)
     elif event in IGNORED_KEYS or (event & terminal.TK_KEY_RELEASED) == terminal.TK_KEY_RELEASED:
         return None
     else:
@@ -70,10 +70,8 @@ def run_modal(on_key):
     while True:
         event = read_event()
 
-        if event is None:
+        if event is None or event[0] != EVENT_KEY:
             continue
-        elif event[0] != EVENT_KEY:
-            return False
 
         result = on_key(event[1])
         if result is not None:

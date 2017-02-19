@@ -22,7 +22,7 @@ def main():
 
     config = f'''
         window: title={get_game_display_name()}, size={get_grid_width()}x{get_grid_height()};
-        input: precise-mouse=false, filter=[keyboard, system];
+        input: precise-mouse=false, filter=[keyboard, mouse, system], alt-functions=false;
         log: level=fatal;
     '''
 

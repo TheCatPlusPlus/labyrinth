@@ -1,8 +1,8 @@
-EVENT_CLOSE  = 'window-closing'
-EVENT_RESIZE = 'window-resized'
-EVENT_MOUSE  = 'mouse-event'
-EVENT_SCROLL = 'scroll-event'
-EVENT_KEY    = 'key-event'
+EVENT_CLOSE        = 'window-close'
+EVENT_RESIZE       = 'window-resize'
+EVENT_MOUSE_MOVE   = 'mouse-move'
+EVENT_MOUSE_SCROLL = 'mouse-scroll'
+EVENT_KEY          = 'key-press'
 
 ACTION_PREVIOUS_ITEM = 'previous-item'
 ACTION_NEXT_ITEM     = 'next-item'
