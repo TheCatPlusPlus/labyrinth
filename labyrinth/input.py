@@ -63,3 +63,18 @@ def read_event():
 
 def has_event():
     return terminal.peek() != 0
+
+def run_modal(on_key):
+    terminal.refresh()
+
+    while True:
+        event = read_event()
+
+        if event is None:
+            continue
+        elif event[0] != EVENT_KEY:
+            return False
+
+        result = on_key(event[1])
+        if result is not None:
+            return result

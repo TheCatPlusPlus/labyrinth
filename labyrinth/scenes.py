@@ -1,5 +1,5 @@
 from bearlibterminal import terminal
-from . import ui
+from . import ui, debug
 from .data import data_glyph, data_tile
 from .globals import *
 
@@ -96,12 +96,9 @@ class GameScene(Scene):
 
         action = get_game_keymap().query(args[0])
 
-        if action == ACTION_TAKE_STAIRS:
-            from .anim import explosion, animate
-            p = this_game().player
-            animate(explosion(p.x, p.y, 4, 'red', 'orange'))
-
-        if action == ACTION_QUIT and ui.modal_confirm('Quit without saving? [color=red]NOTE[/color]: this will discard existing save!'):
+        if action == ACTION_DEBUG_MENU:
+            debug.debug_menu()
+        elif action == ACTION_QUIT and ui.modal_confirm('Quit without saving? [color=red]NOTE[/color]: this will discard existing save!'):
             discard_game()
             signal_exit()
         elif action == ACTION_SAVE_QUIT and ui.modal_confirm('Save and quit?'):

@@ -1,7 +1,7 @@
 from contextlib import contextmanager
 from bearlibterminal import terminal
 from .globals import *
-from .input import read_event
+from .input import read_event, run_modal
 from .data import data_glyph
 
 # single line box
@@ -173,21 +173,14 @@ def modal_confirm(message):
     box(x, y, width, 2)
     terminal.print(x + 1, y + 1, message, align = terminal.TK_ALIGN_CENTER, width = width - 2)
     terminal.print(x + 1, y + 2, yes_no, align = terminal.TK_ALIGN_CENTER, width = width - 2)
-    terminal.refresh()
 
-    while True:
-        event = read_event()
-
-        if event is None:
-            continue
-        elif event[0] != EVENT_KEY:
-            return False
-
-        key = event[1].id
-        if key == terminal.TK_Y:
+    def on_key(key):
+        if key.id == terminal.TK_Y:
             return True
-        elif key in (terminal.TK_N, terminal.TK_ESCAPE):
+        elif key.id in (terminal.TK_N, terminal.TK_ESCAPE):
             return False
+
+    return run_modal(on_key)
 
 @contextmanager
 def background(bg):

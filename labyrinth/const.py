@@ -25,6 +25,8 @@ ACTION_WAIT            = 'wait'
 ACTION_SHOW_INVENTORY = 'show-inventory'
 ACTION_SHOW_CHARACTER = 'show-character'
 
+ACTION_DEBUG_MENU = 'debug-menu'
+
 WIDTH_TOTAL       = 120
 HEIGHT_TOTAL      = 35
 

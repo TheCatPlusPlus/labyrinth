@@ -141,6 +141,7 @@ def load_keymaps():
     _g_game_keymap.add(ACTION_TAKE_STAIRS,     '<',      '>')
     _g_game_keymap.add(ACTION_SHOW_INVENTORY,  'i')
     _g_game_keymap.add(ACTION_SHOW_CHARACTER,  '@')
+    _g_game_keymap.add(ACTION_DEBUG_MENU,      'f12')
 
 def get_menu_keymap():
     return _g_menu_keymap
