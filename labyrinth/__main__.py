@@ -3,13 +3,11 @@ import time, pdb, traceback
 from bearlibterminal import terminal
 
 from .globals import *
-from .log import setup_log, log_error
+from .log import log_error
 from .input import read_event, has_event, parse_key
 from .scenes import *
 
 def start():
-    setup_log()
-
     try:
         main()
     except Exception:
@@ -63,4 +61,5 @@ def main():
     if is_game_loaded():
         save_game()
 
-start()
+if __name__ == '__main__':
+    start()
