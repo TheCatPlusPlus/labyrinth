@@ -48,7 +48,6 @@ TILE_DOOR_CLOSED = 't:door-closed'
 TILE_DOOR_OPEN   = 't:door-open'
 TILE_STAIRS_UP   = 't:stairs-up'
 TILE_STAIRS_DOWN = 't:stairs-down'
-TILE_EXPLOSION   = 't:explosion'
 
 MONSTER_PLAYER  = 'm:player'
 MONSTER_RAT     = 'm:rat'
@@ -90,4 +89,6 @@ MOVEMENT = {
 
 FOV_RADIUS = 8
 
-ANIM_EXPLOSION_FRAME_TIME = 25
+ANIM_FRAME_TIME = 25
+ANIM_PROJECTILE = 'a:projectile'
+ANIM_EXPLOSION  = 'a:explosion'

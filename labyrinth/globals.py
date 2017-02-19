@@ -195,3 +195,20 @@ def map_to_screen(x, y):
         raise OutOfBounds(cx, cy)
 
     return cx, cy
+
+def screen_to_map(cx, cy):
+    x0, y0   = get_viewport_map_origin()
+    cx0, cy0 = get_viewport_screen_origin()
+
+    dx = cx - cx0
+    dy = cy - cy0
+
+    x = x0 + dx
+    y = y0 + dy
+
+    if dx < 0 or dx >= WIDTH_VIEWPORT or dy < 0 or dy >= HEIGHT_VIEWPORT:
+        raise OutOfBounds(cx, cy)
+
+    this_game().level.grid[x, y] # for OOB
+
+    return x, y

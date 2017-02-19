@@ -55,7 +55,6 @@ DEFAULT_UNLIT_FG = DEFAULT_UNLIT_BG = '#202020'
 #
 # tile types
 #
-_(TILE_EXPLOSION,   '*')
 _(TILE_GROUND,      '.', '#555555')
 _(TILE_WALL,        ' ', bg = '#505050')
 _(TILE_WALL_DEEP,   ' ', bg = 'black')
