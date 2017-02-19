@@ -35,8 +35,9 @@ def _(id, *args, **kwargs):
 # tile types
 #
 _(TILE_UNLIT,       ' ', '#202020', '#202020') # NB not used directly
+_(TILE_EXPLOSION,   '*')
 _(TILE_GROUND,      '.', '#555555')
-_(TILE_WALL,        '#', '#7d7d7d')
+_(TILE_WALL,        ' ', bg = '#505050')
 _(TILE_WALL_DEEP,   ' ', bg = 'black')
 _(TILE_DOOR_CLOSED, '+', '#c97600')
 _(TILE_DOOR_OPEN,   '/', '#c97600')

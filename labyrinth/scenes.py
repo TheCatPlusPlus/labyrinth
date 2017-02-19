@@ -1,7 +1,6 @@
 from bearlibterminal import terminal
 from . import ui
 from .data import data_glyph, data_tile
-from .level import OutOfBounds
 from .globals import *
 
 class Scene:
@@ -97,6 +96,11 @@ class GameScene(Scene):
 
         action = get_game_keymap().query(args[0])
 
+        if action == ACTION_TAKE_STAIRS:
+            from .anim import explosion, animate
+            p = this_game().player
+            animate(explosion(p.x, p.y, 4, 'red', 'orange'))
+
         if action == ACTION_QUIT and ui.modal_confirm('Quit without saving? [color=red]NOTE[/color]: this will discard existing save!'):
             discard_game()
             signal_exit()
@@ -127,28 +131,13 @@ class GameScene(Scene):
         pass
 
     def _draw_viewport(self, player, level):
-        def go(player_c, view_c, map_c):
-            if player_c < (view_c // 2):
-                return 0
-            elif player_c >= map_c - (view_c // 2):
-                return map_c - view_c
-            else:
-                return player_c - (view_c // 2)
-
-        if level.grid.width > WIDTH_VIEWPORT:
-            x0 = go(player.x, WIDTH_VIEWPORT, level.grid.width)
-        else:
-            x0 = 0
-
-        if level.grid.height > HEIGHT_VIEWPORT:
-            y0 = go(player.y, HEIGHT_VIEWPORT, level.grid.height)
-        else:
-            y0 = 0
+        x0, y0 = get_viewport_map_origin()
+        cx0, cy0 = get_viewport_screen_origin()
 
         for y in range(0, HEIGHT_VIEWPORT):
             for x in range(0, WIDTH_VIEWPORT):
-                cx = WIDTH_SIDEBAR + 2 + x
-                cy = HEIGHT_BOSS_METER + 2 + y
+                cx = cx0 + x
+                cy = cy0 + y
 
                 try:
                     tile = level.grid[x0 + x, y0 + y]

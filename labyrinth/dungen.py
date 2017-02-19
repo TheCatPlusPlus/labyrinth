@@ -27,7 +27,7 @@
 
 import collections, random
 from .globals import *
-from .level import OutOfBounds, Grid
+from .level import Grid
 
 class RectangleRoom:
     def __init__(self, width, height):

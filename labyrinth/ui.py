@@ -1,5 +1,5 @@
-from bearlibterminal import terminal
 from contextlib import contextmanager
+from bearlibterminal import terminal
 from .globals import *
 from .input import read_event
 from .data import data_glyph

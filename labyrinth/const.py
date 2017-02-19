@@ -47,6 +47,7 @@ TILE_DOOR_OPEN   = 't:door-open'
 TILE_STAIRS_UP   = 't:stairs-up'
 TILE_STAIRS_DOWN = 't:stairs-down'
 TILE_UNLIT       = 't:unlit' # special colour override for unlit tiles
+TILE_EXPLOSION   = 't:explosion'
 
 MONSTER_PLAYER  = 'm:player'
 MONSTER_RAT     = 'm:rat'
@@ -87,3 +88,5 @@ MOVEMENT = {
 }
 
 FOV_RADIUS = 8
+
+ANIM_EXPLOSION_FRAME_TIME = 25

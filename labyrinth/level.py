@@ -2,12 +2,6 @@ import random
 from .globals import *
 from .data import data_tile
 
-class OutOfBounds(Exception):
-    def __init__(self, x, y):
-        super().__init__(f'Point ({x}, {y}) is out of bounds')
-        self.x = x
-        self.y = y
-
 class Grid:
     def __init__(self, width, height, make_cell):
         self._rect      = Rect(0, 0, width, height)

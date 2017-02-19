@@ -1,3 +1,9 @@
+class OutOfBounds(Exception):
+    def __init__(self, x, y):
+        super().__init__(f'Point ({x}, {y}) is out of bounds')
+        self.x = x
+        self.y = y
+
 class Rect:
     def __init__(self, x, y, w, h):
         self.x      = x
@@ -45,6 +51,25 @@ class Rect:
             return vertical
         return horizontal + vertical
 
+    @property
+    def edge_points(self):
+        if self.width > 1 and self.height > 1:
+            for x in range(self.x, self.x2):
+                yield (x, self.y)
+                yield (x, self.y2 - 1)
+
+            for y in range(self.y, self.y2):
+                yield (self.x, y)
+                yield (self.x2 - 1, y)
+        elif self.width == 1 and self.height == 1:
+            yield (self.x, self.y)
+        elif self.width > 1 and self.height == 1:
+            for x in range(self.x, self.x2):
+                yield (x, self.y)
+        elif self.width == 1 and self.height > 1:
+            for y in range(self.y, self.y2):
+                yield (self.x, y)
+
     def __str__(self):
         return f'Rect(pos = ({self.x}, {self.y}), w = {self.width}, h = {self.height})'
 
@@ -70,10 +95,19 @@ def clamp(value, min_value, max_value):
     return min(max_value, max(min_value, value))
 
 def irange(min, max, step = None):
-    if step is not None:
-        return range(min, max + 1, step)
+    if min > max:
+        if step is None:
+            step = -1
+
+        assert step < 0
     else:
-        return range(min, max + 1)
+        if step is None:
+            step = +1
+
+        assert step > 0
+
+    max += step
+    return range(min, max, step)
 
 def norm_l1(v):
     return abs(v[0]) + abs(v[1])

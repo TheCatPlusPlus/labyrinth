@@ -72,14 +72,14 @@ def this_game():
 def get_save_path():
     return get_user_data_path() / 'current.save'
 
-def new_game(player_choices):
+def new_game(*args, **kwargs):
     from .game import Game
 
     if is_game_loaded():
         discard_game()
 
     global _g_game
-    _g_game = Game(player_choices)
+    _g_game = Game(*args, **kwargs)
 
 def load_game():
     from .saves import do_load_game
@@ -147,3 +147,50 @@ def get_menu_keymap():
 
 def get_game_keymap():
     return _g_game_keymap
+
+def get_viewport_map_origin():
+    def go(player_c, view_c, map_c):
+        if player_c < (view_c // 2):
+            return 0
+        elif player_c >= map_c - (view_c // 2):
+            return map_c - view_c
+        else:
+            return player_c - (view_c // 2)
+
+    game   = this_game()
+    player = game.player
+    level  = game.level
+
+    if level.grid.width > WIDTH_VIEWPORT:
+        x0 = go(player.x, WIDTH_VIEWPORT, level.grid.width)
+    else:
+        x0 = 0
+
+    if level.grid.height > HEIGHT_VIEWPORT:
+        y0 = go(player.y, HEIGHT_VIEWPORT, level.grid.height)
+    else:
+        y0 = 0
+
+    return x0, y0
+
+def get_viewport_screen_origin():
+    cx0 = WIDTH_SIDEBAR + 2
+    cy0 = HEIGHT_BOSS_METER + 2
+    return cx0, cy0
+
+def map_to_screen(x, y):
+    x0, y0   = get_viewport_map_origin()
+    cx0, cy0 = get_viewport_screen_origin()
+
+    dx = x - x0
+    dy = y - y0
+
+    cx = cx0 + dx
+    cy = cy0 + dy
+
+    this_game().level.grid[x, y] # for OOB
+
+    if dx < 0 or dx >= WIDTH_VIEWPORT or dy < 0 or dy >= HEIGHT_VIEWPORT:
+        raise OutOfBounds(cx, cy)
+
+    return cx, cy

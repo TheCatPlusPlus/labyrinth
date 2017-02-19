@@ -3,7 +3,6 @@
 
 import math, copy
 from .globals import *
-from .level import OutOfBounds
 
 class Line:
     def __init__(self, p, q):
