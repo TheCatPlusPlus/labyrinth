@@ -17,7 +17,10 @@ def animate(frames):
             break
 
         terminal.refresh()
-        time.sleep(next_time / 1000)
+
+        if not terminal.peek():
+            time.sleep(next_time / 1000)
+
         if terminal.peek():
             return
 
