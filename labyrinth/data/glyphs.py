@@ -1,13 +1,24 @@
 from ..const import *
 
 class Glyph:
-    def __init__(self, id, glyph, fg = None, bg = None):
+    def __init__(self, id, glyph, fg = None, bg = None, unlit_fg = None, unlit_bg = None):
+        assert len(glyph) == 1, f'Glyph {id} too long: "{glyph}"'
+
         self._id    = id
         self._glyph = glyph
         self._fg    = fg
         self._bg    = bg
 
-        assert len(glyph) == 1, f'Glyph {self.id} too long: "{self.glyph}"'
+        if unlit_fg is None:
+            unlit_fg = DEFAULT_UNLIT_FG
+
+        if bg is not None and bg != 'black':
+            unlit_bg = DEFAULT_UNLIT_BG
+        else:
+            unlit_bg = 'black'
+
+        self._unlit_fg = unlit_fg
+        self._unlit_bg = unlit_bg
 
     @property
     def id(self):
@@ -25,16 +36,25 @@ class Glyph:
     def bg(self):
         return self._bg
 
+    @property
+    def unlit_fg(self):
+        return self._unlit_fg
+
+    @property
+    def unlit_bg(self):
+        return self._unlit_bg
+
 _g_glyphs = {}
 
 def _(id, *args, **kwargs):
     assert id not in _g_glyphs, f'Duplicate glyph {id}'
     _g_glyphs[id] = Glyph(id, *args, **kwargs)
 
+DEFAULT_UNLIT_FG = DEFAULT_UNLIT_BG = '#202020'
+
 #
 # tile types
 #
-_(TILE_UNLIT,       ' ', '#202020', '#202020') # NB not used directly
 _(TILE_EXPLOSION,   '*')
 _(TILE_GROUND,      '.', '#555555')
 _(TILE_WALL,        ' ', bg = '#505050')

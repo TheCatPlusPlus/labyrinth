@@ -48,7 +48,6 @@ TILE_DOOR_CLOSED = 't:door-closed'
 TILE_DOOR_OPEN   = 't:door-open'
 TILE_STAIRS_UP   = 't:stairs-up'
 TILE_STAIRS_DOWN = 't:stairs-down'
-TILE_UNLIT       = 't:unlit' # special colour override for unlit tiles
 TILE_EXPLOSION   = 't:explosion'
 
 MONSTER_PLAYER  = 'm:player'

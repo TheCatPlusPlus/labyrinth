@@ -142,16 +142,12 @@ class GameScene(Scene):
                     ui.put_glyph(cx, cy, TILE_WALL_DEEP)
                     continue
 
-                glyph  = data_glyph(tile.type)
-                fg, bg = glyph.fg, glyph.bg
+                glyph = data_glyph(tile.type)
 
-                if not tile.is_lit:
-                    unlit = data_glyph(TILE_UNLIT)
-
-                    if fg is not None:
-                        fg = unlit.fg
-                    if bg is not None and bg != 'black':
-                        bg = unlit.bg
+                if tile.is_lit:
+                    fg, bg = glyph.fg, glyph.bg
+                else:
+                    fg, bg = glyph.unlit_fg, glyph.unlit_bg
 
                 if tile.was_seen:
                     ui.put_glyph(cx, cy, tile.type, fg, bg)

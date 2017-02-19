@@ -18,11 +18,11 @@ class Zone:
 
     @property
     def _level_width(self):
-        return WIDTH_VIEWPORT * 4
+        return WIDTH_VIEWPORT
 
     @property
     def _level_height(self):
-        return HEIGHT_VIEWPORT * 3
+        return HEIGHT_VIEWPORT
 
     def make_level(self, depth):
         level = Level(self._level_width | 1, self._level_height | 1, f'{self.name}:{depth + 1}')
