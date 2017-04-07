@@ -1,5 +1,6 @@
 ﻿using Labyrinth.Data.Ids;
 using Labyrinth.Entities;
+using Labyrinth.Utils;
 
 namespace Labyrinth.Data
 {
@@ -11,8 +12,7 @@ namespace Labyrinth.Data
         public static readonly Id<Item> Sword = new Id<Item>("i:sword");
         public static readonly Id<Item> Rock = new Id<Item>("i:rock");
 
-        public string Singular { get; private set; }
-        public string Plural { get; private set; }
+        public Name Name { get; private set; }
         public string Description { get; private set; }
 
         public ItemData(Id<Item> id)
@@ -26,15 +26,13 @@ namespace Labyrinth.Data
             {
                 new ItemData(Sword)
                 {
-                    Singular = "a sword",
-                    Plural = "swords",
+                    Name = new Name("sword"),
                     Description = "An ordinary steel blade."
                 },
 
                 new ItemData(Rock)
                 {
-                    Singular = "a rock",
-                    Plural = "rocks",
+                    Name = new Name("rock"),
                     Description = "This rock might be fairly small, but it can still be a potent thrown weapon."
                 }
             };

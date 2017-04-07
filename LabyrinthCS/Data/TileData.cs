@@ -1,5 +1,6 @@
 ﻿using Labyrinth.Data.Ids;
 using Labyrinth.Maps;
+using Labyrinth.Utils;
 
 namespace Labyrinth.Data
 {
@@ -35,8 +36,7 @@ namespace Labyrinth.Data
             StairsDown
         };
 
-        public string Singular { get; private set; }
-        public string Plural { get; private set; }
+        public Name Name { get; private set; }
         public string Description { get; private set; }
         public bool IsWalkable { get; private set; }
         public bool IsTransparent { get; private set; }
@@ -54,8 +54,7 @@ namespace Labyrinth.Data
         {
             var wall = new TileData(Wall)
             {
-                Singular = "a wall",
-                Plural = "walls",
+                Name = new Name("wall", thing: true),
                 Description =
                     "The walls are made out of solid stone. They feel weird to touch, slightly pulsating with strange energy. " +
                     "Here and there inscriptions in a forgotten language can be found.",
@@ -65,8 +64,7 @@ namespace Labyrinth.Data
 
             var door = new TileData(DoorClosed)
             {
-                Singular = "a closed door",
-                Plural = "closed doors",
+                Name = new Name("closed door", thing: true),
                 Description =
                     "A heavy, intricately detailed stone door. The mechanism operating it seems to be working flawlessly.",
                 IsWalkable = false,
@@ -77,8 +75,7 @@ namespace Labyrinth.Data
             {
                 new TileData(Ground)
                 {
-                    Singular = "the floor",
-                    Plural = "the floor",
+                    Name = new Name("floor", countable: false, unique: true, thing: true),
                     Description = "The floor is perfectly smooth and cold."
                 },
 
@@ -86,8 +83,7 @@ namespace Labyrinth.Data
 
                 new TileData(WallDeep)
                 {
-                    Singular = wall.Singular,
-                    Plural = wall.Plural,
+                    Name = wall.Name,
                     Description = wall.Description,
                     IsWalkable = false,
                     IsTransparent = false
@@ -97,15 +93,13 @@ namespace Labyrinth.Data
 
                 new TileData(DoorOpen)
                 {
-                    Singular = "an open door",
-                    Plural = "open doors",
+                    Name = new Name("open door", thing: true),
                     Description = door.Description
                 },
 
                 new TileData(StairsDown)
                 {
-                    Singular = "a staircase leading down",
-                    Plural = "staircases leading down",
+                    Name = new Name("staircase leading down", "staircases leading down", thing: true),
                     Description = "A long staircase leading further into the Labyrinth."
                 },
 
@@ -113,8 +107,7 @@ namespace Labyrinth.Data
 
                 new TileData(WaterShallow)
                 {
-                    Singular = "pool of water",
-                    Plural = "pool of water",
+                    Name = new Name("pool of water", "pools of water", thing: true),
                     Description =
                         "This pool is shallow enough to cross, but the water will hinder your movement and combat ability.",
                     BaseMoveCost = Const.MoveCostBase * 2
@@ -122,8 +115,7 @@ namespace Labyrinth.Data
 
                 new TileData(WaterDeep)
                 {
-                    Singular = "deep pool of water",
-                    Plural = "deep pool of water",
+                    Name = new Name("pool of deep water", "pools of deep water", thing: true),
                     Description =
                         "The water is murky and deep, it is best to not attempt crossing here.",
                     IsWalkable = false
@@ -131,8 +123,7 @@ namespace Labyrinth.Data
 
                 new TileData(Lava)
                 {
-                    Singular = "pool of lava",
-                    Plural = "pool of lava",
+                    Name = new Name("pool of lava", "pools of lava", thing: true),
                     Description = "This sizzling pool of molten rock is extremely dangerous, " +
                                   "even coming near it might cause you to get badly burnt.",
                     IsWalkable = false

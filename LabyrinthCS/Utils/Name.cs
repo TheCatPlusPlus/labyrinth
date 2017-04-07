@@ -22,9 +22,7 @@ namespace Labyrinth.Utils
         {
             if (string.IsNullOrEmpty(plural))
             {
-                var words = singular.Split(' ');
-                words[0] += 's';
-                plural = string.Join(" ", words);
+                plural = singular + "s";
             }
 
             _singular = singular;

@@ -143,7 +143,7 @@ namespace Labyrinth.UI.Scenes
             }
             else
             {
-                look.Append($"[color=white]{_lookAt.Singular.Capitalize()}.");
+                look.Append($"[color=white]{_lookAt.Name.Singular().Capitalize()}.");
                 var description = _lookAt.Description;
 
                 if (_lookAt.IsLit)
@@ -169,16 +169,11 @@ namespace Labyrinth.UI.Scenes
                             for (var idx = 0; idx < grouped.Count; ++idx)
                             {
                                 (var item, var count) = grouped[idx];
-                                var name = count > 1 ? item.Plural : item.Singular;
+                                var name = count > 1 ? item.Name.Plural(count) : item.Name.Singular();
 
                                 if (idx == 0)
                                 {
                                     name = name.Capitalize();
-                                }
-
-                                if (count > 1)
-                                {
-                                    name = $"{count} {name}";
                                 }
 
                                 name = $"[color=cyan]{name}[/color]";

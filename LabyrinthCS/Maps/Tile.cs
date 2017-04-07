@@ -6,6 +6,7 @@ using System.Linq;
 using Labyrinth.Data;
 using Labyrinth.Data.Ids;
 using Labyrinth.Entities;
+using Labyrinth.Utils;
 
 namespace Labyrinth.Maps
 {
@@ -37,8 +38,7 @@ namespace Labyrinth.Maps
         public object Tag { get; set; }
         public IEnumerable<Point> Neighbours => GetNeighbours();
 
-        public string Singular => _data.Singular;
-        public string Plural => _data.Plural;
+        public Name Name => _data.Name;
         public string Description => _data.Description;
         public bool IsWalkable => Monster == null && _data.IsWalkable;
         public bool IsTransparent => _data.IsTransparent;

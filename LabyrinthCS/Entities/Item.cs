@@ -1,5 +1,6 @@
 ﻿using Labyrinth.Data;
 using Labyrinth.Data.Ids;
+using Labyrinth.Utils;
 
 namespace Labyrinth.Entities
 {
@@ -10,8 +11,7 @@ namespace Labyrinth.Entities
         public Id<Item> Id { get; }
         IId IHasId.Id => Id;
 
-        public string Singular => _data.Singular;
-        public string Plural => _data.Plural;
+        public Name Name => _data.Name;
         public string Description => _data.Description;
 
         public Item(Id<Item> id)

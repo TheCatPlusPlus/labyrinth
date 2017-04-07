@@ -32,7 +32,7 @@ namespace Labyrinth.Data
 
                 new MonsterData(Rodent)
                 {
-                    Name = new Name("rodent of unusual size"),
+                    Name = new Name("rodent of unusual size", "rodents of unusual size"),
                     Description = "A giant rodent that will eat anything it can get its paws on."
                 },
 
