@@ -49,7 +49,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AI\Path.cs" />
+    <Compile Include="AI\IPathFinder.cs" />
+    <Compile Include="AI\ShortestPath.cs" />
     <Compile Include="Const.cs" />
     <Compile Include="Data\GlyphData.cs" />
     <Compile Include="Data\Ids\IId.cs" />
@@ -70,7 +71,7 @@
     <Compile Include="Maps\FOV\FieldOfView.cs" />
     <Compile Include="Maps\Grid.cs" />
     <Compile Include="Maps\IGridItem.cs" />
-    <Compile Include="Maps\ITileEntities.cs" />
+    <Compile Include="Maps\IEntityList.cs" />
     <Compile Include="Maps\Level.cs" />
     <Compile Include="Maps\OutOfBounds.cs" />
     <Compile Include="Maps\Tile.cs" />

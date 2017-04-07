@@ -24,7 +24,7 @@ namespace Labyrinth.UI.Scenes
         private readonly SidebarGaugeWidget _mp;
         private readonly SidebarGaugeWidget _stamina;
         private readonly Viewport _viewport;
-        private Path _cursorPath;
+        private ShortestPath _cursorPath;
         private Tile _lookAt;
 
         public GameScene()
@@ -71,7 +71,7 @@ namespace Labyrinth.UI.Scenes
                     var level = State.Game.Level;
                     var map = _viewport.ScreenToMap(_viewport.Cursor);
                     _lookAt = level[map];
-                    _cursorPath = new Path(level, State.Game.Player.Position, map);
+                    _cursorPath = new ShortestPath(level, State.Game.Player.Position, map);
                 }
                 catch (OutOfBounds)
                 {

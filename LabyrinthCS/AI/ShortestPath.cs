@@ -13,16 +13,16 @@ using Labyrinth.Utils;
 
 namespace Labyrinth.AI
 {
-    public class Path
+    public class ShortestPath : IPathFinder
     {
         private class Node
         {
-            private readonly Path _parent;
+            private readonly ShortestPath _parent;
 
             public Point Point { get; }
             public int Score => _parent.FScore(Point);
 
-            public Node(Path parent, Point point)
+            public Node(ShortestPath parent, Point point)
             {
                 _parent = parent;
                 Point = point;
@@ -90,7 +90,7 @@ namespace Labyrinth.AI
         public bool Found => _path.Count > 0;
         public IEnumerable<Point> Points => _path;
 
-        public Path([NotNull] Level level, Point start, Point goal)
+        public ShortestPath([NotNull] Level level, Point start, Point goal)
         {
             var closed = new System.Collections.Generic.HashSet<Node>();
             var open = new IntervalHeap<Node>(new NodeComparer());
