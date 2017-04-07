@@ -18,6 +18,16 @@ namespace Labyrinth.Utils
             return (int)Math.Round(x);
         }
 
+        public static int FloorInt(float x)
+        {
+            return (int)Math.Floor(x);
+        }
+
+        public static int CeilInt(float x)
+        {
+            return (int)Math.Ceiling(x);
+        }
+
         public static int Clamp(int value, int min, int max)
         {
             if (value < min)

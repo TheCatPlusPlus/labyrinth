@@ -14,6 +14,9 @@ namespace Labyrinth.Entities
         public virtual Name Name => _data.Name;
         public string Description => _data.Description;
 
+        public virtual int Speed => MathExt.CeilInt(_data.SpeedFactor * Const.SpeedBase);
+        public int Energy { get; set; }
+
         public Monster(Id<Monster> id)
         {
             Id = id;

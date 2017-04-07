@@ -40,14 +40,14 @@ namespace Labyrinth.Data
         public string Description { get; private set; }
         public bool IsWalkable { get; private set; }
         public bool IsTransparent { get; private set; }
-        public int BaseMoveCost { get; private set; }
+        public float CostFactor { get; private set; }
 
         public TileData(Id<Tile> id)
             : base(id)
         {
             IsWalkable = true;
             IsTransparent = true;
-            BaseMoveCost = Const.MoveCostBase;
+            CostFactor = 1.0f;
         }
 
         static TileData()
@@ -110,7 +110,7 @@ namespace Labyrinth.Data
                     Name = new Name("pool of water", "pools of water", thing: true),
                     Description =
                         "This pool is shallow enough to cross, but the water will hinder your movement and combat ability.",
-                    BaseMoveCost = Const.MoveCostBase * 2
+                    CostFactor = 2.0f
                 },
 
                 new TileData(WaterDeep)

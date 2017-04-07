@@ -14,7 +14,7 @@ namespace Labyrinth
         public const int HeightBossMeter = 3;
         public const int HeightViewport = Height - HeightMessages - HeightBossMeter - 4;
 
-        public const int SpeedBase = 100;
+        public const int SpeedBase = 10;
         public const int MoveCostBase = SpeedBase;
 
         public const int FovRadius = 4;

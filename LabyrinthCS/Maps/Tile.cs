@@ -45,7 +45,7 @@ namespace Labyrinth.Maps
         public bool IsWall => TileData.AllWalls.Contains(Id);
         public bool IsDoor => TileData.AllDoors.Contains(Id);
         public bool IsExit => TileData.AllExits.Contains(Id);
-        public int BaseMoveCost => IsWalkable ? _data.BaseMoveCost : int.MaxValue;
+        public int BaseMoveCost => IsWalkable ? MathExt.CeilInt(_data.CostFactor * Const.MoveCostBase) : int.MaxValue;
 
         public bool IsLit
         {
