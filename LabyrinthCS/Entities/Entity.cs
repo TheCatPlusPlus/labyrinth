@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
 
+using JetBrains.Annotations;
+
 using Labyrinth.Data;
 using Labyrinth.Maps;
 using Labyrinth.Utils;
@@ -42,8 +44,8 @@ namespace Labyrinth.Entities
                 return false;
             }
 
-            ((ITileEntities)current).RemoveEntity(this);
-            ((ITileEntities)next).AddEntity(this);
+            ((IEntityList)current).RemoveEntity(this);
+            ((IEntityList)next).AddEntity(this);
             Position = to;
             return true;
         }
@@ -55,19 +57,20 @@ namespace Labyrinth.Entities
                 throw new InvalidOperationException("Attempting to despawn an unspawned entity");
             }
 
-            ((ITileEntities)Level[Position]).RemoveEntity(this);
+            ((IEntityList)Level[Position]).RemoveEntity(this);
+            ((IEntityList)Level).RemoveEntity(this);
             Level = null;
             Position = PointExt.Invalid;
         }
 
-        public void Spawn(Level level, Point position)
+        public void Spawn([NotNull] Level level, Point position)
         {
             if (Level != null)
             {
                 Despawn();
             }
 
-            ITileEntities tile;
+            IEntityList tile;
             try
             {
                 tile = level[position];
@@ -84,9 +87,10 @@ namespace Labyrinth.Entities
 
             Level = level;
             Position = position;
+            ((IEntityList)Level).AddEntity(this);
         }
 
-        public void Spawn(Level level)
+        public void Spawn([NotNull] Level level)
         {
             var position = level.RandomWalkable();
             if (position.IsInvalid())

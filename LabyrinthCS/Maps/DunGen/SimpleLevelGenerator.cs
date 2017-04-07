@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 
+using JetBrains.Annotations;
+
 using Labyrinth.Data;
 using Labyrinth.Entities;
 using Labyrinth.Utils;
@@ -9,6 +11,7 @@ namespace Labyrinth.Maps.DunGen
 {
     public class SimpleLevelGenerator : ILevelGenerator
     {
+        [ItemNotNull]
         public IEnumerable<string> Fill(Level level)
         {
             yield return "creating simple room";

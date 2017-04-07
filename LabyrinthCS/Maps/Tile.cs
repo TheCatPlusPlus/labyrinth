@@ -10,7 +10,7 @@ using Labyrinth.Utils;
 
 namespace Labyrinth.Maps
 {
-    public class Tile : IHasId<Tile>, IGridItem, ITileEntities
+    public class Tile : IHasId<Tile>, IGridItem, IEntityList
     {
         private readonly List<Item> _items;
         private bool _isLit;
@@ -69,7 +69,7 @@ namespace Labyrinth.Maps
             _items = new List<Item>();
         }
 
-        bool ITileEntities.AddEntity(Entity entity)
+        bool IEntityList.AddEntity(Entity entity)
         {
             if (!IsWalkable)
             {
@@ -88,7 +88,7 @@ namespace Labyrinth.Maps
             return true;
         }
 
-        void ITileEntities.RemoveEntity(Entity entity)
+        void IEntityList.RemoveEntity(Entity entity)
         {
             if (entity.Position != Position)
             {
