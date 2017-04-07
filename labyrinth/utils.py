@@ -39,7 +39,7 @@ class Rect:
         if self.x >= other.x2:
             horizontal = self.x - other.x2
         elif self.x2 <= other.x:
-            horizontal = other.x2 - self.x
+            horizontal = other.x - self.x2
         else:
             horizontal = -1
 

@@ -26,16 +26,20 @@ class Zone:
 
     def make_level(self, depth):
         level = Level(self._level_width | 1, self._level_height | 1, f'{self.name}:{depth + 1}')
+        level_gen, zone_gen = self.get_generators(level, depth)
 
-        level_gen = Generator(level)
         for progress in level_gen():
             log_info(f'Generating {level.name}: level structure: {progress}')
 
-        zone_gen = ZoneGenerator(self, level, depth)
         for progress in zone_gen():
             log_info(f'Generating {level.name}: zone specifics: {progress}')
 
         return level
+
+    def get_generators(self, level, depth):
+        level_gen = Generator(level)
+        zone_gen = ZoneGenerator(self, level, depth)
+        return level_gen, zone_gen
 
 class ZoneGenerator:
     def __init__(self, zone, level, depth):
