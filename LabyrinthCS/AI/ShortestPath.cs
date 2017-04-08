@@ -13,7 +13,7 @@ namespace Labyrinth.AI
 {
     public sealed class ShortestPath : IPathFinder
     {
-        private class Node
+        private sealed class Node
         {
             private readonly ShortestPath _parent;
 
@@ -69,7 +69,7 @@ namespace Labyrinth.AI
             }
         }
 
-        private class NodeComparer : IComparer<Node>
+        private sealed class NodeComparer : IComparer<Node>
         {
             public int Compare(Node x, Node y)
             {
@@ -87,9 +87,14 @@ namespace Labyrinth.AI
 
         public bool Found => _path.Count > 0;
         public IEnumerable<Vector2I> Points => _path;
+        public Vector2I Start { get; }
+        public Vector2I Goal { get; }
 
         public ShortestPath([NotNull] Level level, Vector2I start, Vector2I goal)
         {
+            Start = start;
+            Goal = goal;
+
             var closed = new System.Collections.Generic.HashSet<Node>();
             var open = new IntervalHeap<Node>(new NodeComparer());
 
@@ -132,7 +137,7 @@ namespace Labyrinth.AI
                     var neighbour = MakeNode(point);
                     var tile = level[point];
 
-                    if (closed.Contains(neighbour) || (!tile.IsWalkable && !tile.IsDoor))
+                    if (closed.Contains(neighbour) || (!tile.CanWalkThrough && !tile.IsDoor))
                     {
                         continue;
                     }

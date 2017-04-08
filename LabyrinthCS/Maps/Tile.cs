@@ -42,12 +42,14 @@ namespace Labyrinth.Maps
 
         public Name Name => _data.Name;
         public string Description => _data.Description;
-        public bool IsWalkable => (Monster == null) && _data.IsWalkable;
-        public bool IsTransparent => _data.IsTransparent;
+        public bool CanWalkThrough => (Monster == null) && _data.CanWalkThrough;
+        public bool CanFlyOver => (Monster == null) && _data.CanFlyOver;
+        public bool CanSeeThrough => _data.CanSeeThrough;
         public bool IsWall => TileData.AllWalls.Contains(Id);
         public bool IsDoor => TileData.AllDoors.Contains(Id);
         public bool IsExit => TileData.AllExits.Contains(Id);
-        public int BaseMoveCost => IsWalkable ? MathExt.CeilInt(_data.CostFactor * Const.MoveCostBase) : int.MaxValue;
+
+        public int BaseMoveCost => CanWalkThrough ? MathExt.CeilInt(_data.CostFactor * Const.MoveCostBase) : int.MaxValue;
 
         public bool IsLit
         {
@@ -73,7 +75,7 @@ namespace Labyrinth.Maps
 
         bool IEntityList.AddEntity(Entity entity)
         {
-            if (!IsWalkable)
+            if (!CanWalkThrough)
             {
                 return false;
             }

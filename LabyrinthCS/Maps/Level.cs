@@ -21,7 +21,7 @@ namespace Labyrinth.Maps
 
         [ItemNotNull]
         [NotNull]
-        public IEnumerable<Tile> WalkableTiles => _tiles.Where(t => t.IsWalkable);
+        public IEnumerable<Tile> WalkableTiles => _tiles.Where(t => t.CanWalkThrough);
         [ItemNotNull]
         [NotNull]
         public IEnumerable<Tile> Tiles => _tiles;

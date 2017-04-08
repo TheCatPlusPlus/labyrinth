@@ -97,7 +97,8 @@ namespace Labyrinth.Utils.Geometry
         [Pure]
         public int NormL1()
         {
-            return Math.Abs(X) + Math.Abs(Y);
+            var abs = Abs();
+            return abs.X + abs.Y;
         }
 
         [Pure]
@@ -107,11 +108,23 @@ namespace Labyrinth.Utils.Geometry
         }
 
         [Pure]
-        public Vector2I Normalized()
+        public Vector2I Normalize()
         {
             var v2F = (Vector2F)this;
-            v2F = v2F.Normalized();
+            v2F = v2F.Normalize();
             return (Vector2I)v2F;
+        }
+
+        [Pure]
+        public Vector2I Abs()
+        {
+            return new Vector2I(Math.Abs(X), Math.Abs(Y));
+        }
+
+        [Pure]
+        public Vector2I Swap()
+        {
+            return new Vector2I(Y, X);
         }
 
         [Pure]

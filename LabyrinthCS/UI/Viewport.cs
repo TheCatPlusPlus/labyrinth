@@ -87,14 +87,14 @@ namespace Labyrinth.UI
             if (_cursor != GridPoint.Invalid)
             {
                 using (TerminalExt.Foreground(Color.Red))
-                using (TerminalExt.Layer(1))
+                using (TerminalExt.Layer(3))
                 {
                     Terminal.Put(_cursor, '\u25AF');
                 }
             }
         }
 
-        private void Draw(Vector2I screen, [NotNull] Tile tile)
+        private static void Draw(Vector2I screen, [NotNull] Tile tile)
         {
             var glyph = GlyphData.For(tile.Id);
 
@@ -114,20 +114,23 @@ namespace Labyrinth.UI
             var occupied = false;
             if (tile.IsLit)
             {
+                occupied = true;
+
                 if (tile.Monster != null)
                 {
                     PutGlyph(screen, 2, tile.Monster.Id);
-                    occupied = true;
                 }
                 else if (tile.Items.Count == 1)
                 {
                     PutGlyph(screen, 2, tile.Items[0].Id);
-                    occupied = true;
                 }
                 else if (tile.Items.Count > 0)
                 {
                     PutGlyph(screen, 2, ItemData.Multiple);
-                    occupied = true;
+                }
+                else
+                {
+                    occupied = false;
                 }
             }
 

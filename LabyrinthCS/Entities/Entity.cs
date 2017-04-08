@@ -34,7 +34,7 @@ namespace Labyrinth.Entities
             var current = Level[Position];
             var next = Level[to];
 
-            if (!next.IsWalkable)
+            if (!next.CanWalkThrough)
             {
                 if (next.IsDoor)
                 {

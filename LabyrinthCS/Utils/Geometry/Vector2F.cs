@@ -128,7 +128,7 @@ namespace Labyrinth.Utils.Geometry
         }
 
         [Pure]
-        public Vector2F Normalized()
+        public Vector2F Normalize()
         {
             var length = NormL2();
             return new Vector2F(X / length, Y / length);

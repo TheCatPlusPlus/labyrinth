@@ -8,5 +8,7 @@ namespace Labyrinth.AI
     {
         bool Found { get; }
         IEnumerable<Vector2I> Points { get; }
+        Vector2I Start { get; }
+        Vector2I Goal { get; }
     }
 }

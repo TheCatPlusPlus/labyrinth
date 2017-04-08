@@ -40,16 +40,35 @@ namespace Labyrinth.Data
 
         public Name Name { get; private set; }
         public string Description { get; private set; }
-        public bool IsWalkable { get; private set; }
-        public bool IsTransparent { get; private set; }
+        public bool CanWalkThrough { get; private set; }
+        public bool CanFlyOver { get; private set; }
+        public bool CanSeeThrough { get; private set; }
         public float CostFactor { get; private set; }
 
-        public TileData(Id<Tile> id)
+        public bool IsSolid
+        {
+            get => !CanWalkThrough && !CanFlyOver && !CanSeeThrough;
+            private set => CanWalkThrough = CanFlyOver = CanSeeThrough = !value;
+        }
+
+        public TileData([NotNull] Id<Tile> id)
             : base(id)
         {
-            IsWalkable = true;
-            IsTransparent = true;
+            Name = new Name("unknown tile", thing: true);
+            Description = "This tile has not been described yet. It is a bug.";
+            IsSolid = false;
             CostFactor = 1.0f;
+        }
+
+        public TileData([NotNull] Id<Tile> id, [NotNull] TileData other)
+            : base(id)
+        {
+            Name = other.Name;
+            Description = other.Description;
+            CanWalkThrough = other.CanWalkThrough;
+            CanFlyOver = other.CanFlyOver;
+            CanSeeThrough = other.CanSeeThrough;
+            CostFactor = other.CostFactor;
         }
 
         static TileData()
@@ -60,8 +79,7 @@ namespace Labyrinth.Data
                 Description =
                     "The walls are made out of solid stone. They feel weird to touch, slightly pulsating with strange energy. " +
                     "Here and there inscriptions in a forgotten language can be found.",
-                IsWalkable = false,
-                IsTransparent = false
+                IsSolid = true
             };
 
             var door = new TileData(DoorClosed)
@@ -69,8 +87,7 @@ namespace Labyrinth.Data
                 Name = new Name("closed door", thing: true),
                 Description =
                     "A heavy, intricately detailed stone door. The mechanism operating it seems to be working flawlessly.",
-                IsWalkable = false,
-                IsTransparent = false
+                IsSolid = true
             };
 
             Registry = new Registry<Tile, TileData>
@@ -82,17 +99,10 @@ namespace Labyrinth.Data
                 },
 
                 wall,
-
-                new TileData(WallDeep)
-                {
-                    Name = wall.Name,
-                    Description = wall.Description,
-                    IsWalkable = false,
-                    IsTransparent = false
-                },
+                new TileData(WallDeep, wall),
+                new TileData(OutOfBounds, wall),
 
                 door,
-
                 new TileData(DoorOpen)
                 {
                     Name = new Name("open door", thing: true),
@@ -104,8 +114,6 @@ namespace Labyrinth.Data
                     Name = new Name("staircase leading down", "staircases leading down", thing: true),
                     Description = "A long staircase leading further into the Labyrinth."
                 },
-
-                new TileData(OutOfBounds),
 
                 new TileData(WaterShallow)
                 {
@@ -120,7 +128,7 @@ namespace Labyrinth.Data
                     Name = new Name("pool of deep water", "pools of deep water", thing: true),
                     Description =
                         "The water is murky and deep, it is best to not attempt crossing here.",
-                    IsWalkable = false
+                    CanWalkThrough = false
                 },
 
                 new TileData(Lava)
@@ -128,7 +136,7 @@ namespace Labyrinth.Data
                     Name = new Name("pool of lava", "pools of lava", thing: true),
                     Description = "This sizzling pool of molten rock is extremely dangerous, " +
                                   "even coming near it might cause you to get badly burnt.",
-                    IsWalkable = false
+                    CanWalkThrough = false
                     // TODO: damage, possible to cross with fire resist
                 }
             };
