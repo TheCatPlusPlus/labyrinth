@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using JetBrains.Annotations;
+
 namespace Labyrinth.UI.Input
 {
-    public class KeyMap
+    public sealed class KeyMap
     {
         public static readonly KeyMap Game;
         public static readonly KeyMap Menu;
         private readonly Dictionary<Key, UserAction> _defaultKeys;
         private readonly Dictionary<Key, UserAction> _userKeys;
 
-        public UserAction? this[Key key]
+        public UserAction? this[[NotNull] Key key]
         {
             get
             {
@@ -65,7 +67,7 @@ namespace Labyrinth.UI.Input
             _defaultKeys = new Dictionary<Key, UserAction>();
         }
 
-        public void Bind(UserAction action, string key, params string[] rest)
+        public void Bind(UserAction action, [NotNull] string key, [NotNull] params string[] rest)
         {
             DoBind(action, key, true);
             foreach (var other in rest)
@@ -74,7 +76,7 @@ namespace Labyrinth.UI.Input
             }
         }
 
-        public void BindUser(UserAction action, string key, params string[] rest)
+        public void BindUser(UserAction action, [NotNull] string key, [NotNull] params string[] rest)
         {
             DoBind(action, key, false);
             foreach (var other in rest)
@@ -83,6 +85,7 @@ namespace Labyrinth.UI.Input
             }
         }
 
+        [NotNull]
         public KeyMap Clone()
         {
             var clone = new KeyMap();
@@ -100,7 +103,7 @@ namespace Labyrinth.UI.Input
             return clone;
         }
 
-        private void DoBind(UserAction action, string spec, bool isDefault)
+        private void DoBind(UserAction action, [NotNull] string spec, bool isDefault)
         {
             var key = KeyDatabase.Parse(spec);
             var map = isDefault ? _defaultKeys : _userKeys;

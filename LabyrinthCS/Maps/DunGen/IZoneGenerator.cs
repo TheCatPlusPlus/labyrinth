@@ -1,9 +1,14 @@
 ﻿using System.Collections.Generic;
 
+using JetBrains.Annotations;
+
 namespace Labyrinth.Maps.DunGen
 {
     public interface IZoneGenerator
     {
-        IEnumerable<string> Fill(Level level, Zone zone, int depth);
+        // yields generation step
+        [ItemNotNull]
+        [NotNull]
+        IEnumerable<string> Fill([NotNull] Level level, [NotNull] Zone zone, int depth);
     }
 }

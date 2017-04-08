@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
 
 using C5;
@@ -9,20 +7,20 @@ using C5;
 using JetBrains.Annotations;
 
 using Labyrinth.Maps;
-using Labyrinth.Utils;
+using Labyrinth.Utils.Geometry;
 
 namespace Labyrinth.AI
 {
-    public class ShortestPath : IPathFinder
+    public sealed class ShortestPath : IPathFinder
     {
         private class Node
         {
             private readonly ShortestPath _parent;
 
-            public Point Point { get; }
+            public Vector2I Point { get; }
             public int Score => _parent.FScore(Point);
 
-            public Node(ShortestPath parent, Point point)
+            public Node(ShortestPath parent, Vector2I point)
             {
                 _parent = parent;
                 Point = point;
@@ -33,7 +31,7 @@ namespace Labyrinth.AI
                 return Equals(other.Point);
             }
 
-            private bool Equals(Point other)
+            private bool Equals(Vector2I other)
             {
                 return Point == other;
             }
@@ -84,25 +82,25 @@ namespace Labyrinth.AI
 
         private readonly int[,] _fScore;
         private readonly int[,] _gScore;
-        private readonly Point[,] _cameFrom;
-        private readonly List<Point> _path;
+        private readonly Vector2I[,] _cameFrom;
+        private readonly List<Vector2I> _path;
 
         public bool Found => _path.Count > 0;
-        public IEnumerable<Point> Points => _path;
+        public IEnumerable<Vector2I> Points => _path;
 
-        public ShortestPath([NotNull] Level level, Point start, Point goal)
+        public ShortestPath([NotNull] Level level, Vector2I start, Vector2I goal)
         {
             var closed = new System.Collections.Generic.HashSet<Node>();
             var open = new IntervalHeap<Node>(new NodeComparer());
 
-            _cameFrom = new Point[level.Rect.Width, level.Rect.Height];
+            _cameFrom = new Vector2I[level.Rect.Width, level.Rect.Height];
             _gScore = new int[level.Rect.Width, level.Rect.Height];
             _fScore = new int[level.Rect.Width, level.Rect.Height];
-            _path = new List<Point>();
+            _path = new List<Vector2I>();
 
-            foreach (var point in level.Rect.Points())
+            foreach (var point in level.Rect.Points)
             {
-                CameFrom(point) = PointExt.Invalid;
+                CameFrom(point) = GridPoint.Invalid;
                 GScore(point) = int.MaxValue;
                 FScore(point) = int.MaxValue;
             }
@@ -157,37 +155,37 @@ namespace Labyrinth.AI
         }
 
         [NotNull]
-        private Node MakeNode(Point point)
+        private Node MakeNode(Vector2I point)
         {
             return new Node(this, point);
         }
 
-        private ref int FScore(Point point)
+        private ref int FScore(Vector2I point)
         {
             return ref _fScore[point.X, point.Y];
         }
 
-        private ref int GScore(Point point)
+        private ref int GScore(Vector2I point)
         {
             return ref _gScore[point.X, point.Y];
         }
 
-        private ref Point CameFrom(Point point)
+        private ref Vector2I CameFrom(Vector2I point)
         {
             return ref _cameFrom[point.X, point.Y];
         }
 
-        private void Reconstruct(Point current)
+        private void Reconstruct(Vector2I current)
         {
             do
             {
                 _path.Add(current);
                 current = CameFrom(current);
             }
-            while (current != PointExt.Invalid);
+            while (current != GridPoint.Invalid);
         }
 
-        private static int Estimate([NotNull] Level level, Point node, Point goal)
+        private static int Estimate([NotNull] Level level, Vector2I node, Vector2I goal)
         {
             var moveCost = level[node]
                 .Neighbours
@@ -204,16 +202,14 @@ namespace Labyrinth.AI
             return Distance(node, goal) * moveCost;
         }
 
-        private static int Distance(Point a, Point b)
+        private static int Distance(Vector2I a, Vector2I b)
         {
-            var x = Math.Abs(a.X - b.X);
-            var y = Math.Abs(b.Y - a.Y);
-            return x + y;
+            return (a - b).NormL1();
         }
 
         private static int AddScores(int a, int b)
         {
-            if (a == int.MaxValue || b == int.MaxValue)
+            if ((a == int.MaxValue) || (b == int.MaxValue))
             {
                 return int.MaxValue;
             }

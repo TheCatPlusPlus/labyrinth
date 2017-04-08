@@ -1,25 +1,25 @@
 ﻿using System;
-using System.Drawing;
+using System.Diagnostics;
 
 using JetBrains.Annotations;
 
 using Labyrinth.Data;
 using Labyrinth.Maps;
-using Labyrinth.Utils;
+using Labyrinth.Utils.Geometry;
 
 namespace Labyrinth.Entities
 {
     public abstract class Entity : IGridItem
     {
-        public Point Position { get; private set; }
+        public Vector2I Position { get; private set; }
         public Level Level { get; private set; }
 
         protected Entity()
         {
-            Position = PointExt.Invalid;
+            Position = GridPoint.Invalid;
         }
 
-        public bool Move(Point to)
+        public bool Move(Vector2I to)
         {
             if (Level == null)
             {
@@ -60,10 +60,16 @@ namespace Labyrinth.Entities
             ((IEntityList)Level[Position]).RemoveEntity(this);
             ((IEntityList)Level).RemoveEntity(this);
             Level = null;
-            Position = PointExt.Invalid;
+            Position = GridPoint.Invalid;
         }
 
-        public void Spawn([NotNull] Level level, Point position)
+        public void Spawn([NotNull] Level level, [NotNull] Tile tile)
+        {
+            Debug.Assert(level == tile.Level);
+            Spawn(level, tile.Position);
+        }
+
+        public void Spawn([NotNull] Level level, Vector2I position)
         {
             if (Level != null)
             {
@@ -93,7 +99,7 @@ namespace Labyrinth.Entities
         public void Spawn([NotNull] Level level)
         {
             var position = level.RandomWalkable();
-            if (position.IsInvalid())
+            if (position.IsInvalidPoint())
             {
                 throw new InvalidOperationException("Could not find a viable spawn point");
             }

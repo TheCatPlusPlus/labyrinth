@@ -6,7 +6,7 @@ using Labyrinth.Utils;
 
 namespace Labyrinth.Entities
 {
-    public class Player : Monster
+    public sealed class Player : Monster
     {
         public override Name Name { get; }
         public Gauge HP { get; }

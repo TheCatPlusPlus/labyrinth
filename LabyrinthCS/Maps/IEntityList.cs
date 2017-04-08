@@ -1,4 +1,6 @@
-﻿using Labyrinth.Entities;
+﻿using JetBrains.Annotations;
+
+using Labyrinth.Entities;
 
 namespace Labyrinth.Maps
 {
@@ -7,7 +9,7 @@ namespace Labyrinth.Maps
     // (so that they're not normally visible)
     public interface IEntityList
     {
-        bool AddEntity(Entity entity);
-        void RemoveEntity(Entity entity);
+        bool AddEntity([NotNull] Entity entity);
+        void RemoveEntity([NotNull] Entity entity);
     }
 }

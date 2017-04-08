@@ -1,10 +1,12 @@
-﻿using Labyrinth.Data.Ids;
+﻿using JetBrains.Annotations;
+
+using Labyrinth.Data.Ids;
 using Labyrinth.Entities;
 using Labyrinth.Utils;
 
 namespace Labyrinth.Data
 {
-    public class ItemData : HasId<Item>
+    public sealed class ItemData : HasId<Item>
     {
         private static readonly Registry<Item, ItemData> Registry;
 
@@ -38,7 +40,8 @@ namespace Labyrinth.Data
             };
         }
 
-        public static ItemData For(Id<Item> id)
+        [NotNull]
+        public static ItemData For([NotNull] Id<Item> id)
         {
             return Registry.Get(id);
         }

@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
+
+using JetBrains.Annotations;
 
 using Labyrinth.Data;
 using Labyrinth.Data.Ids;
 using Labyrinth.Entities;
 using Labyrinth.Utils;
+using Labyrinth.Utils.Geometry;
 
 namespace Labyrinth.Maps
 {
-    public class Tile : IHasId<Tile>, IGridItem, IEntityList
+    public sealed class Tile : IHasId<Tile>, IGridItem, IEntityList
     {
         private readonly List<Item> _items;
         private bool _isLit;
@@ -29,18 +31,18 @@ namespace Labyrinth.Maps
         }
 
         IId IHasId.Id => Id;
-        public Point Position { get; }
+        public Vector2I Position { get; }
         public Level Level { get; }
 
         public IReadOnlyList<Item> Items => _items;
         public Monster Monster { get; private set; }
         public bool WasSeen { get; private set; }
         public object Tag { get; set; }
-        public IEnumerable<Point> Neighbours => GetNeighbours();
+        public IEnumerable<Vector2I> Neighbours => GetNeighbours();
 
         public Name Name => _data.Name;
         public string Description => _data.Description;
-        public bool IsWalkable => Monster == null && _data.IsWalkable;
+        public bool IsWalkable => (Monster == null) && _data.IsWalkable;
         public bool IsTransparent => _data.IsTransparent;
         public bool IsWall => TileData.AllWalls.Contains(Id);
         public bool IsDoor => TileData.AllDoors.Contains(Id);
@@ -60,7 +62,7 @@ namespace Labyrinth.Maps
             }
         }
 
-        public Tile(Level level, Point position, Id<Tile> id = null)
+        public Tile([NotNull] Level level, Vector2I position, [CanBeNull] Id<Tile> id = null)
         {
             Id = id ?? TileData.WallDeep;
             Position = position;
@@ -105,26 +107,24 @@ namespace Labyrinth.Maps
             }
         }
 
-        private IEnumerable<Point> GetNeighbours()
+        private IEnumerable<Vector2I> GetNeighbours()
         {
             for (var dx = -1; dx <= 1; ++dx)
+            for (var dy = -1; dy <= 1; ++dy)
             {
-                for (var dy = -1; dy <= 1; ++dy)
+                var p = Position + new Vector2I(dx, dy);
+
+                if (p == Position)
                 {
-                    var p = Position + new Size(dx, dy);
-
-                    if (p == Position)
-                    {
-                        continue;
-                    }
-
-                    if (!Level.Rect.Contains(p))
-                    {
-                        continue;
-                    }
-
-                    yield return p;
+                    continue;
                 }
+
+                if (!Level.Rect.Contains(p))
+                {
+                    continue;
+                }
+
+                yield return p;
             }
         }
 

@@ -1,30 +1,29 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
-using Labyrinth.Utils;
+using Labyrinth.Utils.Geometry;
 
 namespace Labyrinth.Maps
 {
-    public class Grid<T> : IEnumerable<T>
+    public sealed class Grid<T> : IEnumerable<T>
         where T : class, IGridItem
     {
         private readonly T[,] _cells;
 
-        public Size Size { get; }
-        public Rectangle Rect { get; }
+        public Vector2I Size { get; }
+        public Rect Rect { get; }
         public T this[int x, int y] => Get(x, y);
-        public T this[Point p] => this[p.X, p.Y];
+        public T this[Vector2I p] => this[p.X, p.Y];
 
-        public Grid(Size size, Func<Point, T> makeCell)
+        public Grid(Vector2I size, Func<Vector2I, T> makeCell)
         {
             Size = size;
-            Rect = new Rectangle(new Point(0, 0), Size);
+            Rect = new Rect(0, 0, Size);
             _cells = new T[Size.Width, Size.Height];
 
-            foreach (var p in Rect.Points())
+            foreach (var p in Rect.Points)
             {
                 _cells[p.X, p.Y] = makeCell(p);
             }
@@ -32,9 +31,10 @@ namespace Labyrinth.Maps
 
         public IEnumerator<T> GetEnumerator()
         {
-            return Rect.Points()
-                       .Select(p => this[p])
-                       .GetEnumerator();
+            return Rect
+                .Points
+                .Select(p => this[p])
+                .GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -50,7 +50,7 @@ namespace Labyrinth.Maps
             }
             catch (IndexOutOfRangeException)
             {
-                throw new OutOfBounds(new Point(x, y));
+                throw new OutOfBounds(new Vector2I(x, y));
             }
         }
     }

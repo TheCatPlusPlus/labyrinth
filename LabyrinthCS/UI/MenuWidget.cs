@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -6,12 +6,15 @@ using System.Linq;
 
 using BearLib;
 
+using JetBrains.Annotations;
+
 using Labyrinth.UI.Input;
 using Labyrinth.Utils;
+using Labyrinth.Utils.Geometry;
 
 namespace Labyrinth.UI
 {
-    public class MenuWidget : IEnumerable<MenuWidget.Item>
+    public sealed class MenuWidget : IEnumerable<MenuWidget.Item>
     {
         public class Item
         {
@@ -52,7 +55,7 @@ namespace Labyrinth.UI
             _choices = new List<Item>();
         }
 
-        public MenuWidget(IEnumerable<Item> items)
+        public MenuWidget([NotNull] IEnumerable<Item> items)
         {
             _choices = new List<Item>(items);
         }
@@ -104,7 +107,7 @@ namespace Labyrinth.UI
             return Result.None;
         }
 
-        public void Draw(Point point)
+        public void Draw(Vector2I point)
         {
             for (var index = 0; index < _choices.Count; index++)
             {

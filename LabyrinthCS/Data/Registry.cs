@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
+using JetBrains.Annotations;
+
 using Labyrinth.Data.Ids;
 
 namespace Labyrinth.Data
 {
-    public class Registry<TData> : IEnumerable<TData>
+    public sealed class Registry<TData> : IEnumerable<TData>
         where TData : class, IHasId
     {
         private readonly Dictionary<string, TData> _items;
@@ -15,17 +17,19 @@ namespace Labyrinth.Data
             _items = new Dictionary<string, TData>();
         }
 
-        public TData Get(IId id)
+        [NotNull]
+        public TData Get([NotNull] IId id)
         {
             return _items[id.Value];
         }
 
-        public TData GetOrDefault(IId id)
+        [CanBeNull]
+        public TData GetOrDefault([NotNull] IId id)
         {
             return _items.TryGetValue(id.Value, out TData value) ? value : null;
         }
 
-        public void Add(TData item)
+        public void Add([NotNull] TData item)
         {
             _items.Add(item.Id.Value, item);
         }
@@ -41,7 +45,7 @@ namespace Labyrinth.Data
         }
     }
 
-    public class Registry<T, TData> : IEnumerable<TData>
+    public sealed class Registry<T, TData> : IEnumerable<TData>
         where T : class, IHasId<T>
         where TData : class, IHasId<T>
     {
@@ -52,17 +56,19 @@ namespace Labyrinth.Data
             _items = new Registry<TData>();
         }
 
-        public TData Get(Id<T> id)
+        [NotNull]
+        public TData Get([NotNull] Id<T> id)
         {
             return _items.Get(id);
         }
 
-        public TData GetOrDefault(Id<T> id)
+        [CanBeNull]
+        public TData GetOrDefault([NotNull] Id<T> id)
         {
             return _items.GetOrDefault(id);
         }
 
-        public void Add(TData item)
+        public void Add([NotNull] TData item)
         {
             _items.Add(item);
         }

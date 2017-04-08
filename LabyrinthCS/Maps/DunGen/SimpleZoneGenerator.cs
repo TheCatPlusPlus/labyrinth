@@ -2,7 +2,7 @@
 
 namespace Labyrinth.Maps.DunGen
 {
-    public class SimpleZoneGenerator : IZoneGenerator
+    public sealed class SimpleZoneGenerator : IZoneGenerator
     {
         public IEnumerable<string> Fill(Level level, Zone zone, int depth)
         {

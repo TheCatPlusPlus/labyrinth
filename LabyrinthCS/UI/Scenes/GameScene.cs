@@ -5,11 +5,14 @@ using System.Text;
 
 using BearLib;
 
+using JetBrains.Annotations;
+
 using Labyrinth.AI;
 using Labyrinth.Data;
 using Labyrinth.Maps;
 using Labyrinth.UI.Input;
 using Labyrinth.Utils;
+using Labyrinth.Utils.Geometry;
 
 namespace Labyrinth.UI.Scenes
 {
@@ -33,27 +36,27 @@ namespace Labyrinth.UI.Scenes
 
             _hp = new SidebarGaugeWidget(
                 "HP",
-                new Point(gaugeX, 3),
+                new Vector2I(gaugeX, 3),
                 Color.DarkGreen,
                 Color.Red,
                 Color.LawnGreen);
 
             _mp = new SidebarGaugeWidget(
                 "MP",
-                new Point(gaugeX, 4),
+                new Vector2I(gaugeX, 4),
                 Color.Blue,
                 Color.LightSkyBlue,
                 Color.LightSkyBlue);
 
             _stamina = new SidebarGaugeWidget(
                 "ST",
-                new Point(gaugeX, 5),
+                new Vector2I(gaugeX, 5),
                 Color.DarkOrange,
                 Color.Orange,
                 Color.Orange);
 
             _viewport = new Viewport(
-                new Rectangle(Const.WidthSidebar + 2, 2, Const.WidthViewport, Const.HeightViewport));
+                new Rect(Const.WidthSidebar + 2, 2, Const.WidthViewport, Const.HeightViewport));
         }
 
         public override void React(Event @event)
@@ -81,7 +84,7 @@ namespace Labyrinth.UI.Scenes
             }
         }
 
-        private void ReactKey(Key key)
+        private void ReactKey([NotNull] Key key)
         {
             var action = KeyMap.Game[key];
             if ((action == UserAction.Quit) && ConfirmModal.Show(ConfirmQuit))
@@ -107,9 +110,9 @@ namespace Labyrinth.UI.Scenes
 
         public override void Draw()
         {
-            TerminalExt.VLine(new Point(Const.WidthSidebar, 0), Const.Height);
+            TerminalExt.VLine(new Vector2I(Const.WidthSidebar, 0), Const.Height);
             TerminalExt.HLine(
-                new Point(Const.WidthSidebar, Const.Height - Const.HeightMessages),
+                new Vector2I(Const.WidthSidebar, Const.Height - Const.HeightMessages),
                 Const.Width - Const.WidthSidebar);
             Terminal.Put(Const.WidthSidebar, Const.Height - Const.HeightMessages, TerminalExt.BoxVLineLSplit);
 
@@ -125,7 +128,7 @@ namespace Labyrinth.UI.Scenes
         {
             var x = Const.WidthSidebar + 2;
             var y = Const.Height - Const.HeightMessages + 1;
-            var rect = new Rectangle(x, y, Const.WidthViewport, Const.HeightMessages);
+            var rect = new Rect(x, y, Const.WidthViewport, Const.HeightMessages);
 
             if (_lookAt != null)
             {
@@ -133,7 +136,7 @@ namespace Labyrinth.UI.Scenes
             }
         }
 
-        private void DrawLookAt(Rectangle rect)
+        private void DrawLookAt(Rect rect)
         {
             var look = new StringBuilder();
 
@@ -178,7 +181,7 @@ namespace Labyrinth.UI.Scenes
 
                                 name = $"[color=cyan]{name}[/color]";
 
-                                if (grouped.Count > 1 && idx == grouped.Count - 1)
+                                if ((grouped.Count > 1) && (idx == (grouped.Count - 1)))
                                 {
                                     name = $"and {name}";
                                 }
@@ -218,7 +221,7 @@ namespace Labyrinth.UI.Scenes
             var player = game.Player;
 
             Terminal.Print(
-                new Rectangle(2, 1, Const.WidthPlayerName, 1),
+                new Rect(2, 1, Const.WidthPlayerName, 1),
                 ContentAlignment.MiddleCenter,
                 player.Name.Singular(true));
             _hp.Draw(player.HP);

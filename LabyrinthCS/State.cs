@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
 
+using JetBrains.Annotations;
+
 using Labyrinth.UI;
 
 using Pcg;
@@ -43,7 +45,7 @@ namespace Labyrinth
             Scene.OnEnter();
         }
 
-        public static void NewGame(string playerName)
+        public static void NewGame([NotNull] string playerName)
         {
             if (IsGameLoaded)
             {

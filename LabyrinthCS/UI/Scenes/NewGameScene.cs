@@ -1,8 +1,7 @@
-﻿using System.Drawing;
-
-using BearLib;
+﻿using BearLib;
 
 using Labyrinth.UI.Input;
+using Labyrinth.Utils.Geometry;
 
 namespace Labyrinth.UI.Scenes
 {
@@ -13,7 +12,7 @@ namespace Labyrinth.UI.Scenes
 
         public NewGameScene()
         {
-            _playerName = new InputWidget(new Point(25, 1), Const.WidthPlayerName, "Bob");
+            _playerName = new InputWidget(new Vector2I(25, 1), Const.WidthPlayerName, "Bob");
             _menu = new MenuWidget
             {
                 { "Start the game", OnStartGame },
@@ -38,9 +37,9 @@ namespace Labyrinth.UI.Scenes
 
         public override void Draw()
         {
-            Terminal.Print(new Point(4, 1), "Character name:");
+            Terminal.Print(new Vector2I(4, 1), "Character name:");
             _playerName.Draw();
-            _menu.Draw(new Point(1, 10));
+            _menu.Draw(new Vector2I(1, 10));
         }
 
         private void OnBack()

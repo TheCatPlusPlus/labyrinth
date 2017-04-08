@@ -27,6 +27,8 @@ using System.Drawing.Imaging;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
+using Labyrinth.Utils.Geometry;
+
 // ReSharper disable All
 
 namespace BearLib
@@ -173,14 +175,6 @@ namespace BearLib
         TK_INPUT_NONE       =    0,
         TK_INPUT_CANCELLED  =   -1;
 
-        private static string Format(string text, object[] args)
-        {
-        	if (args != null && args.Length > 0)
-        		return string.Format(text, args);
-        	else
-        		return text;
-        }
-
         private static int LibraryAlignmentFromContentAlignment(ContentAlignment alignment)
         {
             switch (alignment)
@@ -222,12 +216,11 @@ namespace BearLib
 
         public static bool Set(string options, params object[] args)
         {
-            Dictionary<Bitmap, BitmapData> bitmaps = new Dictionary<Bitmap, BitmapData>();
+            var bitmaps = new Dictionary<Bitmap, BitmapData>();
             for (int i=0; i<args.Length; i++)
             {
-                if (args[i] is Bitmap)
+                if (args[i] is Bitmap bitmap)
                 {
-                    Bitmap bitmap = args[i] as Bitmap;
                     BitmapData data = bitmap.LockBits
                     (
                         new Rectangle(0, 0, bitmap.Width, bitmap.Height),
@@ -237,15 +230,13 @@ namespace BearLib
                     bitmaps[bitmap] = data;
                     args[i] = string.Format("0x{0:X}", (System.UInt64)data.Scan0.ToInt64());
                 }
-                else if (args[i] is Size)
+                else if (args[i] is Vector2I size)
                 {
-                    Size size = (Size)args[i];
                     args[i] = string.Format("{0}x{1}", size.Width, size.Height);
                 }
-                else if (args[i] is bool)
+                else if (args[i] is bool value)
                 {
-                    bool value = (bool)args[i];
-                    args[i] = value? "true": "false";
+                    args[i] = value ? "true" : "false";
                 }
             }
             bool result = Set(string.Format(options, args));
@@ -262,7 +253,7 @@ namespace BearLib
         [DllImport("BearLibTerminal.dll", EntryPoint = "terminal_clear_area", CallingConvention = CallingConvention.Cdecl)]
         public static extern void ClearArea(int x, int y, int w, int h);
 
-        public static void ClearArea(Rectangle area)
+        public static void ClearArea(Rect area)
         {
             ClearArea(area.X, area.Y, area.Width, area.Height);
         }
@@ -270,7 +261,7 @@ namespace BearLib
         [DllImport("BearLibTerminal.dll", EntryPoint = "terminal_crop", CallingConvention = CallingConvention.Cdecl)]
         public static extern void Crop(int x, int y, int w, int h);
 
-        public static void Crop(Rectangle area)
+        public static void Crop(Rect area)
         {
             Crop(area.X, area.Y, area.Width, area.Height);
         }
@@ -315,7 +306,7 @@ namespace BearLib
         [DllImport("BearLibTerminal.dll", EntryPoint = "terminal_put", CallingConvention = CallingConvention.Cdecl)]
         public static extern void Put(int x, int y, int code);
 
-        public static void Put(Point location, int code)
+        public static void Put(Vector2I location, int code)
         {
             Put(location.X, location.Y, code);
         }
@@ -325,7 +316,7 @@ namespace BearLib
             Put(x, y, (int)code);
         }
 
-        public static void Put(Point location, char code)
+        public static void Put(Vector2I location, char code)
         {
             Put(location.X, location.Y, (int)code);
         }
@@ -338,7 +329,7 @@ namespace BearLib
             PutExtImpl(x, y, dx, dy, code, null);
         }
 
-        public static void PutExt(Point location, Point offset, int code)
+        public static void PutExt(Vector2I location, Vector2I offset, int code)
         {
             PutExtImpl(location.X, location.Y, offset.X, offset.Y, code, null);
         }
@@ -348,7 +339,7 @@ namespace BearLib
             PutExtImpl(x, y, dx, dy, (int)code, null);
         }
 
-        public static void PutExt(Point location, Point offset, char code)
+        public static void PutExt(Vector2I location, Vector2I offset, char code)
         {
             PutExtImpl(location.X, location.Y, offset.X, offset.Y, (int)code, null);
         }
@@ -360,7 +351,7 @@ namespace BearLib
             PutExtImpl(x, y, dx, dy, code, values);
         }
 
-        public static void PutExt(Point location, Point offset, int code, Color[] corners)
+        public static void PutExt(Vector2I location, Vector2I offset, int code, Color[] corners)
         {
             PutExt(location.X, location.Y, offset.X, offset.Y, code, corners);
         }
@@ -370,7 +361,7 @@ namespace BearLib
             PutExt(x, y, dx, dy, (int)code, corners);
         }
 
-        public static void PutExt(Point location, Point offset, char code, Color[] corners)
+        public static void PutExt(Vector2I location, Vector2I offset, char code, Color[] corners)
         {
             PutExt(location.X, location.Y, offset.X, offset.Y, (int)code, corners);
         }
@@ -380,7 +371,7 @@ namespace BearLib
             return Pick(x, y, 0);
         }
 
-        public static int Pick(Point location)
+        public static int Pick(Vector2I location)
         {
             return Pick(location.X, location.Y, 0);
         }
@@ -388,7 +379,7 @@ namespace BearLib
         [DllImport("BearLibTerminal.dll", EntryPoint = "terminal_pick", CallingConvention = CallingConvention.Cdecl)]
         public static extern int Pick(int x, int y, int index);
 
-        public static int Pick(Point location, int index)
+        public static int Pick(Vector2I location, int index)
         {
             return Pick(location.X, location.Y, index);
         }
@@ -398,7 +389,7 @@ namespace BearLib
             return PickColor(x, y, 0);
         }
 
-        public static Color PickColor(Point location)
+        public static Color PickColor(Vector2I location)
         {
             return PickColor(location.X, location.Y, 0);
         }
@@ -411,7 +402,7 @@ namespace BearLib
             return System.Drawing.Color.FromArgb(PickColorImpl(x, y, index));
         }
 
-        public static Color PickColor(Point location, int index)
+        public static Color PickColor(Vector2I location, int index)
         {
             return PickColor(location.X, location.Y, index);
         }
@@ -424,7 +415,7 @@ namespace BearLib
             return System.Drawing.Color.FromArgb(PickBkColorImpl(x, y));
         }
 
-        public static Color PickBkColor(Point location)
+        public static Color PickBkColor(Vector2I location)
         {
             return PickBkColor(location.X, location.Y);
         }
@@ -432,55 +423,55 @@ namespace BearLib
         [DllImport("BearLibTerminal.dll", CharSet = CharSet.Unicode, EntryPoint = "terminal_print_ext16", CallingConvention = CallingConvention.Cdecl)]
         private static extern void PrintImpl(int x, int y, int w, int h, int align, string text, out int out_w, out int out_h);
 
-        public static Size Print(Rectangle layout, ContentAlignment alignment, string text, params object[] args)
+        public static Vector2I Print(Rect layout, ContentAlignment alignment, string text)
         {
         	int width, height;
-        	PrintImpl(layout.X, layout.Y, layout.Width, layout.Height, LibraryAlignmentFromContentAlignment(alignment), Format(text, args), out width, out height);
-        	return new Size(width, height);
+        	PrintImpl(layout.X, layout.Y, layout.Width, layout.Height, LibraryAlignmentFromContentAlignment(alignment), text, out width, out height);
+        	return new Vector2I(width, height);
         }
 
-        public static Size Print(Rectangle layout, string text, params object[] args)
+        public static Vector2I Print(Rect layout, string text)
         {
-        	return Print(layout, ContentAlignment.TopLeft, text, args);
+        	return Print(layout, ContentAlignment.TopLeft, text);
         }
 
-        public static Size Print(Point location, ContentAlignment alignment, string text, params object[] args)
+        public static Vector2I Print(Vector2I location, ContentAlignment alignment, string text)
         {
-        	return Print(location.X, location.Y, alignment, text, args);
+        	return Print(location.X, location.Y, alignment, text);
         }
 
-        public static Size Print(Point location, string text, params object[] args)
+        public static Vector2I Print(Vector2I location, string text)
         {
-        	return Print(location.X, location.Y, text, args);
+        	return Print(location.X, location.Y, text);
         }
 
-        public static Size Print(int x, int y, ContentAlignment alignment, string text, params object[] args)
-        {
-        	int width, height;
-        	PrintImpl(x, y, 0, 0, LibraryAlignmentFromContentAlignment(alignment), Format(text, args), out width, out height);
-        	return new Size(width, height);
-        }
-
-        public static Size Print(int x, int y, string text, params object[] args)
+        public static Vector2I Print(int x, int y, ContentAlignment alignment, string text)
         {
         	int width, height;
-        	PrintImpl(x, y, 0, 0, 0, Format(text, args), out width, out height);
-        	return new Size(width, height);
+        	PrintImpl(x, y, 0, 0, LibraryAlignmentFromContentAlignment(alignment), text, out width, out height);
+        	return new Vector2I(width, height);
+        }
+
+        public static Vector2I Print(int x, int y, string text)
+        {
+        	int width, height;
+        	PrintImpl(x, y, 0, 0, 0, text, out width, out height);
+        	return new Vector2I(width, height);
         }
 
         [DllImport("BearLibTerminal.dll", CharSet = CharSet.Unicode, EntryPoint = "terminal_measure_ext16", CallingConvention = CallingConvention.Cdecl)]
         private static extern void MeasureImpl(int width, int height, string text, out int out_w, out int out_h);
 
-        public static Size Measure(Size bbox, string text, params object[] args)
+        public static Vector2I Measure(Vector2I bbox, string text)
         {
         	int width, height;
-        	MeasureImpl(bbox.Width, bbox.Height, Format(text, args), out width, out height);
-        	return new Size(width, height);
+        	MeasureImpl(bbox.Width, bbox.Height, text, out width, out height);
+        	return new Vector2I(width, height);
         }
 
-        public static Size Measure(string text, params object[] args)
+        public static Vector2I Measure(string text)
         {
-        	return Measure(new Size(), text, args);
+        	return Measure(Vector2I.Zero, text);
         }
 
         [DllImport("BearLibTerminal.dll", EntryPoint = "terminal_has_input", CallingConvention = CallingConvention.Cdecl)]
@@ -500,7 +491,7 @@ namespace BearLib
         [DllImport("BearLibTerminal.dll", CharSet = CharSet.Unicode, EntryPoint = "terminal_read_str16", CallingConvention = CallingConvention.Cdecl)]
         public static extern int ReadStr(int x, int y, StringBuilder text, int max);
 
-        public static int ReadStr(Point location, StringBuilder text, int max)
+        public static int ReadStr(Vector2I location, StringBuilder text, int max)
         {
             return ReadStr(location.X, location.Y, text, max);
         }
@@ -513,7 +504,7 @@ namespace BearLib
             return result;
         }
 
-        public static int ReadStr(Point location, ref string text, int max)
+        public static int ReadStr(Vector2I location, ref string text, int max)
         {
             return ReadStr(location.X, location.Y, ref text, max);
         }
@@ -535,7 +526,7 @@ namespace BearLib
         private static object ParseSize(string s)
         {
             string[] parts = s.Split('x');
-            return new Size(int.Parse(parts[0]), int.Parse(parts[1]));
+            return new Vector2I(int.Parse(parts[0]), int.Parse(parts[1]));
         }
 
         private static object ParseBool(string s)
@@ -556,7 +547,7 @@ namespace BearLib
                 {
                     Type type = typeof(T);
 
-                    if (type == typeof(Size))
+                    if (type == typeof(Vector2I))
                     {
                         return (T)ParseSize(result_str);
                     }

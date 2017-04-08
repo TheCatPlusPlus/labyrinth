@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
+
+using Labyrinth.Utils.Geometry;
 
 namespace Labyrinth.AI
 {
     public interface IPathFinder
     {
         bool Found { get; }
-        IEnumerable<Point> Points { get; }
+        IEnumerable<Vector2I> Points { get; }
     }
 }

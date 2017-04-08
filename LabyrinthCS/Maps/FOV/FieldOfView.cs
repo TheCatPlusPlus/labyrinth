@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
+
+using JetBrains.Annotations;
 
 using Labyrinth.Entities;
-using Labyrinth.Utils;
+using Labyrinth.Utils.Geometry;
 
 namespace Labyrinth.Maps.FOV
 {
-    public class FieldOfView
+    public sealed class FieldOfView
     {
         private readonly Player _player;
         private readonly List<Tile> _visible;
@@ -27,9 +28,8 @@ namespace Labyrinth.Maps.FOV
             _visible.Clear();
 
             // TODO real FOV
-            var fov = new Rectangle(_player.Position, new Size(1, 1));
-            fov.Inflate(Const.FovRadius, Const.FovRadius);
-            foreach (var point in fov.Points())
+            var fov = new Rect(_player.Position, 1, 1).Inflated(Const.FovRadius);
+            foreach (var point in fov.Points)
             {
                 if (level.Rect.Contains(point))
                 {
@@ -38,7 +38,7 @@ namespace Labyrinth.Maps.FOV
             }
         }
 
-        private void Visit(Level level, Point point)
+        private void Visit([NotNull] Level level, Vector2I point)
         {
             var tile = level[point];
             tile.IsLit = true;

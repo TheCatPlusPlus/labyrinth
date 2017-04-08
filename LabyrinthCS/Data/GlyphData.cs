@@ -1,13 +1,15 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 
+using JetBrains.Annotations;
+
 using Labyrinth.Data.Ids;
 using Labyrinth.Utils;
 
 namespace Labyrinth.Data
 {
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
-    public class GlyphData : IHasId
+    public sealed class GlyphData : IHasId
     {
         private static readonly Registry<GlyphData> Registry;
 
@@ -113,7 +115,8 @@ namespace Labyrinth.Data
             };
         }
 
-        public static GlyphData For(IId id)
+        [NotNull]
+        public static GlyphData For([NotNull] IId id)
         {
             return Registry.Get(id);
         }

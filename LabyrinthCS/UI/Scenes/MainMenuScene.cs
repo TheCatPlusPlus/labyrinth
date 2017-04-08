@@ -3,6 +3,7 @@
 using BearLib;
 
 using Labyrinth.UI.Input;
+using Labyrinth.Utils.Geometry;
 
 namespace Labyrinth.UI.Scenes
 {
@@ -37,16 +38,16 @@ namespace Labyrinth.UI.Scenes
         public override void Draw()
         {
             Terminal.Print(
-                new Rectangle(0, 12, Const.Width, 1),
+                new Rect(0, 12, Const.Width, 1),
                 ContentAlignment.MiddleCenter,
                 "The Labyrinth");
             Terminal.Print(
-                new Rectangle(0, 13, Const.Width, 1),
+                new Rect(0, 13, Const.Width, 1),
                 ContentAlignment.MiddleCenter,
                 "[color=dark grey]v0.1.0");
 
             var x = Const.Width / 2 - _menu.Width / 2;
-            _menu.Draw(new Point(x, 17));
+            _menu.Draw(new Vector2I(x, 17));
         }
 
         private void OnLoadGame()

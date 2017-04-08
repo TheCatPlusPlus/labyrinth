@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AI\IPathFinder.cs" />
+    <Compile Include="AI\MissilePath.cs" />
     <Compile Include="AI\ShortestPath.cs" />
     <Compile Include="Const.cs" />
     <Compile Include="Data\GlyphData.cs" />
@@ -89,7 +90,9 @@
     <Compile Include="UI\SidebarGaugeWidget.cs" />
     <Compile Include="UI\Viewport.cs" />
     <Compile Include="Utils\ColorExt.cs" />
-    <Compile Include="Utils\Direction.cs" />
+    <Compile Include="Utils\Geometry\Direction.cs" />
+    <Compile Include="Utils\Geometry\GridPoint.cs" />
+    <Compile Include="Utils\Geometry\Rect.cs" />
     <Compile Include="Utils\Guard.cs" />
     <Compile Include="UI\InputWidget.cs" />
     <Compile Include="UI\Input\Key.cs" />
@@ -109,18 +112,19 @@
     <Compile Include="UI\Input\Event.cs" />
     <Compile Include="UI\Scenes\MainMenuScene.cs" />
     <Compile Include="UI\TerminalExt.cs" />
+    <Compile Include="Utils\Geometry\Vector2F.cs" />
+    <Compile Include="Utils\Geometry\Vector2I.cs" />
     <Compile Include="Utils\MiscExt.cs" />
     <Compile Include="Data\Ids\Id.cs" />
     <Compile Include="Data\Ids\HasId.cs" />
     <Compile Include="Utils\Name.cs" />
-    <Compile Include="Utils\PointExt.cs" />
     <Compile Include="Utils\RandomExt.cs" />
-    <Compile Include="Utils\RectangleExt.cs" />
     <Compile Include="Utils\StringExt.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,10 +1,12 @@
-﻿using Labyrinth.Data.Ids;
+﻿using JetBrains.Annotations;
+
+using Labyrinth.Data.Ids;
 using Labyrinth.Maps;
 using Labyrinth.Utils;
 
 namespace Labyrinth.Data
 {
-    public class TileData : HasId<Tile>
+    public sealed class TileData : HasId<Tile>
     {
         private static readonly Registry<Tile, TileData> Registry;
 
@@ -132,7 +134,8 @@ namespace Labyrinth.Data
             };
         }
 
-        public static TileData For(Id<Tile> id)
+        [NotNull]
+        public static TileData For([NotNull] Id<Tile> id)
         {
             return Registry.Get(id);
         }

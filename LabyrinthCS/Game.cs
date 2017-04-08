@@ -1,10 +1,10 @@
-﻿using System.Drawing;
+﻿using JetBrains.Annotations;
 
 using Labyrinth.Data;
 using Labyrinth.Entities;
 using Labyrinth.Maps;
 using Labyrinth.UI.Input;
-using Labyrinth.Utils;
+using Labyrinth.Utils.Geometry;
 
 namespace Labyrinth
 {
@@ -14,7 +14,7 @@ namespace Labyrinth
         public Zone Zone { get; private set; }
         public Level Level { get; private set; }
 
-        public Game(string playerName)
+        public Game([NotNull] string playerName)
         {
             Player = new Player(playerName);
             Zone = new Zone(ZoneData.Test);
@@ -26,7 +26,7 @@ namespace Labyrinth
 
         public void React(UserAction action)
         {
-            if (Direction.Movement.TryGetValue(action, out Size direction))
+            if (Direction.Movement.TryGetValue(action, out Vector2I direction))
             {
                 Player.Move(Player.Position + direction);
             }

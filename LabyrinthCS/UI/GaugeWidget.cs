@@ -1,18 +1,21 @@
-using System.Drawing;
+﻿using System.Drawing;
+
+using JetBrains.Annotations;
 
 using Labyrinth.Utils;
+using Labyrinth.Utils.Geometry;
 
 namespace Labyrinth.UI
 {
-    public class GaugeWidget
+    public sealed class GaugeWidget
     {
-        private readonly Point _origin;
+        private readonly Vector2I _origin;
         private readonly int _width;
         private readonly Color _color;
         private readonly Color _lossColor;
         private readonly Color _gainColor;
 
-        public GaugeWidget(Point origin, int width, Color color, Color? lossColor = null, Color? gainColor = null)
+        public GaugeWidget(Vector2I origin, int width, Color color, Color? lossColor = null, Color? gainColor = null)
         {
             _origin = origin;
             _width = width;
@@ -21,7 +24,7 @@ namespace Labyrinth.UI
             _gainColor = gainColor ?? color;
         }
 
-        public void Draw(Gauge gauge)
+        public void Draw([NotNull] Gauge gauge)
         {
             var previous = gauge.PreviousPercent;
             var current = gauge.CurrentPercent;

@@ -7,36 +7,36 @@ using JetBrains.Annotations;
 using Labyrinth.Data;
 using Labyrinth.Data.Ids;
 using Labyrinth.Maps;
-using Labyrinth.Utils;
+using Labyrinth.Utils.Geometry;
 
 namespace Labyrinth.UI
 {
-    public class Viewport
+    public sealed class Viewport
     {
-        private static Point Player => State.Game.Player.Position;
+        private static Vector2I Player => State.Game.Player.Position;
         private static Level Level => State.Game.Level;
 
-        private readonly Rectangle _rect;
-        private Point _cursor;
+        private readonly Rect _rect;
+        private Vector2I _cursor;
 
-        public Point Cursor
+        public Vector2I Cursor
         {
             get => _cursor;
-            set => _cursor = _rect.Contains(value) ? value : PointExt.Invalid;
+            set => _cursor = _rect.Contains(value) ? value : GridPoint.Invalid;
         }
 
-        public Viewport(Rectangle rect)
+        public Viewport(Rect rect)
         {
             _rect = rect;
-            _cursor = PointExt.Invalid;
+            _cursor = GridPoint.Invalid;
         }
 
-        public Point ScreenToMap(Point screen)
+        public Vector2I ScreenToMap(Vector2I screen)
         {
             var mapOrigin = GetMapOrigin();
-            var screenOrigin = _rect.Location;
+            var screenOrigin = _rect.Origin;
 
-            var delta = new Size(screen.X - screenOrigin.X, screen.Y - screenOrigin.Y);
+            var delta = screen - screenOrigin;
             var map = mapOrigin + delta;
 
             if (!_rect.Contains(screen))
@@ -48,12 +48,12 @@ namespace Labyrinth.UI
             return map;
         }
 
-        public Point MapToScreen(Point map)
+        public Vector2I MapToScreen(Vector2I map)
         {
             var mapOrigin = GetMapOrigin();
-            var screenOrigin = _rect.Location;
+            var screenOrigin = _rect.Origin;
 
-            var delta = new Size(map.X - mapOrigin.X, map.Y - mapOrigin.Y);
+            var delta = map - mapOrigin;
             var screen = screenOrigin + delta;
 
             var _ = Level[map];
@@ -69,10 +69,10 @@ namespace Labyrinth.UI
         {
             var mapOrigin = GetMapOrigin();
 
-            foreach (Size p in _rect.RelativePoints())
+            foreach (var p in _rect.RelativePoints)
             {
                 var map = mapOrigin + p;
-                var screen = _rect.Location + p;
+                var screen = _rect.Origin + p;
 
                 if (Level.Rect.Contains(map))
                 {
@@ -84,7 +84,7 @@ namespace Labyrinth.UI
                 }
             }
 
-            if (_cursor != PointExt.Invalid)
+            if (_cursor != GridPoint.Invalid)
             {
                 using (TerminalExt.Foreground(Color.Red))
                 using (TerminalExt.Layer(1))
@@ -94,7 +94,7 @@ namespace Labyrinth.UI
             }
         }
 
-        private void Draw(Point screen, [NotNull] Tile tile)
+        private void Draw(Vector2I screen, [NotNull] Tile tile)
         {
             var glyph = GlyphData.For(tile.Id);
 
@@ -137,7 +137,7 @@ namespace Labyrinth.UI
             }
         }
 
-        private void PutGlyph(Point screen, int layer, IId id, Color? fg = null, Color? bg = null)
+        private static void PutGlyph(Vector2I screen, int layer, [NotNull] IId id, Color? fg = null, Color? bg = null)
         {
             var glyph = GlyphData.For(id);
             fg = fg ?? glyph.Foreground;
@@ -150,7 +150,7 @@ namespace Labyrinth.UI
             }
         }
 
-        private Point GetMapOrigin()
+        private Vector2I GetMapOrigin()
         {
             int Go(int focusCoord, int viewCoord, int mapCoord)
             {
@@ -180,7 +180,7 @@ namespace Labyrinth.UI
                 y0 = Go(Player.Y, _rect.Height, Level.Rect.Height);
             }
 
-            return new Point(x0, y0);
+            return new Vector2I(x0, y0);
         }
     }
 }

@@ -1,10 +1,12 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text.RegularExpressions;
 
 using BearLib;
+
+using JetBrains.Annotations;
 
 using Labyrinth.Utils;
 
@@ -202,7 +204,7 @@ namespace Labyrinth.UI.Input
             Add(Terminal.TK_MOUSE_X2, "mouse-5");
         }
 
-        private static void Add(int code, string name, bool shifted = false)
+        private static void Add(int code, [NotNull] string name, bool shifted = false)
         {
             var entry = new Entry(code, name, shifted);
             ByName[name] = entry;
@@ -217,7 +219,8 @@ namespace Labyrinth.UI.Input
             }
         }
 
-        public static Key Parse(string spec)
+        [NotNull]
+        public static Key Parse([NotNull] string spec)
         {
             var re = new Regex(@"\s+");
             var parts = re.Split(spec.Trim()).ToList();
@@ -262,7 +265,8 @@ namespace Labyrinth.UI.Input
             return new Key(entry.Code, ctrl, alt, shift);
         }
 
-        public static string Unparse(Key key)
+        [NotNull]
+        public static string Unparse([NotNull] Key key)
         {
             Dictionary<int, Entry> map;
 

@@ -1,11 +1,12 @@
-﻿using System.Drawing;
+﻿using JetBrains.Annotations;
 
 using Labyrinth.Data.Ids;
 using Labyrinth.Maps;
+using Labyrinth.Utils.Geometry;
 
 namespace Labyrinth.Data
 {
-    public class ZoneData : HasId<Zone>
+    public sealed class ZoneData : HasId<Zone>
     {
         private static readonly Registry<Zone, ZoneData> Registry;
 
@@ -13,7 +14,7 @@ namespace Labyrinth.Data
 
         public string Name { get; private set; }
         public int MaxDepth { get; private set; }
-        public Size MaxLevelSize { get; private set; }
+        public Vector2I MaxLevelSize { get; private set; }
 
         public ZoneData(Id<Zone> id)
             : base(id)
@@ -28,12 +29,13 @@ namespace Labyrinth.Data
                 {
                     Name = "Test Zone",
                     MaxDepth = 3,
-                    MaxLevelSize = new Size(80, 20)
+                    MaxLevelSize = new Vector2I(80, 20)
                 }
             };
         }
 
-        public static ZoneData For(Id<Zone> id)
+        [NotNull]
+        public static ZoneData For([NotNull] Id<Zone> id)
         {
             return Registry.Get(id);
         }

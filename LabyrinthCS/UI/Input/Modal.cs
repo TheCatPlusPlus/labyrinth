@@ -23,7 +23,7 @@ namespace Labyrinth.UI.Input
 
         protected override void React(Scene scene, Event @event)
         {
-            if (@event != null && @event is KeyEvent key)
+            if ((@event != null) && @event is KeyEvent key)
             {
                 ReactModal(key);
             }

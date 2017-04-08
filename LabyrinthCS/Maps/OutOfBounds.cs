@@ -1,31 +1,35 @@
 ﻿using System;
-using System.Drawing;
 using System.Runtime.Serialization;
+
+using JetBrains.Annotations;
+
+using Labyrinth.Utils.Geometry;
 
 namespace Labyrinth.Maps
 {
-    public class OutOfBounds : Exception
+    [Serializable]
+    public sealed class OutOfBounds : Exception
     {
-        public Point Position { get; }
+        public Vector2I Position { get; }
 
-        public OutOfBounds(Point position)
+        public OutOfBounds(Vector2I position)
         {
             Position = position;
         }
 
-        public OutOfBounds(Point position, string message)
+        public OutOfBounds(Vector2I position, string message)
             : base(message)
         {
             Position = position;
         }
 
-        public OutOfBounds(Point position, string message, Exception innerException)
+        public OutOfBounds(Vector2I position, string message, Exception innerException)
             : base(message, innerException)
         {
             Position = position;
         }
 
-        protected OutOfBounds(SerializationInfo info, StreamingContext context)
+        private OutOfBounds([NotNull] SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }

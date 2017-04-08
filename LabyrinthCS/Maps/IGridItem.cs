@@ -1,9 +1,9 @@
-﻿using System.Drawing;
+﻿using Labyrinth.Utils.Geometry;
 
 namespace Labyrinth.Maps
 {
     public interface IGridItem
     {
-        Point Position { get; }
+        Vector2I Position { get; }
     }
 }

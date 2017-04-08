@@ -4,7 +4,7 @@ using Labyrinth.Utils;
 
 namespace Labyrinth.Entities
 {
-    public class Item : Entity, IHasId<Item>
+    public sealed class Item : Entity, IHasId<Item>
     {
         private readonly ItemData _data;
 

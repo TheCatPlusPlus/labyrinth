@@ -7,3 +7,4 @@ packages/
 bin/
 obj/
 *.py[co]
+*.user

@@ -1,6 +1,6 @@
 ﻿namespace Labyrinth.Data.Ids
 {
-    public class HasId<T> : IHasId<T>
+    public abstract class HasId<T> : IHasId<T>
         where T : IHasId
     {
         public Id<T> Id { get; }

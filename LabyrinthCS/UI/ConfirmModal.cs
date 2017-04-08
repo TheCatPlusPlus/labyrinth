@@ -4,16 +4,18 @@ using System.Drawing;
 using BearLib;
 
 using Labyrinth.UI.Input;
+using Labyrinth.Utils;
+using Labyrinth.Utils.Geometry;
 
 namespace Labyrinth.UI
 {
     // TODO multiline
-    public class ConfirmModal : Modal<bool>
+    public sealed class ConfirmModal : Modal<bool>
     {
         private const string YesNo = "[[[color=green]Y[/color]]]es / [[[color=green]N[/color]]]o";
 
         private readonly string _message;
-        private readonly Point _origin;
+        private readonly Vector2I _origin;
         private readonly int _width;
 
         public ConfirmModal(string message)
@@ -26,20 +28,20 @@ namespace Labyrinth.UI
             _width = Math.Max(yesNoSize.Width, messageSize.Width) + 3;
             var x = Const.Width / 2 - _width / 2;
             var y = Const.Height / 2 - 1;
-            _origin = new Point(x, y);
+            _origin = new Vector2I(x, y);
         }
 
         protected override void DrawModal()
         {
-            var first = _origin + new Size(1, 1);
-            var second = _origin + new Size(1, 2);
-            var bbox = new Size(_width - 2, 1);
+            var first = _origin + new Vector2I(1, 1);
+            var second = _origin + new Vector2I(1, 2);
+            var bbox = new Vector2I(_width - 2, 1);
 
-            Terminal.Print(first, new string(' ', _width));
-            Terminal.Print(second, new string(' ', _width));
-            TerminalExt.Box(_origin, new Size(_width, 2));
-            Terminal.Print(new Rectangle(first, bbox), ContentAlignment.MiddleCenter, _message);
-            Terminal.Print(new Rectangle(second, bbox), ContentAlignment.MiddleCenter, YesNo);
+            Terminal.Print(first, ' '.Repeat(_width));
+            Terminal.Print(second, ' '.Repeat(_width));
+            TerminalExt.Box(_origin, new Vector2I(_width, 2));
+            Terminal.Print(new Rect(first, bbox), ContentAlignment.MiddleCenter, _message);
+            Terminal.Print(new Rect(second, bbox), ContentAlignment.MiddleCenter, YesNo);
         }
 
         protected override void ReactModal(KeyEvent @event)

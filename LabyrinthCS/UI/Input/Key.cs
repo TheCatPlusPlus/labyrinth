@@ -1,12 +1,15 @@
-﻿namespace Labyrinth.UI.Input
+﻿using JetBrains.Annotations;
+
+namespace Labyrinth.UI.Input
 {
-    public class Key
+    public sealed class Key
     {
         public int Code { get; }
         public bool Ctrl { get; }
         public bool Shift { get; }
         public bool Alt { get; }
 
+        [NotNull]
         public Key WithoutMods => new Key(Code, false, false, false);
 
         public Key(int code, bool ctrl, bool alt, bool shift)
@@ -22,28 +25,21 @@
             return KeyDatabase.Unparse(this);
         }
 
-        protected bool Equals(Key other)
+        public bool Equals([NotNull] Key other)
         {
             return Code == other.Code && Ctrl == other.Ctrl && Shift == other.Shift && Alt == other.Alt;
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-            // ReSharper disable once ConvertIfStatementToReturnStatement
-            if (obj.GetType() != GetType())
+            var key = obj as Key;
+
+            if (ReferenceEquals(null, key))
             {
                 return false;
             }
 
-            return Equals((Key)obj);
+            return ReferenceEquals(this, obj) || Equals(key);
         }
 
         public override int GetHashCode()
@@ -58,12 +54,12 @@
             }
         }
 
-        public static bool operator==(Key left, Key right)
+        public static bool operator==([CanBeNull] Key left, [CanBeNull] Key right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator!=(Key left, Key right)
+        public static bool operator!=([CanBeNull] Key left, [CanBeNull] Key right)
         {
             return !Equals(left, right);
         }

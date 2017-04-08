@@ -1,6 +1,8 @@
-﻿namespace Labyrinth.Data.Ids
+﻿using JetBrains.Annotations;
+
+namespace Labyrinth.Data.Ids
 {
-    public class Id<T> : IId
+    public sealed class Id<T> : IId
         where T : IHasId
     {
         public string Value { get; }
@@ -10,40 +12,34 @@
             Value = value;
         }
 
-        protected bool Equals(Id<T> other)
+        public bool Equals([NotNull] Id<T> other)
         {
             return string.Equals(Value, other.Value);
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-            if (obj.GetType() != GetType())
+            var id = obj as Id<T>;
+
+            if (ReferenceEquals(null, id))
             {
                 return false;
             }
 
-            return Equals((Id<T>)obj);
+            return ReferenceEquals(this, id) || Equals(id);
         }
 
         public override int GetHashCode()
         {
-            return (Value != null ? Value.GetHashCode() : 0);
+            return Value != null ? Value.GetHashCode() : 0;
         }
 
-        public static bool operator==(Id<T> left, Id<T> right)
+        public static bool operator==([CanBeNull] Id<T> left, [CanBeNull] Id<T> right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator!=(Id<T> left, Id<T> right)
+        public static bool operator!=([CanBeNull] Id<T> left, [CanBeNull] Id<T> right)
         {
             return !Equals(left, right);
         }

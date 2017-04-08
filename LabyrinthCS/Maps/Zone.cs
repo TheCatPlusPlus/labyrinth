@@ -1,27 +1,30 @@
-﻿using System.Drawing;
-using System.Linq;
+﻿using System.Linq;
+
+using JetBrains.Annotations;
 
 using Labyrinth.Data;
 using Labyrinth.Data.Ids;
 using Labyrinth.Maps.DunGen;
 using Labyrinth.Utils;
+using Labyrinth.Utils.Geometry;
 
 namespace Labyrinth.Maps
 {
-    public class Zone : HasId<Zone>
+    public sealed class Zone : HasId<Zone>
     {
         private readonly ZoneData _data;
 
-        public Zone(Id<Zone> id)
+        public Zone([NotNull] Id<Zone> id)
             : base(id)
         {
             _data = ZoneData.For(id);
         }
 
+        [NotNull]
         public Level CreateLevel(int depth)
         {
             var size = _data.MaxLevelSize;
-            size = new Size(size.Width | 1, size.Height | 1);
+            size = new Vector2I(size.Width | 1, size.Height | 1);
 
             // TODO
             var levelGen = new SimpleLevelGenerator();

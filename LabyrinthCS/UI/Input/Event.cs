@@ -1,8 +1,8 @@
-﻿using System.Drawing;
-
-using BearLib;
+﻿using BearLib;
 
 using JetBrains.Annotations;
+
+using Labyrinth.Utils.Geometry;
 
 namespace Labyrinth.UI.Input
 {
@@ -22,7 +22,7 @@ namespace Labyrinth.UI.Input
                 case Terminal.TK_MOUSE_MOVE:
                     var x = Terminal.State(Terminal.TK_MOUSE_X);
                     var y = Terminal.State(Terminal.TK_MOUSE_Y);
-                    return new MouseMoveEvent(new Point(x, y));
+                    return new MouseMoveEvent(new Vector2I(x, y));
                 case Terminal.TK_MOUSE_SCROLL:
                     var wheel = Terminal.State(Terminal.TK_MOUSE_WHEEL);
                     return new MouseScrollEvent(wheel);
@@ -51,11 +51,11 @@ namespace Labyrinth.UI.Input
             var next = Terminal.Peek();
             // things that need HasNext don't want to be interrupted
             // by mouse moves
-            return next != 0 && next != Terminal.TK_MOUSE_MOVE;
+            return (next != 0) && (next != Terminal.TK_MOUSE_MOVE);
         }
     }
 
-    public class KeyEvent : Event
+    public sealed class KeyEvent : Event
     {
         public Key Key { get; }
 
@@ -70,7 +70,7 @@ namespace Labyrinth.UI.Input
         }
     }
 
-    public class MouseScrollEvent : Event
+    public sealed class MouseScrollEvent : Event
     {
         public int Wheel { get; }
 
@@ -85,11 +85,11 @@ namespace Labyrinth.UI.Input
         }
     }
 
-    public class MouseMoveEvent : Event
+    public sealed class MouseMoveEvent : Event
     {
-        public Point Cursor { get; }
+        public Vector2I Cursor { get; }
 
-        public MouseMoveEvent(Point cursor)
+        public MouseMoveEvent(Vector2I cursor)
         {
             Cursor = cursor;
         }
@@ -100,7 +100,7 @@ namespace Labyrinth.UI.Input
         }
     }
 
-    public class ResizeEvent : Event
+    public sealed class ResizeEvent : Event
     {
         public override string ToString()
         {
@@ -108,7 +108,7 @@ namespace Labyrinth.UI.Input
         }
     }
 
-    public class CloseEvent : Event
+    public sealed class CloseEvent : Event
     {
         public override string ToString()
         {

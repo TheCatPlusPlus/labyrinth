@@ -4,18 +4,21 @@ using System.Drawing;
 
 using BearLib;
 
+using JetBrains.Annotations;
+
 using Labyrinth.Utils;
+using Labyrinth.Utils.Geometry;
 
 namespace Labyrinth.UI
 {
     public static class TerminalExt
     {
-        public const char BoxUlCorner = '\u250C';
-        public const char BoxUrCorner = '\u2510';
+        public const char BoxTlCorner = '\u250C';
+        public const char BoxTrCorner = '\u2510';
         public const char BoxBlCorner = '\u2514';
         public const char BoxBrCorner = '\u2518';
-        public const char BoxUlCornerSoft = '\u256C';
-        public const char BoxUrCornerSoft = '\u256D';
+        public const char BoxTlCornerSoft = '\u256C';
+        public const char BoxTrCornerSoft = '\u256D';
         public const char BoxBlCornerSoft = '\u2570';
         public const char BoxBrCornerSoft = '\u256F';
         public const char BoxVLine = '\u2502';
@@ -26,6 +29,7 @@ namespace Labyrinth.UI
         public const char BoxHLineUSplit = '\u2534';
         public const char BoxCrossSplit = '\u253C';
 
+        [NotNull]
         private static Guard ColorGuard(Color? color, int state, Action<Color> set)
         {
             var previous = Color.FromArgb(Terminal.State(state));
@@ -36,16 +40,19 @@ namespace Labyrinth.UI
             return new Guard(() => set(previous));
         }
 
+        [NotNull]
         public static Guard Background(Color? color)
         {
             return ColorGuard(color, Terminal.TK_BKCOLOR, Terminal.BkColor);
         }
 
+        [NotNull]
         public static Guard Foreground(Color? color)
         {
             return ColorGuard(color, Terminal.TK_COLOR, Terminal.Color);
         }
 
+        [NotNull]
         public static Guard Colors(Color? fg, Color? bg)
         {
             var fgGuard = Foreground(fg);
@@ -58,30 +65,25 @@ namespace Labyrinth.UI
                 });
         }
 
-        public static void Box(Point origin, Size size)
+        public static void Box(Vector2I origin, Vector2I size)
         {
-            Box(new Rectangle(origin, size));
+            Box(new Rect(origin, size));
         }
 
-        public static void Box(Rectangle rect)
+        public static void Box(Rect rect)
         {
-            var ul = new Point(rect.X, rect.Y);
-            var ur = new Point(rect.Right, rect.Y);
-            var bl = new Point(rect.X, rect.Bottom);
-            var br = new Point(rect.Right, rect.Bottom);
+            VLine(rect.TopLeft, rect.Height);
+            VLine(rect.TopRight, rect.Height);
+            HLine(rect.BottomLeft, rect.Width);
+            HLine(rect.BottomRight, rect.Width);
 
-            VLine(ul, rect.Height);
-            VLine(ur, rect.Height);
-            HLine(ul, rect.Width);
-            HLine(bl, rect.Width);
-
-            Terminal.Put(ul, BoxUlCorner);
-            Terminal.Put(ur, BoxUrCorner);
-            Terminal.Put(bl, BoxBlCorner);
-            Terminal.Put(br, BoxBrCorner);
+            Terminal.Put(rect.TopLeft, BoxTlCorner);
+            Terminal.Put(rect.TopRight, BoxTrCorner);
+            Terminal.Put(rect.BottomLeft, BoxBlCorner);
+            Terminal.Put(rect.BottomRight, BoxBrCorner);
         }
 
-        public static void VLine(Point point, int height, char ch = BoxVLine)
+        public static void VLine(Vector2I point, int height, char ch = BoxVLine)
         {
             for (var y = 0; y < height; ++y)
             {
@@ -89,7 +91,7 @@ namespace Labyrinth.UI
             }
         }
 
-        public static void HLine(Point point, int width, char ch = BoxHLine)
+        public static void HLine(Vector2I point, int width, char ch = BoxHLine)
         {
             for (var x = 0; x < width; ++x)
             {
@@ -97,7 +99,7 @@ namespace Labyrinth.UI
             }
         }
 
-        public static void HBar(Point point, int width, Color? color)
+        public static void HBar(Vector2I point, int width, Color? color)
         {
             using (Background(color))
             {
@@ -105,6 +107,7 @@ namespace Labyrinth.UI
             }
         }
 
+        [NotNull]
         public static Guard Composition(bool enabled = true)
         {
             var current = Terminal.State(Terminal.TK_COMPOSITION) != 0;
@@ -112,6 +115,7 @@ namespace Labyrinth.UI
             return new Guard(() => Terminal.Composition(current));
         }
 
+        [NotNull]
         public static Guard Layer(int layer)
         {
             Debug.Assert(layer.Within(0, 256));

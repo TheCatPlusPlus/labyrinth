@@ -1,21 +1,24 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 
 using BearLib;
 
+using JetBrains.Annotations;
+
 using Labyrinth.Utils;
+using Labyrinth.Utils.Geometry;
 
 namespace Labyrinth.UI
 {
-    public class InputWidget
+    public sealed class InputWidget
     {
-        private readonly Point _point;
+        private readonly Vector2I _point;
         private readonly int _maxLength;
 
         public string Value { get; private set; }
 
-        public InputWidget(Point point, int maxLength, string @default = "")
+        public InputWidget(Vector2I point, int maxLength, string @default = "")
         {
             _point = point;
             _maxLength = maxLength;
@@ -57,6 +60,7 @@ namespace Labyrinth.UI
             }
         }
 
+        [NotNull]
         private Guard Colors()
         {
             return TerminalExt.Colors(Color.White, Color.DarkGray);

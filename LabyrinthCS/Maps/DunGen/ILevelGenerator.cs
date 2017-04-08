@@ -1,10 +1,14 @@
 ﻿using System.Collections.Generic;
 
+using JetBrains.Annotations;
+
 namespace Labyrinth.Maps.DunGen
 {
     public interface ILevelGenerator
     {
         // yields generation step
-        IEnumerable<string> Fill(Level level);
+        [ItemNotNull]
+        [NotNull]
+        IEnumerable<string> Fill([NotNull] Level level);
     }
 }

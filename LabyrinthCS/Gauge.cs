@@ -1,8 +1,8 @@
-using Labyrinth.Utils;
+﻿using Labyrinth.Utils;
 
 namespace Labyrinth
 {
-    public class Gauge
+    public sealed class Gauge
     {
         private readonly string _name;
         private int _current;
