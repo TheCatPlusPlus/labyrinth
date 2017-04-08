@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Drawing;
 
+using JetBrains.Annotations;
+
 namespace Labyrinth.Utils
 {
     public static class ColorExt
@@ -22,6 +24,12 @@ namespace Labyrinth.Utils
             var g = color.G * factor;
             var b = color.B * factor;
             return Color.FromArgb(color.A, (int)r, (int)g, (int)b);
+        }
+
+        [NotNull]
+        public static string ToHex(this Color color)
+        {
+            return $"{color.R:X02}{color.G:X02}{color.B:X02}{color.A:X02}";
         }
     }
 }

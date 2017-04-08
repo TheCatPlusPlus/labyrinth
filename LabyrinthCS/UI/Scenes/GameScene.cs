@@ -1,18 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+﻿using System.Drawing;
 
 using BearLib;
 
 using JetBrains.Annotations;
 
 using Labyrinth.AI;
-using Labyrinth.Data;
 using Labyrinth.Maps;
 using Labyrinth.UI.Input;
 using Labyrinth.UI.Widgets;
-using Labyrinth.Utils;
 using Labyrinth.Utils.Geometry;
 
 namespace Labyrinth.UI.Scenes
@@ -28,12 +23,21 @@ namespace Labyrinth.UI.Scenes
         private readonly SidebarGaugeWidget _mp;
         private readonly SidebarGaugeWidget _stamina;
         private readonly Viewport _viewport;
+        private readonly LookAtWidget _lookAt;
+        private readonly MessagesWidget _messages;
+
         private IPathFinder _cursorPath;
-        private Tile _lookAt;
+        private Tile _cursorTile;
 
         public GameScene()
         {
             const int gaugeX = Const.WidthSidebar - Const.WidthSidebarGauge - 1;
+
+            const int messagesX = Const.WidthSidebar + 2;
+            const int messagesY = Const.Height - Const.HeightMessages + 1;
+            var messagesRect = new Rect(messagesX, messagesY, Const.WidthViewport, Const.HeightMessages);
+
+            var viewportRect = new Rect(Const.WidthSidebar + 2, 2, Const.WidthViewport, Const.HeightViewport);
 
             _hp = new SidebarGaugeWidget(
                 "HP",
@@ -56,8 +60,9 @@ namespace Labyrinth.UI.Scenes
                 Color.Orange,
                 Color.Orange);
 
-            _viewport = new Viewport(
-                new Rect(Const.WidthSidebar + 2, 2, Const.WidthViewport, Const.HeightViewport));
+            _viewport = new Viewport(viewportRect);
+            _lookAt = new LookAtWidget(messagesRect);
+            _messages = new MessagesWidget(messagesRect);
         }
 
         public override void React(Event @event)
@@ -74,13 +79,13 @@ namespace Labyrinth.UI.Scenes
                 {
                     var level = State.Game.Level;
                     var map = _viewport.ScreenToMap(_viewport.Cursor);
-                    _lookAt = level[map];
+                    _cursorTile = level[map];
                     _cursorPath = new MissilePath(level, State.Game.Player.Position, map);
                 }
                 catch (OutOfBounds)
                 {
                     _cursorPath = null;
-                    _lookAt = null;
+                    _cursorTile = null;
                 }
             }
         }
@@ -103,7 +108,7 @@ namespace Labyrinth.UI.Scenes
             }
             else if (action != null)
             {
-                _lookAt = null; // TODO modal look
+                _cursorTile = null; // TODO modal look
                 _cursorPath = null;
                 State.Game.React(action.Value);
             }
@@ -127,93 +132,14 @@ namespace Labyrinth.UI.Scenes
 
         private void DrawMessages()
         {
-            var x = Const.WidthSidebar + 2;
-            var y = Const.Height - Const.HeightMessages + 1;
-            var rect = new Rect(x, y, Const.WidthViewport, Const.HeightMessages);
-
-            if (_lookAt != null)
+            if (_cursorTile != null)
             {
-                DrawLookAt(rect);
-            }
-        }
-
-        private void DrawLookAt(Rect rect)
-        {
-            var look = new StringBuilder();
-
-            if (!_lookAt.WasSeen)
-            {
-                look.Append("[color=white]An unseen tile.");
+                _lookAt.Draw(_cursorTile);
             }
             else
             {
-                look.Append($"[color=white]{_lookAt.Name.Singular().Capitalize()}.");
-                var description = _lookAt.Description;
-
-                if (_lookAt.IsLit)
-                {
-                    if (_lookAt.Monster != null)
-                    {
-                        look.Append($" [color=cyan]{_lookAt.Monster.Name.Singular().Capitalize()}[/color] is here.");
-                    }
-
-                    if (_lookAt.Items.Count > 0)
-                    {
-                        // TODO store count on Tile maybe
-                        var query = from @group in _lookAt.Items.GroupBy(i => i.Id)
-                            let item = ItemData.For(@group.Key)
-                            let count = @group.Count()
-                            select (item, count);
-                        var grouped = query.ToList();
-
-                        if (grouped.Count.Within(1, 5))
-                        {
-                            var items = new List<string>();
-
-                            for (var idx = 0; idx < grouped.Count; ++idx)
-                            {
-                                (var item, var count) = grouped[idx];
-                                var name = count > 1 ? item.Name.Plural(count) : item.Name.Singular();
-
-                                if (idx == 0)
-                                {
-                                    name = name.Capitalize();
-                                }
-
-                                name = $"[color=cyan]{name}[/color]";
-
-                                if ((grouped.Count > 1) && (idx == (grouped.Count - 1)))
-                                {
-                                    name = $"and {name}";
-                                }
-
-                                items.Add(name);
-                            }
-
-                            var lies = _lookAt.Items.Count > 1 ? "lie" : "lies";
-                            var joined = string.Join(", ", items);
-                            look.Append($" {joined} {lies} here.");
-                        }
-                        else
-                        {
-                            look.Append(" Many items lie here.");
-                        }
-                    }
-
-                    if (_lookAt.Monster != null)
-                    {
-                        description = _lookAt.Monster.Description;
-                    }
-                    else if (_lookAt.Items.Count == 1)
-                    {
-                        description = _lookAt.Items[0].Description;
-                    }
-                }
-
-                look.Append($"\n\n[color=light grey]{description}[/color]");
+                _messages.Draw();
             }
-
-            Terminal.Print(rect, look.ToString());
         }
 
         private void DrawSidebar()
