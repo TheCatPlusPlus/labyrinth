@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -33,7 +34,7 @@ namespace Labyrinth.UI.Widgets
         {
             _builder.Clear();
 
-            Add($"[color=#{Tile.ToHex()}]");
+            Add($"[color={Tile.ToHex()}]");
             if (!tile.WasSeen)
             {
                 Add("An unseen tile.");
@@ -43,20 +44,23 @@ namespace Labyrinth.UI.Widgets
                 ExamineTile(tile);
             }
 
-            Terminal.Print(_rect, _builder.ToString());
+            var text = _builder.ToString();
+            Terminal.Print(_rect, text);
         }
 
         private void ExamineTile([NotNull] Tile tile)
         {
-            Add(tile.Name.Singular().Capitalize());
+            var name = tile.Name.Singular().Capitalize();
             var description = tile.Description;
+
+            Add($"{name}.");
 
             if (tile.IsLit)
             {
                 ExamineTileDetail(tile, ref description);
             }
 
-            Add($"\n\n[color=#{Description.ToHex()}]{description}");
+            Add($"\n\n[color={Description.ToHex()}]{description}");
         }
 
         private void ExamineTileDetail([NotNull] Tile tile, ref string description)

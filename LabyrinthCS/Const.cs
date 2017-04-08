@@ -22,6 +22,6 @@ namespace Labyrinth
 
         public static readonly TimeSpan AnimFrameTime = TimeSpan.FromMilliseconds(25);
 
-        public static readonly Log.Category EnabledVerbose = 0;
+        public const Log.Category EnabledVerbose = 0;
     }
 }
