@@ -87,6 +87,7 @@
     <Compile Include="UI\Input\EventLoop.cs" />
     <Compile Include="UI\Scenes\GameScene.cs" />
     <Compile Include="UI\Scenes\NewGameScene.cs" />
+    <Compile Include="UI\Widgets\LookAtWidget.cs" />
     <Compile Include="UI\Widgets\SidebarGaugeWidget.cs" />
     <Compile Include="UI\Viewport.cs" />
     <Compile Include="Utils\ColorExt.cs" />

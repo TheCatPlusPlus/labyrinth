@@ -8,7 +8,7 @@ using Labyrinth.Utils.Geometry;
 
 namespace Labyrinth.UI.Scenes
 {
-    public class MainMenuScene : Scene
+    public sealed class MainMenuScene : Scene
     {
         private readonly MenuWidget _menu;
 

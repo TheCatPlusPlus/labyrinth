@@ -6,7 +6,7 @@ using Labyrinth.Utils.Geometry;
 
 namespace Labyrinth.UI.Scenes
 {
-    public class NewGameScene : Scene
+    public sealed class NewGameScene : Scene
     {
         private readonly InputWidget _playerName;
         private readonly MenuWidget _menu;

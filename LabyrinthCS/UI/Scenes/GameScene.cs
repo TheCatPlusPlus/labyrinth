@@ -17,7 +17,7 @@ using Labyrinth.Utils.Geometry;
 
 namespace Labyrinth.UI.Scenes
 {
-    public class GameScene : Scene
+    public sealed class GameScene : Scene
     {
         private const string ConfirmQuit =
             "Quit without saving? [color=red]NOTE[/color]: this will discard existing save! (not implemented yet)";

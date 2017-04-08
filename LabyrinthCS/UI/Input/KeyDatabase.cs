@@ -14,7 +14,7 @@ namespace Labyrinth.UI.Input
 {
     public static class KeyDatabase
     {
-        private class Entry
+        private sealed class Entry
         {
             public int Code { get; }
             public string Name { get; }
