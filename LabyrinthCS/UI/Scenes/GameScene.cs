@@ -8,6 +8,7 @@ using Labyrinth.AI;
 using Labyrinth.Maps;
 using Labyrinth.UI.Input;
 using Labyrinth.UI.Widgets;
+using Labyrinth.Utils;
 using Labyrinth.Utils.Geometry;
 
 namespace Labyrinth.UI.Scenes
@@ -151,9 +152,15 @@ namespace Labyrinth.UI.Scenes
                 new Rect(2, 1, Const.WidthPlayerName, 1),
                 ContentAlignment.MiddleCenter,
                 player.Name.Singular(true));
+
             _hp.Draw(player.HP);
             _mp.Draw(player.MP);
             _stamina.Draw(player.Stamina);
+
+            var turn = game.TotalCost / (float)Const.SpeedBase;
+            var last = MathExt.Clamp(game.LastCost / (float)Const.SpeedBase, 0.0f, float.MaxValue);
+
+            Terminal.Print(4, 6, $"T: {turn:F1} ({last:F1})");
         }
 
         private void DrawViewport()

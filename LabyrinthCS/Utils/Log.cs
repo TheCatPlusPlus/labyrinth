@@ -4,6 +4,12 @@ namespace Labyrinth.Utils
 {
     public static class Log
     {
+        [Flags]
+        public enum Category : ulong
+        {
+            Scheduler = 1 << 0
+        }
+
         private static void Write(ConsoleColor color, string message)
         {
             var previous = Console.ForegroundColor;
@@ -13,9 +19,12 @@ namespace Labyrinth.Utils
             Console.ForegroundColor = previous;
         }
 
-        public static void Verbose(string message)
+        public static void Verbose(Category category, string message)
         {
-            Write(ConsoleColor.DarkGray, $"[VERBOSE] {message}");
+            if ((Const.EnabledVerbose & category) != 0)
+            {
+                Write(ConsoleColor.DarkGray, $"[VERBOSE] {message}");
+            }
         }
 
         public static void Debug(string message)

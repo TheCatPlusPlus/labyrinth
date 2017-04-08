@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Globalization;
 
 using BearLib;
 
@@ -26,7 +27,7 @@ namespace Labyrinth
                 return;
             }
 
-            if (@event is KeyEvent key && key.Key == AltF4)
+            if (@event is KeyEvent key && (key.Key == AltF4))
             {
                 State.SignalExit();
                 return;
@@ -37,6 +38,11 @@ namespace Labyrinth
 
         private static void Main()
         {
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+            CultureInfo.CurrentUICulture = CultureInfo.InvariantCulture;
+            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+            CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+
             Terminal.Open();
             Terminal.Set(
                 $"window: title=Labyrinth, size={Const.Width}x{Const.Height};" +

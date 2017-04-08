@@ -58,7 +58,7 @@ namespace Labyrinth.AI
                     // only go through monsters
                     // (and include them as final point)
 
-                    if (tile.Monster != null)
+                    if (tile.Actor != null)
                     {
                         _points.Add(point);
                         if (!penetrating)

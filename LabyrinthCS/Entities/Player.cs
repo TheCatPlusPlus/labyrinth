@@ -6,9 +6,12 @@ using Labyrinth.Utils;
 
 namespace Labyrinth.Entities
 {
-    public sealed class Player : Monster
+    public sealed class Player : Actor
     {
         public override Name Name { get; }
+        public override string Description => Data.Description;
+        public override float SpeedFactor => 1.0f; // TODO effects
+
         public Gauge HP { get; }
         public Gauge MP { get; }
         public Gauge Stamina { get; }

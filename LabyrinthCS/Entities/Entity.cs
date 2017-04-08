@@ -4,6 +4,7 @@ using System.Diagnostics;
 using JetBrains.Annotations;
 
 using Labyrinth.Data;
+using Labyrinth.Entities.Time;
 using Labyrinth.Maps;
 using Labyrinth.Utils.Geometry;
 
@@ -14,12 +15,26 @@ namespace Labyrinth.Entities
         public Vector2I Position { get; private set; }
         public Level Level { get; private set; }
 
+        [CanBeNull]
+        public Tile Tile
+        {
+            get
+            {
+                if (Level == null)
+                {
+                    return null;
+                }
+
+                return Position == GridPoint.Invalid ? null : Level[Position];
+            }
+        }
+
         protected Entity()
         {
             Position = GridPoint.Invalid;
         }
 
-        public bool Move(Vector2I to)
+        public virtual int Move(Vector2I to)
         {
             if (Level == null)
             {
@@ -28,7 +43,7 @@ namespace Labyrinth.Entities
 
             if (!Level.Rect.Contains(to))
             {
-                return false;
+                return -1;
             }
 
             var current = Level[Position];
@@ -41,16 +56,17 @@ namespace Labyrinth.Entities
                     next.Id = TileData.DoorOpen;
                 }
 
-                return false;
+                return -1;
             }
 
             ((IEntityList)current).RemoveEntity(this);
             ((IEntityList)next).AddEntity(this);
             Position = to;
-            return true;
+
+            return MoveCost.ApplyFactor(current.CostFactor);
         }
 
-        public void Despawn()
+        public virtual void Despawn()
         {
             if (Level == null)
             {
@@ -69,7 +85,7 @@ namespace Labyrinth.Entities
             Spawn(level, tile.Position);
         }
 
-        public void Spawn([NotNull] Level level, Vector2I position)
+        public virtual void Spawn([NotNull] Level level, Vector2I position)
         {
             if (Level != null)
             {

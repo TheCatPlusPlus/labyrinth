@@ -1,5 +1,7 @@
 ﻿using System;
 
+using Labyrinth.Utils;
+
 namespace Labyrinth
 {
     public static class Const
@@ -15,10 +17,11 @@ namespace Labyrinth
         public const int HeightViewport = Height - HeightMessages - HeightBossMeter - 4;
 
         public const int SpeedBase = 10;
-        public const int MoveCostBase = SpeedBase;
 
         public const int FovRadius = 4;
 
         public static readonly TimeSpan AnimFrameTime = TimeSpan.FromMilliseconds(25);
+
+        public static readonly Log.Category EnabledVerbose = 0;
     }
 }

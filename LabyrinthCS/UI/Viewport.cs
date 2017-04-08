@@ -116,9 +116,9 @@ namespace Labyrinth.UI
             {
                 occupied = true;
 
-                if (tile.Monster != null)
+                if (tile.Actor != null)
                 {
-                    PutGlyph(screen, 2, tile.Monster.Id);
+                    PutGlyph(screen, 2, tile.Actor.Id);
                 }
                 else if (tile.Items.Count == 1)
                 {

@@ -61,9 +61,9 @@ namespace Labyrinth.UI.Widgets
 
         private void ExamineTileDetail([NotNull] Tile tile, ref string description)
         {
-            if (tile.Monster != null)
+            if (tile.Actor != null)
             {
-                var name = tile.Monster.Name.Singular().Capitalize();
+                var name = tile.Actor.Name.Singular().Capitalize();
                 AddSeparate($"[color={Name.ToHex()}]{name}[/color] is here.");
             }
 
@@ -72,9 +72,9 @@ namespace Labyrinth.UI.Widgets
                 ExamineTileItems(tile);
             }
 
-            if (tile.Monster != null)
+            if (tile.Actor != null)
             {
-                description = tile.Monster.Description;
+                description = tile.Actor.Description;
             }
             else if (tile.Items.Count == 1)
             {

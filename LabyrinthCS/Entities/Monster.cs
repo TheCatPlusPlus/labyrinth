@@ -1,26 +1,23 @@
-﻿using Labyrinth.Data;
+﻿using JetBrains.Annotations;
+
 using Labyrinth.Data.Ids;
 using Labyrinth.Utils;
 
 namespace Labyrinth.Entities
 {
-    public class Monster : Entity, IHasId<Monster>
+    public sealed class Monster : Actor
     {
-        private readonly MonsterData _data;
+        public override Name Name => Data.Name;
+        public override string Description => Data.Description;
 
-        public Id<Monster> Id { get; }
-        IId IHasId.Id => Id;
-
-        public virtual Name Name => _data.Name;
-        public string Description => _data.Description;
-
-        public virtual int Speed => MathExt.CeilInt(_data.SpeedFactor * Const.SpeedBase);
-        public int Energy { get; set; }
-
-        public Monster(Id<Monster> id)
+        public Monster([NotNull] Id<Monster> id)
+            : base(id)
         {
-            Id = id;
-            _data = MonsterData.For(Id);
+        }
+
+        public int Act()
+        {
+            return Const.SpeedBase;
         }
     }
 }

@@ -8,11 +8,13 @@ using Labyrinth.Utils.Geometry;
 
 namespace Labyrinth
 {
-    public class Game
+    public sealed class Game
     {
         public Player Player { get; }
         public Zone Zone { get; private set; }
         public Level Level { get; private set; }
+        public int TotalCost { get; private set; }
+        public int LastCost { get; private set; }
 
         public Game([NotNull] string playerName)
         {
@@ -24,14 +26,27 @@ namespace Labyrinth
             Player.FieldOfView.Update(Level);
         }
 
+        public void Start()
+        {
+            Level.Scheduler.Advance();
+        }
+
         public void React(UserAction action)
         {
+            LastCost = 0;
+
             if (Direction.Movement.TryGetValue(action, out Vector2I direction))
             {
-                Player.Move(Player.Position + direction);
+                LastCost = Player.Move(Player.Position + direction);
+            }
+
+            if (LastCost > 0)
+            {
+                TotalCost += LastCost;
             }
 
             Player.FieldOfView.Update(Level);
+            Level.Scheduler.Advance();
         }
     }
 }

@@ -7,6 +7,7 @@ using JetBrains.Annotations;
 using Labyrinth.Data;
 using Labyrinth.Data.Ids;
 using Labyrinth.Entities;
+using Labyrinth.Entities.Time;
 using Labyrinth.Utils;
 using Labyrinth.Utils.Geometry;
 
@@ -35,21 +36,22 @@ namespace Labyrinth.Maps
         public Level Level { get; }
 
         public IReadOnlyList<Item> Items => _items;
-        public Monster Monster { get; private set; }
+        public Actor Actor { get; private set; }
         public bool WasSeen { get; private set; }
         public object Tag { get; set; }
         public IEnumerable<Vector2I> Neighbours => GetNeighbours();
 
         public Name Name => _data.Name;
         public string Description => _data.Description;
-        public bool CanWalkThrough => (Monster == null) && _data.CanWalkThrough;
-        public bool CanFlyOver => (Monster == null) && _data.CanFlyOver;
+        public bool CanWalkThrough => (Actor == null) && _data.CanWalkThrough;
+        public bool CanFlyOver => (Actor == null) && _data.CanFlyOver;
         public bool CanSeeThrough => _data.CanSeeThrough;
         public bool IsWall => TileData.AllWalls.Contains(Id);
         public bool IsDoor => TileData.AllDoors.Contains(Id);
         public bool IsExit => TileData.AllExits.Contains(Id);
 
-        public int BaseMoveCost => CanWalkThrough ? MathExt.CeilInt(_data.CostFactor * Const.MoveCostBase) : int.MaxValue;
+        public float CostFactor => _data.CostFactor;
+        public int BaseMoveCost => CanWalkThrough ? MoveCost.ApplyFactor(CostFactor) : int.MaxValue;
 
         public bool IsLit
         {
@@ -80,9 +82,9 @@ namespace Labyrinth.Maps
                 return false;
             }
 
-            if (entity is Monster monster)
+            if (entity is Actor monster)
             {
-                Monster = monster;
+                Actor = monster;
             }
             else if (entity is Item item)
             {
@@ -99,9 +101,9 @@ namespace Labyrinth.Maps
                 throw new InvalidOperationException("Entity's position doesn't match the tile's");
             }
 
-            if (entity is Monster)
+            if (entity is Actor)
             {
-                Monster = null;
+                Actor = null;
             }
             else if (entity is Item item)
             {

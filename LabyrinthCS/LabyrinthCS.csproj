@@ -60,9 +60,13 @@
     <Compile Include="Data\Registry.cs" />
     <Compile Include="Data\TileData.cs" />
     <Compile Include="Data\ZoneData.cs" />
+    <Compile Include="Entities\Actor.cs" />
     <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\Time\IEnergy.cs" />
     <Compile Include="Entities\Item.cs" />
     <Compile Include="Entities\Monster.cs" />
+    <Compile Include="Entities\Time\Scheduler.cs" />
+    <Compile Include="Entities\Time\MoveCost.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Gauge.cs" />
     <Compile Include="Maps\DunGen\ILevelGenerator.cs" />
