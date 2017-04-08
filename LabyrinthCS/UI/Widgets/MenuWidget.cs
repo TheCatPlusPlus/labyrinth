@@ -12,11 +12,11 @@ using Labyrinth.UI.Input;
 using Labyrinth.Utils;
 using Labyrinth.Utils.Geometry;
 
-namespace Labyrinth.UI
+namespace Labyrinth.UI.Widgets
 {
     public sealed class MenuWidget : IEnumerable<MenuWidget.Item>
     {
-        public class Item
+        public sealed class Item
         {
             private readonly Func<bool> _isEnabled;
 
@@ -85,6 +85,7 @@ namespace Labyrinth.UI
 
             var action = KeyMap.Menu[key.Key];
 
+            // ReSharper disable once SwitchStatementMissingSomeCases
             switch (action)
             {
                 case UserAction.Confirm:

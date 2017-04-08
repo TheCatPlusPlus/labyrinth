@@ -3,6 +3,7 @@
 using BearLib;
 
 using Labyrinth.UI.Input;
+using Labyrinth.UI.Widgets;
 using Labyrinth.Utils.Geometry;
 
 namespace Labyrinth.UI.Scenes

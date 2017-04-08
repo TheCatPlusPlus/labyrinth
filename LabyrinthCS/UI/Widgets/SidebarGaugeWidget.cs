@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 
 using Labyrinth.Utils.Geometry;
 
-namespace Labyrinth.UI
+namespace Labyrinth.UI.Widgets
 {
     public sealed class SidebarGaugeWidget
     {

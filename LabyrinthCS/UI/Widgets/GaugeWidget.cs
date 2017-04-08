@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 using Labyrinth.Utils;
 using Labyrinth.Utils.Geometry;
 
-namespace Labyrinth.UI
+namespace Labyrinth.UI.Widgets
 {
     public sealed class GaugeWidget
     {

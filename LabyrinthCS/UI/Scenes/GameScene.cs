@@ -11,6 +11,7 @@ using Labyrinth.AI;
 using Labyrinth.Data;
 using Labyrinth.Maps;
 using Labyrinth.UI.Input;
+using Labyrinth.UI.Widgets;
 using Labyrinth.Utils;
 using Labyrinth.Utils.Geometry;
 
