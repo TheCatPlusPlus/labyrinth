@@ -86,7 +86,7 @@ namespace Labyrinth.AI
         private readonly List<Vector2I> _path;
 
         public bool Found => _path.Count > 0;
-        public IEnumerable<Vector2I> Points => _path;
+        public IReadOnlyList<Vector2I> Points => _path;
         public Vector2I Start { get; }
         public Vector2I Goal { get; }
 

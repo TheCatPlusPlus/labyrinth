@@ -17,7 +17,7 @@ namespace Labyrinth.AI
         public Vector2I Start { get; }
         public Vector2I Goal { get; }
         public bool Found { get; }
-        public IEnumerable<Vector2I> Points => _points;
+        public IReadOnlyList<Vector2I> Points => _points;
 
         public MissilePath([NotNull] Level level, Vector2I start, Vector2I goal, bool penetrating = false)
         {
