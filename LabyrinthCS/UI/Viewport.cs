@@ -87,7 +87,7 @@ namespace Labyrinth.UI
             if (_cursor != GridPoint.Invalid)
             {
                 using (TerminalExt.Foreground(Color.Red))
-                using (TerminalExt.Layer(3))
+                using (TerminalExt.Layer(4))
                 {
                     Terminal.Put(_cursor, '\u25AF');
                 }

@@ -30,7 +30,7 @@ namespace Labyrinth.Utils
         public static string ToHex(this Color color, bool withPrefix = true)
         {
             var prefix = withPrefix ? "#" : "";
-            return $"{prefix}{color.R:X02}{color.G:X02}{color.B:X02}";
+            return $"{prefix}{color.A:X02}{color.R:X02}{color.G:X02}{color.B:X02}";
         }
     }
 }
