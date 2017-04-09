@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 using JetBrains.Annotations;
 
 using Labyrinth.Maps;
-using Labyrinth.Utils;
 using Labyrinth.Utils.Geometry;
 
 namespace Labyrinth.AI
