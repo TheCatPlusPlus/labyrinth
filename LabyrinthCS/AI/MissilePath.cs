@@ -39,8 +39,7 @@ namespace Labyrinth.AI
             //   ......#xxx@
             // (this is due to coordinate transformations needed in Bresenham's algorithm)
 
-            var line = MakeLine(start, goal).OrderBy(p => (p - start).NormL1());
-            foreach (var point in line)
+            foreach (var point in Line.Make(start, goal))
             {
                 if (point == start)
                 {
@@ -65,54 +64,6 @@ namespace Labyrinth.AI
                     {
                         break;
                     }
-                }
-            }
-        }
-
-        private static IEnumerable<Vector2I> MakeLine(Vector2I start, Vector2I goal)
-        {
-            var diff = (goal - start).Abs();
-            var steep = diff.Y > diff.X;
-
-            var x0 = start.X;
-            var y0 = start.Y;
-            var x1 = goal.X;
-            var y1 = goal.Y;
-
-            if (steep)
-            {
-                MiscExt.Swap(ref x0, ref y0);
-                MiscExt.Swap(ref x1, ref y1);
-            }
-
-            if (x0 > x1)
-            {
-                MiscExt.Swap(ref x0, ref x1);
-                MiscExt.Swap(ref y0, ref y1);
-            }
-
-            var dx = x1 - x0;
-            var dy = Math.Abs(y1 - y0);
-            var error = dx / 2;
-            var step = y0 < y1 ? 1 : -1;
-
-            var y = y0;
-            for (var x = x0; x <= x1; ++x)
-            {
-                var point = new Vector2I(x, y);
-
-                if (steep)
-                {
-                    point = point.Swap();
-                }
-
-                yield return point;
-
-                error -= dy;
-                if (error < 0)
-                {
-                    y += step;
-                    error += dx;
                 }
             }
         }
