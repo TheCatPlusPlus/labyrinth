@@ -43,7 +43,7 @@ namespace Labyrinth.Data
         public bool CanWalkThrough { get; private set; }
         public bool CanFlyOver { get; private set; }
         public bool CanSeeThrough { get; private set; }
-        public float CostFactor { get; private set; }
+        public decimal CostFactor { get; private set; }
 
         public bool IsSolid
         {
@@ -57,7 +57,7 @@ namespace Labyrinth.Data
             Name = new Name("unknown tile", thing: true);
             Description = "This tile has not been described yet. It is a bug.";
             IsSolid = false;
-            CostFactor = 1.0f;
+            CostFactor = 1.0m;
         }
 
         public TileData([NotNull] Id<Tile> id, [NotNull] TileData other)
@@ -120,7 +120,7 @@ namespace Labyrinth.Data
                     Name = new Name("pool of water", "pools of water", thing: true),
                     Description =
                         "This pool is shallow enough to cross, but the water will hinder your movement and combat ability.",
-                    CostFactor = 2.0f
+                    CostFactor = 2.0m
                 },
 
                 new TileData(WaterDeep)

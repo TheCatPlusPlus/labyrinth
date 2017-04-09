@@ -8,10 +8,5 @@
         {
             return point == Invalid;
         }
-
-        public static bool IsInvalidPoint(this Vector2F point)
-        {
-            return point == Invalid;
-        }
     }
 }

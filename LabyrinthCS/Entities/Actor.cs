@@ -18,7 +18,7 @@ namespace Labyrinth.Entities
 
         public abstract Name Name { get; }
         public abstract string Description { get; }
-        public virtual float SpeedFactor => Data.SpeedFactor;
+        public virtual decimal SpeedFactor => Data.SpeedFactor;
 
         public int Speed => MoveCost.ApplyFactor(SpeedFactor);
         public int Energy { get; private set; }

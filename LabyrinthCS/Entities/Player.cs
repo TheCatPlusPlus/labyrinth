@@ -10,7 +10,7 @@ namespace Labyrinth.Entities
     {
         public override Name Name { get; }
         public override string Description => Data.Description;
-        public override float SpeedFactor => 1.0f; // TODO effects
+        public override decimal SpeedFactor => 1.0m; // TODO effects
 
         public Gauge HP { get; }
         public Gauge MP { get; }

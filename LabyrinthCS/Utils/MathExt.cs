@@ -10,7 +10,7 @@ namespace Labyrinth.Utils
             {
                 b = -b;
             }
-            return ((a % b) + b) % b;
+            return (a % b + b) % b;
         }
 
         public static int RoundInt(float x)
@@ -24,6 +24,21 @@ namespace Labyrinth.Utils
         }
 
         public static int CeilInt(float x)
+        {
+            return (int)Math.Ceiling(x);
+        }
+
+        public static int RoundInt(decimal x)
+        {
+            return (int)Math.Round(x);
+        }
+
+        public static int FloorInt(decimal x)
+        {
+            return (int)Math.Floor(x);
+        }
+
+        public static int CeilInt(decimal x)
         {
             return (int)Math.Ceiling(x);
         }
@@ -48,9 +63,14 @@ namespace Labyrinth.Utils
             return value > max ? max : value;
         }
 
-        public static bool ApproxEquals(float a, float b)
+        public static decimal Clamp(decimal value, decimal min, decimal max)
         {
-            return Math.Abs(a - b) < 0.00001;
+            if (value < min)
+            {
+                return min;
+            }
+
+            return value > max ? max : value;
         }
     }
 }

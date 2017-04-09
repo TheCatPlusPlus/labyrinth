@@ -17,12 +17,12 @@ namespace Labyrinth.Data
         public Name Name { get; private set; }
         public string Description { get; private set; }
 
-        public float SpeedFactor { get; private set; }
+        public decimal SpeedFactor { get; private set; }
 
         public MonsterData(Id<Monster> id)
             : base(id)
         {
-            SpeedFactor = 1.0f;
+            SpeedFactor = 1.0m;
         }
 
         static MonsterData()
@@ -46,7 +46,7 @@ namespace Labyrinth.Data
                     // TODO flying
                     Name = new Name("bat"),
                     Description = "An unusually aggressive kind of bat.",
-                    SpeedFactor = 2.0f
+                    SpeedFactor = 2.0m
                 }
             };
         }

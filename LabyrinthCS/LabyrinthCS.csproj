@@ -119,7 +119,6 @@
     <Compile Include="UI\Input\Event.cs" />
     <Compile Include="UI\Scenes\MainMenuScene.cs" />
     <Compile Include="UI\TerminalExt.cs" />
-    <Compile Include="Utils\Geometry\Vector2F.cs" />
     <Compile Include="Utils\Geometry\Vector2I.cs" />
     <Compile Include="Utils\MiscExt.cs" />
     <Compile Include="Data\Ids\Id.cs" />

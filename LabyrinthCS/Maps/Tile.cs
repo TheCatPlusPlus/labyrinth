@@ -50,7 +50,7 @@ namespace Labyrinth.Maps
         public bool IsDoor => TileData.AllDoors.Contains(Id);
         public bool IsExit => TileData.AllExits.Contains(Id);
 
-        public float CostFactor => _data.CostFactor;
+        public decimal CostFactor => _data.CostFactor;
         public int BaseMoveCost => CanWalkThrough ? MoveCost.ApplyFactor(CostFactor) : int.MaxValue;
 
         public bool IsLit

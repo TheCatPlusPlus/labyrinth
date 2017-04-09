@@ -40,16 +40,6 @@ namespace Labyrinth.Utils.Geometry
             Y = y;
         }
 
-        public Vector2I(Vector2F other)
-            : this(MathExt.RoundInt(other.X), MathExt.RoundInt(other.Y))
-        {
-        }
-
-        public static explicit operator Vector2I(Vector2F other)
-        {
-            return new Vector2I(other);
-        }
-
         [Pure]
         public bool Equals(Vector2I other)
         {
@@ -102,20 +92,6 @@ namespace Labyrinth.Utils.Geometry
         }
 
         [Pure]
-        public float NormL2()
-        {
-            return (float)Math.Sqrt(X * X + Y * Y);
-        }
-
-        [Pure]
-        public Vector2I Normalize()
-        {
-            var v2F = (Vector2F)this;
-            v2F = v2F.Normalize();
-            return (Vector2I)v2F;
-        }
-
-        [Pure]
         public Vector2I Abs()
         {
             return new Vector2I(Math.Abs(X), Math.Abs(Y));
@@ -152,7 +128,7 @@ namespace Labyrinth.Utils.Geometry
         }
 
         [Pure]
-        public static Vector2I operator*(Vector2I self, float scale)
+        public static Vector2I operator*(Vector2I self, decimal scale)
         {
             return new Vector2I(MathExt.RoundInt(self.X * scale), MathExt.RoundInt(self.Y * scale));
         }
@@ -164,7 +140,7 @@ namespace Labyrinth.Utils.Geometry
         }
 
         [Pure]
-        public static Vector2I operator/(Vector2I self, float scale)
+        public static Vector2I operator/(Vector2I self, decimal scale)
         {
             return new Vector2I(MathExt.RoundInt(self.X / scale), MathExt.RoundInt(self.Y / scale));
         }

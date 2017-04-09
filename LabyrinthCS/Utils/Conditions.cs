@@ -17,6 +17,11 @@
             return value >= min && value < max;
         }
 
+        public static bool Within(this decimal value, decimal min, decimal max)
+        {
+            return value >= min && value < max;
+        }
+
         public static bool WithinInclusive(this int value, int min, int max)
         {
             return value >= min && value <= max;
@@ -28,6 +33,11 @@
         }
 
         public static bool WithinInclusive(this double value, double min, double max)
+        {
+            return value >= min && value <= max;
+        }
+
+        public static bool WithinInclusive(this decimal value, decimal min, decimal max)
         {
             return value >= min && value <= max;
         }
