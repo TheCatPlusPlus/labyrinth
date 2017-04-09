@@ -27,20 +27,35 @@ namespace Labyrinth.Maps.FOV
 
             _visible.Clear();
 
-            // TODO real FOV
             var fov = new Rect(_player.Position, 1, 1).Inflated(Const.FovRadius);
-            foreach (var point in fov.Points)
+            foreach (var goal in fov.EdgePoints)
+            foreach (var point in Line.Make(_player.Position, goal))
             {
-                if (level.Rect.Contains(point))
+                if (!level.Rect.Contains(point))
                 {
-                    Visit(level, point);
+                    continue;
+                }
+
+                var tile = level[point];
+                Visit(tile);
+
+                if (!tile.CanSeeThrough)
+                {
+                    break;
                 }
             }
+
+            Visit(level, _player.Position);
         }
 
         private void Visit([NotNull] Level level, Vector2I point)
         {
             var tile = level[point];
+            Visit(tile);
+        }
+
+        private void Visit([NotNull] Tile tile)
+        {
             tile.IsLit = true;
             _visible.Add(tile);
         }
