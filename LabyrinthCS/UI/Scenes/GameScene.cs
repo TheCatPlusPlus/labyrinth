@@ -160,23 +160,25 @@ namespace Labyrinth.UI.Scenes
             var turn = game.TotalCost / (float)Const.SpeedBase;
             var last = MathExt.Clamp(game.LastCost / (float)Const.SpeedBase, 0.0f, float.MaxValue);
 
-            Terminal.Print(4, 6, $"T: {turn:F1} ({last:F1})");
+            Terminal.Print(2, 6, $"T: {turn:F1} ({last:F1})");
         }
 
         private void DrawViewport()
         {
             _viewport.Draw();
 
-            if ((_cursorPath != null) && _cursorPath.Found)
+            if (_cursorPath?.Found != true)
             {
-                using (TerminalExt.Composition())
-                using (TerminalExt.Foreground(Color.Red))
+                return;
+            }
+
+            using (TerminalExt.Layer(3))
+            using (TerminalExt.Foreground(Color.Red))
+            {
+                foreach (var map in _cursorPath.Points)
                 {
-                    foreach (var map in _cursorPath.Points)
-                    {
-                        var screen = _viewport.MapToScreen(map);
-                        Terminal.Put(screen, '\u00B7');
-                    }
+                    var screen = _viewport.MapToScreen(map);
+                    Terminal.Put(screen, '\u00B7');
                 }
             }
         }
