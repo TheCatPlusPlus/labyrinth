@@ -4,7 +4,7 @@ using Labyrinth.Utils.Geometry;
 
 namespace Labyrinth.AI
 {
-    public interface IPathFinder
+    public interface IPathFinder : IEnumerable<Vector2I>
     {
         bool Found { get; }
         IReadOnlyList<Vector2I> Points { get; }

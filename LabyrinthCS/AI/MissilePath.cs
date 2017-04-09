@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -52,27 +53,19 @@ namespace Labyrinth.AI
                 }
 
                 var tile = level[point];
+                _points.Add(point);
 
                 if (!tile.CanFlyOver)
                 {
-                    // only go through monsters
-                    // (and include them as final point)
+                    var monster = tile.Actor != null;
+                    var goThrough = monster && penetrating;
 
-                    if (tile.Actor != null)
-                    {
-                        _points.Add(point);
-                        if (!penetrating)
-                        {
-                            break;
-                        }
-                    }
-                    else
+                    // only go through monsters
+                    if (!goThrough)
                     {
                         break;
                     }
                 }
-
-                _points.Add(point);
             }
         }
 
@@ -122,6 +115,16 @@ namespace Labyrinth.AI
                     error += dx;
                 }
             }
+        }
+
+        public IEnumerator<Vector2I> GetEnumerator()
+        {
+            return _points.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

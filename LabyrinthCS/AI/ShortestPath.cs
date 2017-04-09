@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
@@ -220,6 +221,16 @@ namespace Labyrinth.AI
             }
 
             return a + b;
+        }
+
+        public IEnumerator<Vector2I> GetEnumerator()
+        {
+            return _path.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }
