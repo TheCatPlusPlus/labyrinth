@@ -37,7 +37,7 @@ namespace Labyrinth.AI
                 return Point == other;
             }
 
-            public override bool Equals(object obj)
+            public override bool Equals([CanBeNull] object obj)
             {
                 var other = obj as Node;
 
@@ -72,7 +72,7 @@ namespace Labyrinth.AI
 
         private sealed class NodeComparer : IComparer<Node>
         {
-            public int Compare(Node x, Node y)
+            public int Compare([CanBeNull] Node x, [CanBeNull] Node y)
             {
                 Debug.Assert(x != null);
                 Debug.Assert(y != null);

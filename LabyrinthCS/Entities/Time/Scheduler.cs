@@ -10,6 +10,7 @@ namespace Labyrinth.Entities.Time
 {
     public sealed class Scheduler
     {
+        // ReSharper disable once NotAccessedField.Local
         private readonly Level _level;
         private readonly LinkedList<Actor> _queue;
         private readonly IEnumerator _loop;

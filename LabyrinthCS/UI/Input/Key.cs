@@ -30,7 +30,7 @@ namespace Labyrinth.UI.Input
             return Code == other.Code && Ctrl == other.Ctrl && Shift == other.Shift && Alt == other.Alt;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals([CanBeNull] object obj)
         {
             var key = obj as Key;
 

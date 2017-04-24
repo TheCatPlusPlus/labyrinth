@@ -1,5 +1,7 @@
 ﻿using System.Threading;
 
+using JetBrains.Annotations;
+
 namespace Labyrinth.UI.Input.Auto
 {
     public abstract class AutoAction : EventLoop
@@ -7,6 +9,7 @@ namespace Labyrinth.UI.Input.Auto
         private bool _isRunning = true;
         protected override bool IsRunning => _isRunning;
 
+        [CanBeNull]
         protected override Event Wait()
         {
             if (!Event.HasNext())

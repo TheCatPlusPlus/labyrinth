@@ -17,7 +17,7 @@ namespace Labyrinth.Data.Ids
             return string.Equals(Value, other.Value);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals([CanBeNull] object obj)
         {
             var id = obj as Id<T>;
 

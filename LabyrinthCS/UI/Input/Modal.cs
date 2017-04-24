@@ -9,7 +9,7 @@ namespace Labyrinth.UI.Input
 
         public T Result { get; private set; }
 
-        protected void Close(T result)
+        protected void Close([CanBeNull] T result)
         {
             _isOpen = false;
             Result = result;
@@ -21,7 +21,7 @@ namespace Labyrinth.UI.Input
             DrawModal();
         }
 
-        protected override void React(Scene scene, Event @event)
+        protected override void React(Scene scene, [CanBeNull] Event @event)
         {
             if ((@event != null) && @event is KeyEvent key)
             {

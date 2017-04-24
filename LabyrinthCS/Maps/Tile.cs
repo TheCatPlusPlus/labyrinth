@@ -21,6 +21,7 @@ namespace Labyrinth.Maps
         private Id<Tile> _id;
         private TileData _data;
 
+        [NotNull]
         public Id<Tile> Id
         {
             get => _id;
@@ -31,14 +32,17 @@ namespace Labyrinth.Maps
             }
         }
 
+        [NotNull]
         IId IHasId.Id => Id;
         public Vector2I Position { get; }
         public Level Level { get; }
 
+        [NotNull]
         public IReadOnlyList<Item> Items => _items;
         public Actor Actor { get; private set; }
         public bool WasSeen { get; private set; }
         public object Tag { get; set; }
+        [NotNull]
         public IEnumerable<Vector2I> Neighbours => GetNeighbours();
 
         public Name Name => _data.Name;
@@ -66,6 +70,7 @@ namespace Labyrinth.Maps
             }
         }
 
+        // ReSharper disable once NotNullMemberIsNotInitialized
         public Tile([NotNull] Level level, Vector2I position, [CanBeNull] Id<Tile> id = null)
         {
             Id = id ?? TileData.WallDeep;

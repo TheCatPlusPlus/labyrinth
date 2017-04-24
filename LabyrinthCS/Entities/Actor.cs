@@ -31,7 +31,7 @@ namespace Labyrinth.Entities
             Energy = Speed;
         }
 
-        public int CompareTo(Actor other)
+        public int CompareTo([CanBeNull] Actor other)
         {
             if (ReferenceEquals(this, other))
             {

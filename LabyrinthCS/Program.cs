@@ -3,18 +3,20 @@ using System.Globalization;
 
 using BearLib;
 
+using JetBrains.Annotations;
+
 using Labyrinth.UI;
 using Labyrinth.UI.Input;
 using Labyrinth.UI.Scenes;
 
 namespace Labyrinth
 {
-    internal class Program : EventLoop
+    internal sealed class Program : EventLoop
     {
         private static readonly Key AltF4 = KeyDatabase.Parse("alt f4");
         protected override bool IsRunning => State.IsRunning;
 
-        protected override void React(Scene scene, Event @event)
+        protected override void React(Scene scene, [CanBeNull] Event @event)
         {
             if (@event == null)
             {

@@ -47,7 +47,7 @@ namespace Labyrinth.Utils.Geometry
         }
 
         [Pure]
-        public override bool Equals(object obj)
+        public override bool Equals([CanBeNull] object obj)
         {
             if (ReferenceEquals(null, obj))
             {

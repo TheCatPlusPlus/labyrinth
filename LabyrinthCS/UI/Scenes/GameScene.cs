@@ -27,7 +27,9 @@ namespace Labyrinth.UI.Scenes
         private readonly LookAtWidget _lookAt;
         private readonly MessagesWidget _messages;
 
+        [CanBeNull]
         private IPathFinder _cursorPath;
+        [CanBeNull]
         private Tile _cursorTile;
 
         public GameScene()

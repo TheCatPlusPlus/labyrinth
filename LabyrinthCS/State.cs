@@ -10,6 +10,7 @@ namespace Labyrinth
 {
     public static class State
     {
+        [CanBeNull]
         private static Game _game;
 
         public static PcgRandom Rng { get; private set; }
@@ -17,11 +18,12 @@ namespace Labyrinth
         public static bool IsRunning { get; private set; }
         public static bool IsGameLoaded => _game != null;
 
+        [NotNull]
         public static Game Game
         {
             get
             {
-                Debug.Assert(IsGameLoaded, "State.Game used before game is loaded");
+                Debug.Assert(_game != null, "State.Game used before game is loaded");
                 return _game;
             }
         }
