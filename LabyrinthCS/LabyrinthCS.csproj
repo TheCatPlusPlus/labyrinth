@@ -37,6 +37,9 @@
     <Reference Include="JetBrains.Annotations, Version=10.4.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.Annotations.10.4.0\lib\net\JetBrains.Annotations.dll</HintPath>
     </Reference>
+    <Reference Include="NodaTime, Version=2.0.0.0, Culture=neutral, PublicKeyToken=4226afe0d9b296d1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NodaTime.2.0.0\lib\net45\NodaTime.dll</HintPath>
+    </Reference>
     <Reference Include="PcgRandom, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\PcgRandom.1.0.0\lib\net40\PcgRandom.dll</HintPath>
     </Reference>
@@ -82,6 +85,8 @@
     <Compile Include="Maps\Tile.cs" />
     <Compile Include="Entities\Player.cs" />
     <Compile Include="Maps\Zone.cs" />
+    <Compile Include="Messages\MessageLog.cs" />
+    <Compile Include="Messages\IMessageListener.cs" />
     <Compile Include="SavedGame.cs" />
     <Compile Include="UI\Anims\Animation.cs" />
     <Compile Include="UI\ConfirmModal.cs" />
@@ -126,6 +131,7 @@
     <Compile Include="Utils\Name.cs" />
     <Compile Include="Utils\RandomExt.cs" />
     <Compile Include="Utils\StringExt.cs" />
+    <Compile Include="Utils\Null.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -53,7 +53,6 @@ namespace Labyrinth
             }
 
             _game = new Game(playerName);
-            _game.Start();
         }
 
         public static void LoadGame()

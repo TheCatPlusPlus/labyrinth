@@ -66,6 +66,17 @@ namespace Labyrinth.UI.Scenes
             _messages = new MessagesWidget(messagesRect);
         }
 
+        public override void OnEnter()
+        {
+            State.Game.MessageListeners.Add(_messages);
+            State.Game.Start();
+        }
+
+        public override void OnExit()
+        {
+            State.Game.MessageListeners.Remove(_messages);
+        }
+
         public override void React(Event @event)
         {
             if (@event is KeyEvent key)

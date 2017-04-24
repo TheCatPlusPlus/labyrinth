@@ -195,5 +195,10 @@ namespace Labyrinth.Utils.Geometry
                 }
             }
         }
+
+        public override string ToString()
+        {
+            return $"Rect({X}, {Y}, {Width}, {Height})";
+        }
     }
 }

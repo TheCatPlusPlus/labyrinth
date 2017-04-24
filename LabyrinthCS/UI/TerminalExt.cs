@@ -123,5 +123,19 @@ namespace Labyrinth.UI
             Terminal.Layer(layer);
             return new Guard(() => Terminal.Layer(current));
         }
+
+        public static Guard Crop(Rect rect)
+        {
+            Terminal.Crop(rect);
+            return new Guard(() => Terminal.Crop(0, 0, 0, 0));
+        }
+
+        public static void Fill(Rect rect, char ch)
+        {
+            foreach (var point in rect.Points)
+            {
+                Terminal.Put(point, ch);
+            }
+        }
     }
 }
