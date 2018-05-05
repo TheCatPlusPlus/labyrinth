@@ -1,8 +1,8 @@
 using System.Drawing;
 
-namespace Labyrinth.UI
+namespace Labyrinth.Database
 {
-	public sealed class Glyph
+	public sealed class GlyphData
 	{
 		private static readonly Color DefaultUnlitFore = Color.FromArgb(0x20, 0x20, 0x20);
 		private static readonly Color DefaultUnlitBack = DefaultUnlitFore;
@@ -24,7 +24,7 @@ namespace Labyrinth.UI
 			? DefaultUnlitBack
 			: Color.Black;
 
-		public Glyph(char code)
+		public GlyphData(char code)
 		{
 			Code = code;
 			Fore = Color.Black;

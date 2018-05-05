@@ -52,9 +52,14 @@ namespace Labyrinth.Entities
 		[NotNull]
 		public override string ToString()
 		{
-			return Level == null
-				? $"{ID}"
-				: $"{ID} on {Level} at {Position}";
+			var desc = $"{ID}";
+
+			if ((Level != null) && (Position != null))
+			{
+				desc = $"{desc} (on {Level} at {Position})";
+			}
+
+			return desc;
 		}
 	}
 }

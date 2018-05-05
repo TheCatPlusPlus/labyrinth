@@ -25,7 +25,7 @@ namespace Labyrinth
 		public Game()
 		{
 			Messages = new LinkedList<Message>();
-			Player = new Player(this, "Player");
+			Player = new Player(this);
 			var level = new Level("Test", 200, 200);
 
 			Player.Spawn(level);

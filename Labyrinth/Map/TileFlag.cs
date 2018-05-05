@@ -15,7 +15,9 @@ namespace Labyrinth.Map
 		Transparent = 1 << 2,
 
 		// something solid (wall or creature)
-		Solid = 1 << 3
+		Solid = 1 << 3,
+		// suitable for spawning
+		SpawnCandidate = 1 << 4
 	}
 
 	public static class TileFlagExt

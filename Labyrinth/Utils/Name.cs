@@ -12,9 +12,9 @@ namespace Labyrinth.Utils
 		private readonly bool _isThing;
 
 		public Name(
-			[NotNull] string singular,
-			[NotNull] string plural = "",
-			[NotNull] string article = "",
+			string singular,
+			string plural = "",
+			string article = "",
 			bool countable = true,
 			bool unique = false,
 			bool proper = false,

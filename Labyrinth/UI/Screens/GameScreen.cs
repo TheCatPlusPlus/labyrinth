@@ -1,6 +1,11 @@
+using System.Diagnostics;
+
 using BearLib;
 
+using JetBrains.Annotations;
+
 using Labyrinth.Geometry;
+using Labyrinth.Map;
 using Labyrinth.UI.HUD;
 
 using NLog;
@@ -14,28 +19,57 @@ namespace Labyrinth.UI
 		private readonly Viewport _viewport;
 		private readonly StatusBar _statusBar;
 		private readonly MessageLog _messageLog;
+		private readonly LookAt _lookAt;
+
+		[CanBeNull]
+		private Tile _cursorTile;
 
 		public GameScreen(Game game, UI ui)
 			: base(game, ui)
 		{
 			var messageLog = new Rect(0, 0, ui.Width, 4);
-			var statusBar = new Rect(0, ui.Height - 4, ui.Width, 3);
+			var statusBar = new Rect(0, ui.Height - 3, ui.Width, 3);
 			var viewport = new Rect(0, messageLog.Height + 1, ui.Width, ui.Height - messageLog.Height - statusBar.Height - 2);
 
 			_viewport = new Viewport(game, viewport);
 			_statusBar = new StatusBar(game, statusBar);
+			_lookAt = new LookAt(statusBar);
 			_messageLog = new MessageLog(game, messageLog);
 		}
 
 		public override void React(Code code)
 		{
-			if (Terminal.Check(Code.Shift))
+			if (code == Code.MouseMove)
+			{
+				ReactMouse();
+			}
+			else if (Terminal.Check(Code.Shift))
 			{
 				ReactShift(code);
 			}
 			else
 			{
 				ReactNonShift(code);
+			}
+		}
+
+		private void ReactMouse()
+		{
+			Debug.Assert(Game.Player.Level != null, "Game.Player.Level != null");
+
+			var x = Terminal.State(Code.MouseX);
+			var y = Terminal.State(Code.MouseY);
+
+			_viewport.Cursor = new Int2(x, y);
+			_cursorTile = null;
+
+			if (_viewport.Cursor != null)
+			{
+				var map = _viewport.ScreenToMap(_viewport.Cursor.Value);
+				if (map != null)
+				{
+					_cursorTile = Game.Player.Level.Grid[map.Value];
+				}
 			}
 		}
 
@@ -136,15 +170,19 @@ namespace Labyrinth.UI
 
 		public override void Draw()
 		{
-			Terminal.Put(0, UI.Height - 3, '3');
-			Terminal.Put(0, UI.Height - 2, '2');
-			Terminal.Put(0, UI.Height - 1, '1');
-
 			TerminalExt.HLine(new Int2(0, _messageLog.Rect.Height), UI.Width);
 			TerminalExt.HLine(new Int2(0, UI.Height - _statusBar.Rect.Height - 1), UI.Width);
 			_viewport.Draw();
-			_statusBar.Draw();
 			_messageLog.Draw();
+
+			if (_cursorTile != null)
+			{
+				_lookAt.Draw(_cursorTile);
+			}
+			else
+			{
+				_statusBar.Draw();
+			}
 		}
 	}
 }

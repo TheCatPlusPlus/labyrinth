@@ -6,7 +6,6 @@ using JetBrains.Annotations;
 using Labyrinth.Entities.Attrs;
 using Labyrinth.Geometry;
 using Labyrinth.Map;
-using Labyrinth.Utils;
 
 using NLog;
 
@@ -18,9 +17,6 @@ namespace Labyrinth.Entities
 	{
 		private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
-		public Name Name { get; }
-		public string Description { get; }
-
 		public Attribute MaxHP { get; }
 		public Attribute Speed { get; }
 		public Attribute AttackSpeed { get; }
@@ -30,13 +26,10 @@ namespace Labyrinth.Entities
 
 		public bool IsAlive => HP.Value > 0;
 
-		protected Creature(Game game, EntityID id, Name name, string desc, int maxHP, int speed = Scheduler.BaseSpeed)
+		protected Creature(Game game, EntityID id, int maxHP, int speed = Scheduler.BaseSpeed)
 			: base(game, id)
 		{
 			id.RequireNamespace(EntityID.Creatures);
-
-			Name = name;
-			Description = desc;
 
 			MaxHP = new Attribute("Max HP", maxHP, CalcMaxHP);
 			// general speed is used for most actions, attacks are separate to allow
@@ -122,7 +115,7 @@ namespace Labyrinth.Entities
 
 		public override string ToString()
 		{
-			return $"{base.ToString()}: {Name} ({HP}, {Energy})";
+			return $"{base.ToString()}: {HP}, {Energy}";
 		}
 	}
 }

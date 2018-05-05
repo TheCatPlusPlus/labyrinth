@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
 using JetBrains.Annotations;
 
+using Labyrinth.Database;
 using Labyrinth.Entities;
 using Labyrinth.Geometry;
 
@@ -12,20 +12,24 @@ namespace Labyrinth.Map
 	public sealed class Tile
 	{
 		private readonly List<Item> _items;
+		private readonly Dictionary<EntityID, int> _itemCount;
 
 		public TileType Type { get; set; }
 		public Int2 Position { get; }
-		public TileFlag ManualFlags { get; set; }
+		public TileFlag EnabledFlags { get; set; }
+		public TileFlag DisabledFlags { get; set; }
 		public TileFlag EffectiveFlags => GetEffectiveFlags();
 
 		[CanBeNull]
 		public Creature Creature { get; private set; }
 		public IReadOnlyList<Item> Items => _items;
+		public IReadOnlyDictionary<EntityID, int> ItemCount => _itemCount;
 
 		public Tile(Int2 position)
 		{
 			Position = position;
 			_items = new List<Item>();
+			_itemCount = new Dictionary<EntityID, int>();
 		}
 
 		public void Add(Entity entity)
@@ -37,6 +41,8 @@ namespace Labyrinth.Map
 					break;
 				case Item item:
 					_items.Add(item);
+					_itemCount.TryAdd(item.ID, 0);
+					_itemCount[item.ID]++;
 					break;
 			}
 		}
@@ -54,6 +60,12 @@ namespace Labyrinth.Map
 				case Item item:
 					var removed = _items.Remove(item);
 					Debug.Assert(removed, "removed");
+					Debug.Assert(_itemCount.ContainsKey(item.ID));
+					if (--_itemCount[item.ID] == 0)
+					{
+						_itemCount.Remove(item.ID);
+					}
+
 					break;
 			}
 		}
@@ -71,29 +83,28 @@ namespace Labyrinth.Map
 			return false;
 		}
 
-		public TileFlag GetEffectiveFlags()
+		private TileFlag GetEffectiveFlags()
 		{
-			var flags = ManualFlags;
+			var flags = TileFlag.None;
 
-			// 1. tile type flags
-			switch (Type)
+			// 1. static flags
+			var data = DB.Tiles.Get(Type);
+			flags |= data.Flags;
+
+			// 2. dynamic flags
+			if (Creature != null)
 			{
-				case TileType.Floor:
-					flags |= TileFlag.Transparent;
-					if (Creature != null)
-					{
-						flags |= TileFlag.Solid;
-					}
-					break;
-				case TileType.Wall:
-					flags |= TileFlag.Solid;
-					break;
-				default:
-					throw new ArgumentOutOfRangeException();
+				flags |= TileFlag.Solid;
 			}
 
-			flags |= TileFlag.Lit;
+			// 3. force enabled flags (FOV, terraforming, etc)
+			flags |= EnabledFlags;
 
+			// 4. force disabled flags (magic effects etc)
+			flags &= ~DisabledFlags;
+
+			// TODO for testing
+			flags |= TileFlag.Lit | TileFlag.Seen;
 			return flags;
 		}
 	}

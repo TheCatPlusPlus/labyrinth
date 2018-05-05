@@ -5,6 +5,7 @@ using BearLib;
 
 using JetBrains.Annotations;
 
+using Labyrinth.Database;
 using Labyrinth.Geometry;
 using Labyrinth.Map;
 
@@ -94,7 +95,7 @@ namespace Labyrinth.UI.HUD
 				}
 				else
 				{
-					PutGlyph(screen, 0, GlyphDB.OutOfBounds);
+					PutGlyph(screen, 0, DB.Glyphs.OutOfBounds);
 				}
 			}
 
@@ -110,7 +111,7 @@ namespace Labyrinth.UI.HUD
 
 		private static void Draw(Int2 screen, [NotNull] Tile tile)
 		{
-			var glyph = GlyphDB.Get(tile.Type);
+			var glyph = DB.Glyphs.Get(tile.Type);
 			var flags = tile.EffectiveFlags;
 			var isLit = flags.Contains(TileFlag.Lit);
 			var wasSeen = flags.Contains(TileFlag.Seen);
@@ -135,15 +136,15 @@ namespace Labyrinth.UI.HUD
 
 				if (tile.Creature != null)
 				{
-					PutGlyph(screen, 2, GlyphDB.Get(tile.Creature.ID));
+					PutGlyph(screen, 2, DB.Glyphs.Get(tile.Creature.ID));
 				}
 				else if (tile.Items.Count == 1)
 				{
-					PutGlyph(screen, 2, GlyphDB.Get(tile.Items[0].ID));
+					PutGlyph(screen, 2, DB.Glyphs.Get(tile.Items[0].ID));
 				}
 				else if (tile.Items.Count > 0)
 				{
-					PutGlyph(screen, 2, GlyphDB.MultipleItems);
+					PutGlyph(screen, 2, DB.Glyphs.MultipleItems);
 				}
 				else
 				{
@@ -157,15 +158,15 @@ namespace Labyrinth.UI.HUD
 			}
 		}
 
-		private static void PutGlyph(Int2 screen, int layer, Glyph glyph, Color? fg = null, Color? bg = null)
+		private static void PutGlyph(Int2 screen, int layer, GlyphData glyphData, Color? fg = null, Color? bg = null)
 		{
-			fg = fg ?? glyph.Fore;
-			bg = bg ?? glyph.Back;
+			fg = fg ?? glyphData.Fore;
+			bg = bg ?? glyphData.Back;
 
 			using (TerminalExt.Colors(fg, bg))
 			using (TerminalExt.Layer(layer))
 			{
-				Terminal.Put(screen, glyph.Code);
+				Terminal.Put(screen, glyphData.Code);
 			}
 		}
 
