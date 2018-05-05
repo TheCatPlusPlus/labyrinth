@@ -9,12 +9,12 @@ namespace Labyrinth.Entities.Attrs
 		private readonly string _name;
 		private readonly Attribute _maxValue;
 		private int _current;
-		private int _previous;
 
 		public int MaxValue => _maxValue.EffectiveValue;
-		public bool Changed => _current != _previous;
+		public bool HasChanged => _current != PreviousValue;
 		public float CurrentPercent => _current / (float)MaxValue;
-		public float PreviousPercent => _previous / (float)MaxValue;
+		public float PreviousPercent => PreviousValue / (float)MaxValue;
+		public int PreviousValue { get; private set; }
 
 		public int Value
 		{
@@ -30,18 +30,18 @@ namespace Labyrinth.Entities.Attrs
 		{
 			_name = name;
 			_maxValue = maxValue;
-			_current = _previous = MaxValue;
+			_current = PreviousValue = MaxValue;
 		}
 
 		public void Settle()
 		{
-			_previous = _current;
+			PreviousValue = _current;
 		}
 
 		[NotNull]
 		public override string ToString()
 		{
-			return $"{_name}: {_current} / {MaxValue} ({_previous})";
+			return $"{_name}: {_current} / {MaxValue} ({PreviousValue})";
 		}
 	}
 }
