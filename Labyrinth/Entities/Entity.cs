@@ -1,4 +1,3 @@
-using System;
 using System.Diagnostics;
 
 using JetBrains.Annotations;
@@ -8,7 +7,7 @@ using Labyrinth.Map;
 
 namespace Labyrinth.Entities
 {
-	public abstract class Entity : IEquatable<Entity>
+	public abstract class Entity
 	{
 		public EntityID ID { get; }
 
@@ -35,8 +34,8 @@ namespace Labyrinth.Entities
 		public void Spawn(Level level, Int2? position = null)
 		{
 			Despawn();
-			Debug.Assert(LevelImpl != null, "LevelImpl != null");
-			Position = LevelImpl.Spawn(this, position);
+			var impl = (ILevelEntity)level;
+			Position = impl.Spawn(this, position);
 			Level = level;
 		}
 
@@ -47,58 +46,12 @@ namespace Labyrinth.Entities
 			Position = null;
 		}
 
-		public bool Equals([CanBeNull] Entity other)
-		{
-			if (ReferenceEquals(null, other))
-			{
-				return false;
-			}
-
-			if (ReferenceEquals(this, other))
-			{
-				return true;
-			}
-
-			return ID.Equals(other.ID);
-		}
-
-		public override bool Equals([CanBeNull] object obj)
-		{
-			if (ReferenceEquals(null, obj))
-			{
-				return false;
-			}
-
-			if (ReferenceEquals(this, obj))
-			{
-				return true;
-			}
-
-			return (obj.GetType() == GetType()) && Equals((Entity)obj);
-		}
-
-		public override int GetHashCode()
-		{
-			return ID.GetHashCode();
-		}
-
-		public static bool operator==(Entity left, Entity right)
-		{
-			return Equals(left, right);
-		}
-
-		public static bool operator!=(Entity left, Entity right)
-		{
-			return !Equals(left, right);
-		}
-
 		[NotNull]
 		public override string ToString()
 		{
-			var type = GetType().Name;
 			return Level == null
-				? $"{type}: {ID}"
-				: $"{type}: {ID} on {Level} at {Position}";
+				? $"{ID}"
+				: $"{ID} on {Level} at {Position}";
 		}
 	}
 }

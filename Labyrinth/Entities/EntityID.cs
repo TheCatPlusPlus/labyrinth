@@ -7,9 +7,9 @@ namespace Labyrinth.Entities
 {
 	public struct EntityID : IEquatable<EntityID>
 	{
-		public const string Creatures = "Creatures/";
-		public static readonly string Mobs = $"{Creatures}/Mobs/";
-		public const string Items = "Items/";
+		public const string Creatures = "Creatures";
+		public static readonly string Mobs = $"{Creatures}/Mobs";
+		public const string Items = "Items";
 
 		private readonly string _value;
 
@@ -60,7 +60,7 @@ namespace Labyrinth.Entities
 		[NotNull]
 		public override string ToString()
 		{
-			return $"EntityID({_value})";
+			return $"<{_value}>";
 		}
 	}
 }

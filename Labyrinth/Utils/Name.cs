@@ -81,5 +81,11 @@ namespace Labyrinth.Utils
 					return "a";
 			}
 		}
+
+		[NotNull]
+		public override string ToString()
+		{
+			return Singular(true);
+		}
 	}
 }

@@ -1,8 +1,14 @@
 using System;
+using System.Diagnostics;
+
+using JetBrains.Annotations;
 
 using Labyrinth.Entities.Attrs;
+using Labyrinth.Geometry;
 using Labyrinth.Map;
 using Labyrinth.Utils;
+
+using NLog;
 
 using Attribute = Labyrinth.Entities.Attrs.Attribute;
 
@@ -10,6 +16,8 @@ namespace Labyrinth.Entities
 {
 	public abstract class Creature : Entity
 	{
+		private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
+
 		public Name Name { get; }
 		public string Description { get; }
 
@@ -61,7 +69,55 @@ namespace Labyrinth.Entities
 
 		public void Attack(Creature target)
 		{
+		}
 
+		public void TakeDamage([CanBeNull] Creature attacker)
+		{
+			if (!IsAlive)
+			{
+				Despawn();
+			}
+		}
+
+		public int TryMove(Direction direction)
+		{
+			Debug.Assert(Position != null, "Position != null");
+			Debug.Assert(Level != null, "Level != null");
+
+			var from = Position.Value;
+			var to = from + Int2.Movement[direction];
+			var fromTile = Level.Grid[from];
+			var toTile = Level.Grid[to];
+
+			// 0. if target is not in bounds, do nothing
+			if (toTile == null)
+			{
+				Log.Debug($"TryMove({direction}): from {from} to {to}: target out of bounds");
+				return 0;
+			}
+
+			// 1. if tile has another creature, fight
+			if (toTile.Creature != null)
+			{
+				Log.Debug($"TryMove({direction}): from {from} to {to}: fighting {toTile.Creature}");
+				Attack(toTile.Creature);
+				return AttackSpeed.EffectiveValue;
+			}
+
+			// 2. if tile is walkable (via Player to allow for flight effects etc), walk
+			// the cost is determined by the tile we're leaving
+			Debug.Assert(fromTile != null, "fromTile != null");
+			var multiplier = GetMoveCost(fromTile.Type);
+			if (multiplier > 0)
+			{
+				Log.Debug($"TryMove({direction}): from {from} to {to}: {multiplier}x");
+				Move(to);
+				return Speed.EffectiveValue * multiplier;
+			}
+
+			// 3. otherwise, do nothing
+			Log.Debug($"TryMove({direction}): from {from} to {to}: target not walkable");
+			return 0;
 		}
 
 		public override string ToString()

@@ -12,6 +12,7 @@ namespace Labyrinth.Entities.Attrs
 		public Energy(Attribute speed)
 		{
 			_speed = speed;
+			Recharge();
 		}
 
 		public void Recharge()

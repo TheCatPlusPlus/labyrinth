@@ -19,7 +19,7 @@ namespace Labyrinth.Map
 
 			foreach (var point in _rect.Points)
 			{
-				_tiles[point.X, point.Y] = new Tile();
+				_tiles[point.X, point.Y] = new Tile(point);
 			}
 		}
 

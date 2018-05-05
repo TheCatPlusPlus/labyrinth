@@ -1,5 +1,7 @@
 using System.Diagnostics;
 
+using JetBrains.Annotations;
+
 using Labyrinth.Entities;
 using Labyrinth.Geometry;
 
@@ -72,6 +74,12 @@ namespace Labyrinth.Map
 		{
 			Scheduler.Advance();
 			// TODO timers
+		}
+
+		[NotNull]
+		public override string ToString()
+		{
+			return $"{Name}({Width}, {Height})";
 		}
 	}
 }

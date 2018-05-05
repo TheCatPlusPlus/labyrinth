@@ -24,7 +24,7 @@ namespace Labyrinth.Entities
 				var creature = _creatures.First.Value;
 				var energy = creature.Energy;
 
-				Log.Debug($"Turn: {creature} ({energy})");
+//				Log.Debug($"Turn: {creature} ({energy})");
 
 				switch (creature)
 				{

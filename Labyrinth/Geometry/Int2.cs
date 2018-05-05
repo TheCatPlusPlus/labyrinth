@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 using JetBrains.Annotations;
@@ -30,6 +31,18 @@ namespace Labyrinth.Geometry
 		public static readonly Int2 NorthEast = North + East;
 		public static readonly Int2 SouthWest = South + West;
 		public static readonly Int2 SouthEast = South + East;
+
+		public static readonly Dictionary<Direction, Int2> Movement = new Dictionary<Direction, Int2>
+		{
+			{ Direction.North, North },
+			{ Direction.South, South },
+			{ Direction.West, West },
+			{ Direction.East, East },
+			{ Direction.NorthEast, NorthEast },
+			{ Direction.NorthWest, NorthWest },
+			{ Direction.SouthEast, SouthEast },
+			{ Direction.SouthWest, SouthWest }
+		};
 
 		public readonly int X;
 		public readonly int Y;
