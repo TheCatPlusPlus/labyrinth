@@ -1,62 +1,42 @@
-﻿using System.Drawing;
+using System;
 using System.Globalization;
 
-using BearLib;
-
-using JetBrains.Annotations;
-
-using Labyrinth.UI;
-using Labyrinth.UI.Input;
-using Labyrinth.UI.Scenes;
+using NLog;
+using NLog.Config;
+using NLog.Targets;
 
 namespace Labyrinth
 {
-    internal sealed class Program : EventLoop
-    {
-        private static readonly Key AltF4 = KeyDatabase.Parse("alt f4");
-        protected override bool IsRunning => State.IsRunning;
+	internal static class Program
+	{
+		private static void SetupLogging()
+		{
+			var console = new ColoredConsoleTarget("console")
+			{
+				Layout = @"[${logger}] [${level}] ${message} ${exception:format=toString,Data:maxInnerExceptionLevel=10}"
+			};
 
-        protected override void React(Scene scene, [CanBeNull] Event @event)
-        {
-            if (@event == null)
-            {
-                return;
-            }
+			var config = new LoggingConfiguration();
+			config.AddTarget(console);
+			config.AddRule(LogLevel.Trace, LogLevel.Fatal, console);
 
-            if (@event is CloseEvent)
-            {
-                State.SignalExit();
-                return;
-            }
+			LogManager.Configuration = config;
+		}
 
-            if (@event is KeyEvent key && (key.Key == AltF4))
-            {
-                State.SignalExit();
-                return;
-            }
+		private static void Main()
+		{
+			Environment.CurrentDirectory = Data.ExecPath;
 
-            base.React(scene, @event);
-        }
+			CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+			CultureInfo.CurrentUICulture = CultureInfo.InvariantCulture;
+			CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+			CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
-        private static void Main()
-        {
-            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
-            CultureInfo.CurrentUICulture = CultureInfo.InvariantCulture;
-            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
-            CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+			SetupLogging();
 
-            Terminal.Open();
-            Terminal.Set(
-                $"window: title=Labyrinth, size={Const.Width}x{Const.Height};" +
-                "input: precise-mouse=false, filter=[keyboard, mouse, system], alt-functions=false;" +
-                "log: level=fatal;"
-            );
-            Terminal.Color(Color.White);
-            Terminal.BkColor(Color.Black);
-            Terminal.Refresh();
-
-            State.SetScene<MainMenuScene>();
-            new Program().Run();
-        }
-    }
+			var game = new Game();
+			var ui = new UI.UI(game, 120, 45);
+			ui.Run();
+		}
+	}
 }

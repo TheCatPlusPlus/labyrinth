@@ -1,10 +1,7 @@
-__pycache__/
-_fridge/
-_userdata/
 .vs/
 _ReSharper*/
 packages/
 bin/
 obj/
-*.py[co]
+_fridge/
 *.user
