@@ -4,21 +4,19 @@ using JetBrains.Annotations;
 
 namespace Labyrinth.UI
 {
-	public abstract class Dialog
+	public abstract class Dialog : Element
 	{
-		protected Game Game { get; }
-
-		protected Dialog(Game game)
+		protected Dialog(Game game, UI ui)
+			: base(game, ui)
 		{
-			Game = game;
 		}
 
-		public virtual DialogResult React(Code code, UI ui)
+		public virtual DialogResult React(Code code)
 		{
 			return DialogResult.StayOpen;
 		}
 
-		public virtual void Draw(UI ui)
+		public virtual void Draw()
 		{
 		}
 

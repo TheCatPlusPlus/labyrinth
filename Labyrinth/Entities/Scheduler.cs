@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 using NLog;
 
@@ -6,7 +7,9 @@ namespace Labyrinth.Entities
 {
 	public sealed class Scheduler
 	{
+		[SuppressMessage("ReSharper", "UnusedMember.Local")]
 		private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
+
 		public const int BaseSpeed = 10;
 
 		private readonly LinkedList<Creature> _creatures;

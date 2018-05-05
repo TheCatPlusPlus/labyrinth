@@ -30,8 +30,8 @@ namespace Labyrinth.Entities
 
 		public bool IsAlive => HP.Value > 0;
 
-		protected Creature(EntityID id, Name name, string desc, int maxHP, int speed = Scheduler.BaseSpeed)
-			: base(id)
+		protected Creature(Game game, EntityID id, Name name, string desc, int maxHP, int speed = Scheduler.BaseSpeed)
+			: base(game, id)
 		{
 			id.RequireNamespace(EntityID.Creatures);
 

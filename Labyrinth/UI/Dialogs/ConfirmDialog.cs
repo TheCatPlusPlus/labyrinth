@@ -16,13 +16,13 @@ namespace Labyrinth.UI
 		public event Action Yes;
 		public event Action No;
 
-		public ConfirmDialog(Game game, string message)
-			: base(game)
+		public ConfirmDialog(Game game, UI ui, string message)
+			: base(game, ui)
 		{
 			Message = message;
 		}
 
-		public override DialogResult React(Code code, UI ui)
+		public override DialogResult React(Code code)
 		{
 			switch (code)
 			{

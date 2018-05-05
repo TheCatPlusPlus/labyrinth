@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using System.Diagnostics;
 
 using Labyrinth.Entities;
 using Labyrinth.Geometry;
+using Labyrinth.Journal;
 using Labyrinth.Map;
 
 using NLog;
@@ -12,17 +14,23 @@ namespace Labyrinth
 	{
 		private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
+		private ulong _nextMessage;
+
 		public Player Player { get; }
-		public int Round { get; private set; }
-		public int TotalCost { get; private set; }
+		public ulong Round { get; private set; }
+		public long TotalCost { get; private set; }
 		public int LastCost { get; private set; }
+		public LinkedList<Message> Messages { get; }
 
 		public Game()
 		{
-			Player = new Player("Player");
+			Messages = new LinkedList<Message>();
+			Player = new Player(this, "Player");
 			var level = new Level("Test", 200, 200);
 
 			Player.Spawn(level);
+
+			Message("Welcome to [color=yellow]the Labyrinth[/color].");
 		}
 
 		public void Move(Direction direction)
@@ -58,6 +66,14 @@ namespace Labyrinth
 		public void Save()
 		{
 			Log.Debug("Save");
+		}
+
+		public void Message(string text, MessageType type = MessageType.Normal)
+		{
+			var id = ++_nextMessage;
+			var message = new Message(id, Round, text, type);
+			Messages.AddLast(message);
+			Log.Debug($"Message: {text}");
 		}
 
 		private void AdvanceRound(int? cost = null)

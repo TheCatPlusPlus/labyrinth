@@ -1,6 +1,7 @@
 using BearLib;
 
 using Labyrinth.Geometry;
+using Labyrinth.UI.HUD;
 
 using NLog;
 
@@ -10,24 +11,35 @@ namespace Labyrinth.UI
 	{
 		private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
-		public GameScreen(Game game)
-			: base(game)
+		private readonly Viewport _viewport;
+		private readonly StatusBar _statusBar;
+		private readonly MessageLog _messageLog;
+
+		public GameScreen(Game game, UI ui)
+			: base(game, ui)
 		{
+			var messageLog = new Rect(0, 0, ui.Width, 4);
+			var statusBar = new Rect(0, ui.Height - 4, ui.Width, 3);
+			var viewport = new Rect(0, messageLog.Height + 1, ui.Width, ui.Height - messageLog.Height - statusBar.Height - 2);
+
+			_viewport = new Viewport(game, viewport);
+			_statusBar = new StatusBar(game, statusBar);
+			_messageLog = new MessageLog(game, messageLog);
 		}
 
-		public override void React(Code code, UI ui)
+		public override void React(Code code)
 		{
 			if (Terminal.Check(Code.Shift))
 			{
-				ReactShift(code, ui);
+				ReactShift(code);
 			}
 			else
 			{
-				ReactNonShift(code, ui);
+				ReactNonShift(code);
 			}
 		}
 
-		private void ReactShift(Code code, UI ui)
+		private void ReactShift(Code code)
 		{
 			// ReSharper disable once SwitchStatementMissingSomeCases
 			switch (code)
@@ -39,12 +51,12 @@ namespace Labyrinth.UI
 					Game.MoveUp();
 					break;
 				case Code.Q:
-					AskQuit(true, ui);
+					AskQuit(true);
 					break;
 			}
 		}
 
-		private void ReactNonShift(Code code, UI ui)
+		private void ReactNonShift(Code code)
 		{
 			// ReSharper disable once SwitchStatementMissingSomeCases
 			switch (code)
@@ -91,19 +103,19 @@ namespace Labyrinth.UI
 					// ui.Open(new PickItemScreen(Game, Usable));
 					break;
 				case Code.Q:
-					AskQuit(false, ui);
+					AskQuit(false);
 					break;
 			}
 		}
 
-		private void AskQuit(bool discard, UI ui)
+		private void AskQuit(bool discard)
 		{
 			Log.Debug($"AskQuit({discard})");
 
 			var message = discard
 				? "Quit without saving? [color=red]NOTE[/color]: this will discard existing save! (not implemented yet)"
 				: "Save and quit? (not implemented yet)";
-			var confirm = new ConfirmDialog(Game, message);
+			var confirm = new ConfirmDialog(Game, UI, message);
 
 			confirm.Yes += () =>
 			{
@@ -116,14 +128,23 @@ namespace Labyrinth.UI
 					Game.Save();
 				}
 
-				ui.Quit();
+				UI.Quit();
 			};
 
-			ui.Open(confirm);
+			UI.Open(confirm);
 		}
 
-		public override void Draw(UI ui)
+		public override void Draw()
 		{
+			Terminal.Put(0, UI.Height - 3, '3');
+			Terminal.Put(0, UI.Height - 2, '2');
+			Terminal.Put(0, UI.Height - 1, '1');
+
+			TerminalExt.HLine(new Int2(0, _messageLog.Rect.Height), UI.Width);
+			TerminalExt.HLine(new Int2(0, UI.Height - _statusBar.Rect.Height - 1), UI.Width);
+			_viewport.Draw();
+			_statusBar.Draw();
+			_messageLog.Draw();
 		}
 	}
 }

@@ -6,8 +6,8 @@ namespace Labyrinth.Entities
 	{
 		public static readonly EntityID PlayerID = new EntityID($"{EntityID.Creatures}/Player");
 
-		public Player(string name)
-			: base(PlayerID, new Name(name, unique: true, proper: true), "This is you.", 50)
+		public Player(Game game, string name)
+			: base(game, PlayerID, new Name(name, unique: true, proper: true), "This is you.", 50)
 		{
 		}
 	}

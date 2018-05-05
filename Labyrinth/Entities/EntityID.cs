@@ -11,17 +11,17 @@ namespace Labyrinth.Entities
 		public static readonly string Mobs = $"{Creatures}/Mobs";
 		public const string Items = "Items";
 
-		private readonly string _value;
+		public string Value { get; }
 
 		public EntityID(string value)
 		{
-			_value = value;
+			Value = value;
 		}
 
 		[Conditional("DEBUG")]
 		public void RequireNamespace(string prefix)
 		{
-			if (!_value.StartsWith(prefix))
+			if (!Value.StartsWith(prefix))
 			{
 				throw new Exception($"{this}: should have prefix {prefix}");
 			}
@@ -29,7 +29,7 @@ namespace Labyrinth.Entities
 
 		public bool Equals(EntityID other)
 		{
-			return string.Equals(_value, other._value);
+			return string.Equals(Value, other.Value);
 		}
 
 		public override bool Equals([CanBeNull] object obj)
@@ -44,7 +44,7 @@ namespace Labyrinth.Entities
 
 		public override int GetHashCode()
 		{
-			return _value.GetHashCode();
+			return Value.GetHashCode();
 		}
 
 		public static bool operator==(EntityID left, EntityID right)
@@ -60,7 +60,7 @@ namespace Labyrinth.Entities
 		[NotNull]
 		public override string ToString()
 		{
-			return $"<{_value}>";
+			return $"<{Value}>";
 		}
 	}
 }

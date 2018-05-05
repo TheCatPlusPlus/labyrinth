@@ -18,9 +18,12 @@ namespace Labyrinth.Entities
 		[CanBeNull]
 		private ILevelEntity LevelImpl => Level;
 
-		protected Entity(EntityID id)
+		protected Game Game { get; }
+
+		protected Entity(Game game, EntityID id)
 		{
 			ID = id;
+			Game = game;
 		}
 
 		public void Move(Int2 position)

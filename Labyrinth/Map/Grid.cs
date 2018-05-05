@@ -7,17 +7,18 @@ namespace Labyrinth.Map
 	public sealed class Grid
 	{
 		private readonly Tile[,] _tiles;
-		private readonly Rect _rect;
+
+		public Rect Rect { get; }
 
 		[CanBeNull]
 		public Tile this[Int2 position] => IsInBounds(position) ? _tiles[position.X, position.Y] : null;
 
 		public Grid(int width, int height)
 		{
-			_rect = new Rect(0, 0, width, height);
+			Rect = new Rect(0, 0, width, height);
 			_tiles = new Tile[width, height];
 
-			foreach (var point in _rect.Points)
+			foreach (var point in Rect.Points)
 			{
 				_tiles[point.X, point.Y] = new Tile(point);
 			}
@@ -25,7 +26,7 @@ namespace Labyrinth.Map
 
 		public bool IsInBounds(Int2 position)
 		{
-			return _rect.Contains(position);
+			return Rect.Contains(position);
 		}
 	}
 }

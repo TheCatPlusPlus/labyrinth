@@ -6,6 +6,11 @@
     <ApplicationIcon />
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <LangVersion>latest</LangVersion>
+    <ErrorReport>none</ErrorReport>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="Labyrinth.csproj.DotSettings" />
   </ItemGroup>

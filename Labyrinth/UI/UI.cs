@@ -38,7 +38,7 @@ namespace Labyrinth.UI
 			Terminal.BkColor(Color.Black);
 			Terminal.Refresh();
 
-			_screen = new GameScreen(_game);
+			_screen = new GameScreen(_game, this);
 		}
 
 		public void Open(Screen screen)
@@ -60,8 +60,8 @@ namespace Labyrinth.UI
 			while (_isRunning)
 			{
 				Terminal.Clear();
-				_screen.Draw(this);
-				_dialog?.Draw(this);
+				_screen.Draw();
+				_dialog?.Draw();
 				Terminal.Refresh();
 
 				var code = Terminal.Read();
@@ -72,7 +72,7 @@ namespace Labyrinth.UI
 
 				if (_dialog != null)
 				{
-					if (_dialog.React(code, this) == DialogResult.Close)
+					if (_dialog.React(code) == DialogResult.Close)
 					{
 						Log.Debug($"Close: {_dialog}");
 						_dialog = null;
@@ -80,7 +80,7 @@ namespace Labyrinth.UI
 				}
 				else
 				{
-					_screen.React(code, this);
+					_screen.React(code);
 				}
 			}
 		}

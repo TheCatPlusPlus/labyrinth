@@ -4,20 +4,18 @@ using JetBrains.Annotations;
 
 namespace Labyrinth.UI
 {
-	public abstract class Screen
+	public abstract class Screen : Element
 	{
-		protected Game Game { get; }
-
-		protected Screen(Game game)
-		{
-			Game = game;
-		}
-
-		public virtual void React(Code code, UI ui)
+		protected Screen(Game game, UI ui)
+			: base(game, ui)
 		{
 		}
 
-		public virtual void Draw(UI ui)
+		public virtual void React(Code code)
+		{
+		}
+
+		public virtual void Draw()
 		{
 		}
 

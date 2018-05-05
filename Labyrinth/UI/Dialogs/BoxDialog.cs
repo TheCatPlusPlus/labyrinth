@@ -11,19 +11,19 @@ namespace Labyrinth.UI
 		protected abstract string Message { get; }
 		protected virtual string Footer { get; } = "";
 
-		protected BoxDialog(Game game)
-			: base(game)
+		protected BoxDialog(Game game, UI ui)
+			: base(game, ui)
 		{
 		}
 
-		public override void Draw(UI ui)
+		public override void Draw()
 		{
 			var footerSize = Terminal.Measure(Footer);
 			var messageSize = Terminal.Measure(Message);
 
 			var width = Math.Max(footerSize.Width, messageSize.Width) + 3;
-			var x = ui.Width / 2 - width / 2;
-			var y = ui.Height / 2 - 1;
+			var x = UI.Width / 2 - width / 2;
+			var y = UI.Height / 2 - 1;
 			var origin = new Int2(x, y);
 
 			var first = origin + new Int2(1, 1);

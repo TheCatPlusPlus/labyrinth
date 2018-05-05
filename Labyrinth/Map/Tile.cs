@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -11,29 +12,15 @@ namespace Labyrinth.Map
 	public sealed class Tile
 	{
 		private readonly List<Item> _items;
-		private bool _isLit;
 
 		public TileType Type { get; set; }
 		public Int2 Position { get; }
+		public TileFlag ManualFlags { get; set; }
+		public TileFlag EffectiveFlags => GetEffectiveFlags();
 
 		[CanBeNull]
 		public Creature Creature { get; private set; }
 		public IReadOnlyList<Item> Items => _items;
-
-		public bool WasSeen { get; private set; }
-
-		public bool IsLit
-		{
-			get => _isLit;
-			set
-			{
-				_isLit = value;
-				if (value)
-				{
-					WasSeen = true;
-				}
-			}
-		}
 
 		public Tile(Int2 position)
 		{
@@ -82,6 +69,32 @@ namespace Labyrinth.Map
 			}
 
 			return false;
+		}
+
+		public TileFlag GetEffectiveFlags()
+		{
+			var flags = ManualFlags;
+
+			// 1. tile type flags
+			switch (Type)
+			{
+				case TileType.Floor:
+					flags |= TileFlag.Transparent;
+					if (Creature != null)
+					{
+						flags |= TileFlag.Solid;
+					}
+					break;
+				case TileType.Wall:
+					flags |= TileFlag.Solid;
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+
+			flags |= TileFlag.Lit;
+
+			return flags;
 		}
 	}
 }
