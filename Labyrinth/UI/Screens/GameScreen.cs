@@ -33,10 +33,10 @@ namespace Labyrinth.UI
 			switch (code)
 			{
 				case Code.Period:
-					Game.Move(Direction.Down);
+					Game.MoveDown();
 					break;
 				case Code.Comma:
-					Game.Move(Direction.Up);
+					Game.MoveUp();
 					break;
 				case Code.Q:
 					AskQuit(true, ui);
@@ -80,9 +80,6 @@ namespace Labyrinth.UI
 				case Code.Period:
 				case Code.Num5:
 					Game.Wait();
-					break;
-				case Code.R:
-					Game.Rest();
 					break;
 				case Code.I:
 					// ui.Open(new InventoryScreen(Game));

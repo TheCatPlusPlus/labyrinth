@@ -9,8 +9,6 @@ namespace Labyrinth.Geometry
 		NorthEast,
 		NorthWest,
 		SouthEast,
-		SouthWest,
-		Down,
-		Up
+		SouthWest
 	}
 }
