@@ -1,4 +1,5 @@
 using Labyrinth.AI;
+using Labyrinth.Database;
 
 namespace Labyrinth.Entities
 {

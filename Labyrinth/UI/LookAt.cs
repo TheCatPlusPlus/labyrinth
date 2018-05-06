@@ -68,7 +68,7 @@ namespace Labyrinth.UI
 		{
 			if (tile.Creature != null)
 			{
-				var data = DB.Entities.Get(tile.Creature.ID);
+				var data = DB.Entities.Get(tile.Creature);
 				var name = data.Name.Singular().Capitalize();
 				AddSeparate($"[color={Name.ToHex()}]{name}[/color] is here.");
 			}
@@ -90,7 +90,7 @@ namespace Labyrinth.UI
 
 				foreach (var (id, count) in tile.ItemCount)
 				{
-					var data = DB.Entities.Get(id);
+					var data = DB.Entities.GetItem(id);
 					var name = count > 1 ? data.Name.Plural(count) : data.Name.Singular();
 					name = $"[color={Name.ToHex()}]{name}[/color]";
 					items.Add(name);

@@ -95,7 +95,7 @@ namespace Labyrinth.UI.HUD
 				}
 				else
 				{
-					PutGlyph(screen, 0, DB.Glyphs.OutOfBounds);
+					PutGlyph(screen, 0, DB.Tiles.OutOfBounds);
 				}
 			}
 
@@ -111,7 +111,7 @@ namespace Labyrinth.UI.HUD
 
 		private static void Draw(Int2 screen, [NotNull] Tile tile)
 		{
-			var glyph = DB.Glyphs.Get(tile.Type);
+			var glyph = DB.Tiles.Get(tile.Type).Glyph;
 			var flags = tile.EffectiveFlags;
 			var isLit = flags.Contains(TileFlag.Lit);
 			var wasSeen = flags.Contains(TileFlag.Seen);
@@ -136,15 +136,15 @@ namespace Labyrinth.UI.HUD
 
 				if (tile.Creature != null)
 				{
-					PutGlyph(screen, 2, DB.Glyphs.Get(tile.Creature.ID));
+					PutGlyph(screen, 2, DB.Entities.Get(tile.Creature).Glyph);
 				}
 				else if (tile.Items.Count == 1)
 				{
-					PutGlyph(screen, 2, DB.Glyphs.Get(tile.Items[0].ID));
+					PutGlyph(screen, 2, DB.Entities.Get(tile.Items[0]).Glyph);
 				}
 				else if (tile.Items.Count > 0)
 				{
-					PutGlyph(screen, 2, DB.Glyphs.MultipleItems);
+					PutGlyph(screen, 2, DB.Tiles.MultipleItems);
 				}
 				else
 				{

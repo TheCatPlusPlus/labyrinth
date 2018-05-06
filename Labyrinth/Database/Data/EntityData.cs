@@ -2,11 +2,12 @@ using Labyrinth.Utils;
 
 namespace Labyrinth.Database
 {
-	public sealed class EntityData
+	public abstract class EntityData
 	{
 		public Name Name { get; set; }
+		public GlyphData Glyph { get; set; } = new GlyphData('\uFFFC');
 
-		public EntityData(
+		protected EntityData(
 			string singular,
 			string plural = "",
 			string article = "",

@@ -1,3 +1,5 @@
+using Labyrinth.Database;
+
 namespace Labyrinth.Entities
 {
 	public sealed class Item : Entity

@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 
 namespace Labyrinth.Utils
 {
+	// TODO XXX this doesn't work very well
 	public struct Name
 	{
 		private readonly string _singular;
@@ -28,7 +29,7 @@ namespace Labyrinth.Utils
 
 			_singular = singular;
 			_plural = plural;
-			_article = string.IsNullOrEmpty(article) ? GetDefaultArticle(singular) : article;
+			_article = string.IsNullOrEmpty(article) ? GetDefaultArticle(singular, proper) : article;
 			_isCountable = countable && !unique;
 			_isUnique = unique;
 			_isProper = proper;
@@ -71,8 +72,13 @@ namespace Labyrinth.Utils
 		}
 
 		[NotNull]
-		private static string GetDefaultArticle(string singular)
+		private static string GetDefaultArticle(string singular, bool proper)
 		{
+			if (proper)
+			{
+				return "the";
+			}
+
 			switch (singular[0])
 			{
 				case 'e':

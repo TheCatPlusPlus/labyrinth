@@ -2,6 +2,7 @@ using System.Diagnostics;
 
 using JetBrains.Annotations;
 
+using Labyrinth.Database;
 using Labyrinth.Geometry;
 using Labyrinth.Map;
 

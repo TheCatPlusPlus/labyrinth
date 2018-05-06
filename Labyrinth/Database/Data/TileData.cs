@@ -8,6 +8,7 @@ namespace Labyrinth.Database
 		public Name Name { get; set; }
 		public TileFlag Flags { get; set; }
 		public int CostMultiplier { get; set; } = 1;
+		public GlyphData Glyph { get; set; } = new GlyphData('\uFFFC');
 
 		public TileData(
 			string singular,

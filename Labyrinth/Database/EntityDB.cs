@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Drawing;
 
 using Labyrinth.Entities;
 
@@ -6,14 +7,48 @@ namespace Labyrinth.Database
 {
 	public sealed class EntityDB
 	{
-		private readonly Dictionary<string, EntityData> _entities = new Dictionary<string, EntityData>
+		private readonly Dictionary<EntityID, ItemData> _items = new Dictionary<EntityID, ItemData>();
+
+		private readonly Dictionary<EntityID, CreatureData> _creatures = new Dictionary<EntityID, CreatureData>
 		{
-			{ Player.PlayerID.Value, new EntityData("Player", unique: true, proper: true) }
+			{
+				DB.CreaturePlayer, new CreatureData("Player", unique: true, proper: true)
+				{
+					Glyph = new GlyphData('@')
+					{
+						Fore = Color.White
+					}
+				}
+			},
+			{
+				DB.CreatureRat, new CreatureData("rat")
+				{
+					Glyph = new GlyphData('r')
+					{
+						Fore = Color.White
+					}
+				}
+			}
 		};
 
-		public EntityData Get(EntityID id)
+		public CreatureData Get(Creature creature)
 		{
-			return _entities[id.Value];
+			return GetCreature(creature.ID);
+		}
+
+		public ItemData Get(Item item)
+		{
+			return GetItem(item.ID);
+		}
+
+		public CreatureData GetCreature(EntityID id)
+		{
+			return _creatures[id];
+		}
+
+		public ItemData GetItem(EntityID id)
+		{
+			return _items[id];
 		}
 	}
 }

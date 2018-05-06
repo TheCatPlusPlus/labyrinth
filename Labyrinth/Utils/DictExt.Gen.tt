@@ -1,0 +1,53 @@
+<#@ template hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#
+	var output = new StringBuilder();
+	const string name = "DictExt";
+
+	void Emit(string line, int indent)
+	{
+		output.Append(new string('\t', indent));
+		output.AppendLine(line);
+	}
+
+	Emit($"public static partial class {name}", 1);
+	Emit("{", 1);
+
+	for (var count = 1; count < 10; ++count)
+	{
+		var @params = Enumerable.Range(1, count).Select(c => $"IDictionary<TKey, TValue> d{c}").ToArray();
+		var joined = string.Join(", ", @params);
+
+		Emit("[CanBeNull]", 2);
+		Emit($"public static TValue TryGetValue<TKey, TValue>(TKey key, {joined})", 2);
+		Emit("{", 2);
+
+		for (var idx = 1; idx <= count; ++idx)
+		{
+			Emit("{", 3);
+			Emit($"if (d{idx}.TryGetValue(key, out var value))", 4);
+			Emit("{", 4);
+			Emit("return value;", 5);
+			Emit("}", 4);
+			Emit("}", 3);
+		}
+
+		Emit("return default;", 3);
+		Emit("}", 2);
+	}
+
+	output.Append("\t}");
+#>
+using System.Collections.Generic;
+
+using JetBrains.Annotations;
+
+// ReSharper disable PartialTypeWithSinglePart
+// ReSharper disable UnusedMember.Global
+
+namespace Labyrinth.Utils
+{
+<#= output #>
+}

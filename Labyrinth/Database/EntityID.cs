@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 using JetBrains.Annotations;
 
-namespace Labyrinth.Entities
+namespace Labyrinth.Database
 {
 	public struct EntityID : IEquatable<EntityID>
 	{
