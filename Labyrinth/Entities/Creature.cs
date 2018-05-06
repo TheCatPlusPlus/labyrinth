@@ -23,6 +23,7 @@ namespace Labyrinth.Entities
 		public Gauge HP { get; }
 
 		public bool IsAlive => HP.Value > 0;
+		public virtual bool CanOpenDoors => false;
 
 		protected Creature(Game game, EntityID id, int maxHP, int speed = Scheduler.BaseSpeed)
 			: base(game, id)
@@ -54,7 +55,22 @@ namespace Labyrinth.Entities
 		public virtual bool CanWalkOn(Tile from, Tile to, out int multiplier)
 		{
 			multiplier = GetMoveCost(from);
-			return to.EffectiveFlags.Contains(TileFlag.Walkable);
+			return CanWalkOn(to);
+		}
+
+		public virtual bool CanWalkOn(Tile tile)
+		{
+			return tile.EffectiveFlags.Contains(TileFlag.Walkable);
+		}
+
+		public virtual bool CanGetThrough(Tile tile)
+		{
+			if (tile.EffectiveFlags.Contains(TileFlag.Door))
+			{
+				return CanOpenDoors;
+			}
+
+			return CanWalkOn(tile);
 		}
 
 		public void Attack(Creature target)
@@ -79,14 +95,14 @@ namespace Labyrinth.Entities
 			var fromTile = Level.Grid[from];
 			var toTile = Level.Grid[to];
 
-			// 0. if target is not in bounds, do nothing
+			// 1. if target is not in bounds, do nothing
 			if (toTile == null)
 			{
 				Log.Debug($"TryMove({direction}): from {from} to {to}: target out of bounds");
 				return 0;
 			}
 
-			// 1. if tile has another creature, fight
+			// 2. if tile has another creature, fight
 			if (toTile.Creature != null)
 			{
 				Log.Debug($"TryMove({direction}): from {from} to {to}: fighting {toTile.Creature}");
@@ -94,7 +110,15 @@ namespace Labyrinth.Entities
 				return AttackSpeed.EffectiveValue;
 			}
 
-			// 2. if tile is walkable (via Player to allow for flight effects etc), walk
+			// 3. if tile is a door and we're capable of opening doors, open it
+			if (toTile.EffectiveFlags.Contains(TileFlag.Door) && CanOpenDoors)
+			{
+				Log.Debug($"TryMove({direction}): from {from} to {to}: opening the door");
+				toTile.Type = toTile.Type.GetOpened();
+				return Speed.EffectiveValue;
+			}
+
+			// 4. if tile is walkable (via Player to allow for flight effects etc), walk
 			// the cost is determined by the tile we're leaving
 			Debug.Assert(fromTile != null, "fromTile != null");
 			if (CanWalkOn(fromTile, toTile, out var multiplier))

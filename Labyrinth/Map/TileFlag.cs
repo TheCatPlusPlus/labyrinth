@@ -14,12 +14,16 @@ namespace Labyrinth.Map
 		// can be seen through
 		Transparent = 1 << 2,
 
-		// something solid (wall or creature; blocks shots)
+		// something solid (wall or creature)
 		Solid = 1 << 3,
 		// suitable for spawning
 		SpawnCandidate = 1 << 4,
 		// can be walked on without special effects
-		Walkable = 1 << 5
+		Walkable = 1 << 5,
+		// can be pierced through (solid but doesn't block shots)
+		Piercable = 1 << 6,
+		// can be opened by capable creatures
+		Door = 1 << 7
 	}
 
 	public static class TileFlagExt

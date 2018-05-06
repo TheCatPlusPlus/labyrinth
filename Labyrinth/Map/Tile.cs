@@ -104,10 +104,6 @@ namespace Labyrinth.Map
 			{
 				flags |= TileFlag.Transparent;
 			}
-			else
-			{
-				flags &= ~TileFlag.Walkable;
-			}
 
 			if (!flags.Contains(TileFlag.Walkable))
 			{

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using Labyrinth.Entities;
 using Labyrinth.Geometry;
 using Labyrinth.Journal;
+using Labyrinth.Map;
 using Labyrinth.Map.Gen;
 using Labyrinth.Utils;
 
@@ -23,6 +24,16 @@ namespace Labyrinth
 		public long TotalCost { get; private set; }
 		public int LastCost { get; private set; }
 		public LinkedList<Message> Messages { get; }
+
+		public Level Level
+		{
+			get
+			{
+				Debug.Assert(Player.Level != null, "Player.Level != null");
+				Debug.Assert(Player.Position != null, "Player.Position != null");
+				return Player.Level;
+			}
+		}
 
 		public Game()
 		{
@@ -86,9 +97,6 @@ namespace Labyrinth
 
 		private void AdvanceRound(int? cost = null)
 		{
-			Debug.Assert(Player.Position != null, "Player.Position != null");
-			Debug.Assert(Player.Level != null, "Player.Level != null");
-
 			var actualCost = cost ?? Player.Speed.EffectiveValue;
 			Log.Debug($"AdvanceRound: spent {actualCost} energy");
 
@@ -99,7 +107,7 @@ namespace Labyrinth
 			Player.Energy.Drain(actualCost);
 			// timers (regen etc) tick at the base speed so doing an action
 			// that takes 3x base time will advance them by 3 ticks
-			Player.Level.Tick(actualCost / (float)Scheduler.BaseSpeed);
+			Level.Tick(actualCost / (float)Scheduler.BaseSpeed);
 		}
 	}
 }

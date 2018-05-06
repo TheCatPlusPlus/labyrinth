@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,31 +6,19 @@ using JetBrains.Annotations;
 
 using Labyrinth.Utils;
 
-namespace Labyrinth.Geometry
+namespace Labyrinth.Geometry.Paths
 {
-	public sealed class Line : IEnumerable<Int2>
+	// simple line with no regard to level structure
+	public static class Line
 	{
-		private readonly List<Int2> _points;
-
-		public Int2 Start { get; }
-		public Int2 End { get; }
-		public IReadOnlyList<Int2> Points => _points;
-
-		public Line(Int2 start, Int2 end)
+		public static Path Create(Int2 start, Int2 end)
 		{
-			Start = start;
-			End = end;
-			_points = new List<Int2>(Make(start, end));
+			var points = DoCreate(start, end).OrderBy(p => (p - start).NormL1()).ToArray();
+			return new Path(points, start, end);
 		}
 
 		[NotNull]
-		public static IEnumerable<Int2> Make(Int2 start, Int2 end)
-		{
-			return DoMake(start, end).OrderBy(p => (p - start).NormL1());
-		}
-
-		[NotNull]
-		private static IEnumerable<Int2> DoMake(Int2 start, Int2 end)
+		private static IEnumerable<Int2> DoCreate(Int2 start, Int2 end)
 		{
 			var diff = (end - start).Abs();
 			var steep = diff.Y > diff.X;
@@ -77,16 +64,6 @@ namespace Labyrinth.Geometry
 					error += dx;
 				}
 			}
-		}
-
-		public IEnumerator<Int2> GetEnumerator()
-		{
-			return _points.GetEnumerator();
-		}
-
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
 		}
 	}
 }

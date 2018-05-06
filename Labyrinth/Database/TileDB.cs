@@ -41,7 +41,7 @@ namespace Labyrinth.Database
 			{
 				TileType.DoorClosed, new TileData("closed door")
 				{
-					Flags = TileFlag.Solid
+					Flags = TileFlag.Solid | TileFlag.Door
 				}
 			},
 			{

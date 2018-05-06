@@ -13,5 +13,17 @@ namespace Labyrinth.Map
 					return false;
 			}
 		}
+
+		public static TileType GetOpened(this TileType type)
+		{
+			switch (type)
+			{
+				case TileType.DoorClosed:
+				case TileType.DoorOpen:
+					return TileType.DoorOpen;
+				default:
+					return type;
+			}
+		}
 	}
 }
