@@ -1,28 +1,35 @@
+using System;
 using System.Diagnostics;
 
 using JetBrains.Annotations;
 
 using Labyrinth.Entities;
 using Labyrinth.Geometry;
+using Labyrinth.Utils;
 
 namespace Labyrinth.Map
 {
 	public sealed class Level : ILevelEntity
 	{
+		private readonly Game _game;
+
 		public string Name { get; }
 		public int Width { get; }
 		public int Height { get; }
+		public int Depth { get; }
 
 		public Scheduler Scheduler { get; }
 		public Grid Grid { get; }
 
-		public Level(string name, int width, int height)
+		public Level(Game game, string name, int width, int height, int depth)
 		{
+			_game = game;
 			Name = name;
 			Width = width;
 			Height = height;
+			Depth = depth;
 			Scheduler = new Scheduler();
-			Grid = new Grid(width, height);
+			Grid = new Grid(this, width, height);
 		}
 
 		Int2 ILevelEntity.Spawn(Entity entity, Int2? target)
@@ -65,9 +72,24 @@ namespace Labyrinth.Map
 			}
 		}
 
-		private Int2 FindSpawnPoint()
+		public Int2 FindSpawnPoint(TileFlag flags = TileFlag.SpawnCandidate | TileFlag.Walkable)
 		{
-			return new Int2();
+			var attempts = 5000;
+			while (attempts-- > 0)
+			{
+				var x = _game.RNG.NextIntRange(Width);
+				var y = _game.RNG.NextIntRange(Height);
+				var p = new Int2(x, y);
+				var tile = Grid[p];
+
+				Debug.Assert(tile != null, "tile != null");
+				if (tile.EffectiveFlags.Contains(flags))
+				{
+					return p;
+				}
+			}
+
+			throw new InvalidOperationException("Could not find a suitable spawn point");
 		}
 
 		public void Tick(float dt)

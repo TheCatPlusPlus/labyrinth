@@ -44,12 +44,6 @@ namespace Labyrinth.UI.HUD
 				Space(w);
 			}
 
-			void DrawInt(string l, int v, int w = 15)
-			{
-				DrawValue(l, v, x, y, w);
-				Space(w);
-			}
-
 			void DrawStr(string l, string v, int w = 15)
 			{
 				DrawValue(l, v, x, y, w);
@@ -75,11 +69,6 @@ namespace Labyrinth.UI.HUD
 			}
 
 			DrawValue(label, value, x, y, width);
-		}
-
-		private void DrawValue(string label, int value, int x, int y, int width)
-		{
-			DrawValue(label, value.ToString(), x, y, width);
 		}
 
 		private void DrawValue(string label, string value, int x, int y, int width)

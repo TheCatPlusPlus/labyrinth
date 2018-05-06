@@ -35,6 +35,7 @@ namespace Labyrinth
 			SetupLogging();
 
 			var game = new Game();
+			game.Start();
 			var ui = new UI.UI(game, 120, 45);
 			ui.Run();
 		}

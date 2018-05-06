@@ -1,15 +1,13 @@
-using System;
 using System.Diagnostics;
 
 using JetBrains.Annotations;
 
+using Labyrinth.Database;
 using Labyrinth.Entities.Attrs;
 using Labyrinth.Geometry;
 using Labyrinth.Map;
 
 using NLog;
-
-using Attribute = Labyrinth.Entities.Attrs.Attribute;
 
 namespace Labyrinth.Entities
 {
@@ -47,17 +45,16 @@ namespace Labyrinth.Entities
 
 		// the result is multiplied by the creature speed
 		// if the cost is <= 0 then the tile is not walkable
-		public virtual int GetMoveCost(TileType target)
+		public virtual int GetMoveCost(Tile to)
 		{
-			switch (target)
-			{
-				case TileType.Floor:
-					return 1;
-				case TileType.Wall:
-					return 0;
-				default:
-					throw new ArgumentOutOfRangeException(nameof(target), target, null);
-			}
+			var tile = DB.Tiles.Get(to.Type);
+			return tile.CostMultiplier;
+		}
+
+		public virtual bool CanWalkOn(Tile from, Tile to, out int multiplier)
+		{
+			multiplier = GetMoveCost(from);
+			return to.EffectiveFlags.Contains(TileFlag.Walkable);
 		}
 
 		public void Attack(Creature target)
@@ -100,8 +97,7 @@ namespace Labyrinth.Entities
 			// 2. if tile is walkable (via Player to allow for flight effects etc), walk
 			// the cost is determined by the tile we're leaving
 			Debug.Assert(fromTile != null, "fromTile != null");
-			var multiplier = GetMoveCost(fromTile.Type);
-			if (multiplier > 0)
+			if (CanWalkOn(fromTile, toTile, out var multiplier))
 			{
 				Log.Debug($"TryMove({direction}): from {from} to {to}: {multiplier}x");
 				Move(to);

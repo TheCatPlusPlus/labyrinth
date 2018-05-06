@@ -16,18 +16,21 @@ namespace Labyrinth.Map
 
 		public TileType Type { get; set; }
 		public Int2 Position { get; }
+		public Level Level { get; }
 		public TileFlag EnabledFlags { get; set; }
 		public TileFlag DisabledFlags { get; set; }
 		public TileFlag EffectiveFlags => GetEffectiveFlags();
+		public IEnumerable<Tile> Neighbours => GetNeighbours();
 
 		[CanBeNull]
 		public Creature Creature { get; private set; }
 		public IReadOnlyList<Item> Items => _items;
 		public IReadOnlyDictionary<EntityID, int> ItemCount => _itemCount;
 
-		public Tile(Int2 position)
+		public Tile(Level level, Int2 position)
 		{
 			Position = position;
+			Level = level;
 			_items = new List<Item>();
 			_itemCount = new Dictionary<EntityID, int>();
 		}
@@ -97,6 +100,15 @@ namespace Labyrinth.Map
 				flags |= TileFlag.Solid;
 			}
 
+			if (!flags.Contains(TileFlag.Solid))
+			{
+				flags |= TileFlag.Transparent;
+			}
+			else
+			{
+				flags &= ~TileFlag.Walkable;
+			}
+
 			// 3. force enabled flags (FOV, terraforming, etc)
 			flags |= EnabledFlags;
 
@@ -106,6 +118,26 @@ namespace Labyrinth.Map
 			// TODO for testing
 			flags |= TileFlag.Lit | TileFlag.Seen;
 			return flags;
+		}
+
+		private IEnumerable<Tile> GetNeighbours()
+		{
+			for (var dx = -1; dx <= 1; ++dx)
+			for (var dy = -1; dy <= 1; ++dy)
+			{
+				var p = Position + new Int2(dx, dy);
+
+				if (p == Position)
+				{
+					continue;
+				}
+
+				var tile = Level.Grid[p];
+				if (tile != null)
+				{
+					yield return tile;
+				}
+			}
 		}
 	}
 }

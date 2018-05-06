@@ -14,10 +14,12 @@ namespace Labyrinth.Map
 		// can be seen through
 		Transparent = 1 << 2,
 
-		// something solid (wall or creature)
+		// something solid (wall or creature; blocks shots)
 		Solid = 1 << 3,
 		// suitable for spawning
-		SpawnCandidate = 1 << 4
+		SpawnCandidate = 1 << 4,
+		// can be walked on without special effects
+		Walkable = 1 << 5
 	}
 
 	public static class TileFlagExt

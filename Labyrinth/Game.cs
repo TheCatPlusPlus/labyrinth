@@ -4,7 +4,8 @@ using System.Diagnostics;
 using Labyrinth.Entities;
 using Labyrinth.Geometry;
 using Labyrinth.Journal;
-using Labyrinth.Map;
+using Labyrinth.Map.Gen;
+using Labyrinth.Utils;
 
 using NLog;
 
@@ -16,6 +17,7 @@ namespace Labyrinth
 
 		private ulong _nextMessage;
 
+		public Xoshiro256StarStar RNG { get; }
 		public Player Player { get; }
 		public ulong Round { get; private set; }
 		public long TotalCost { get; private set; }
@@ -24,9 +26,15 @@ namespace Labyrinth
 
 		public Game()
 		{
+			RNG = new Xoshiro256StarStar();
 			Messages = new LinkedList<Message>();
 			Player = new Player(this);
-			var level = new Level("Test", 200, 200);
+		}
+
+		public void Start()
+		{
+			var gen = new TestLevelGen(this);
+			var level = gen.Create("Test", 66, 23, 0);
 
 			Player.Spawn(level);
 

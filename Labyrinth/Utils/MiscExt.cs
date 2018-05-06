@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Labyrinth.Utils
 {
 	public static class MiscExt
@@ -7,6 +9,13 @@ namespace Labyrinth.Utils
 			var temp = left;
 			left = right;
 			right = temp;
+		}
+
+		public static void Swap<T>(this IList<T> items, int left, int right)
+		{
+			var temp = items[left];
+			items[left] = items[right];
+			items[right] = temp;
 		}
 	}
 }
