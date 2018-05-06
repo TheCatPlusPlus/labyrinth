@@ -51,16 +51,17 @@ namespace Labyrinth.UI
 		{
 			var data = DB.Tiles.Get(tile.Type);
 			var name = data.Name.Singular().Capitalize();
-			var description = "";
 
 			Add($"{name}.");
 
 			if (tile.EffectiveFlags.Contains(TileFlag.Lit))
 			{
-				description = ExamineTileDetail(tile);
+				var desc = ExamineTileDetail(tile);
+				Add($"\n[color={Description.ToHex()}]{desc}[/color]");
 			}
 
-			Add($"\n\n[color={Description.ToHex()}]{description}[/color]");
+			var debug = $"P: {tile.Position.ToString().EscapeTags()} | T: {tile.Type} | F: {tile.EffectiveFlags}";
+			Add($"\n[color=grey]{debug}[/color]");
 		}
 
 		private string ExamineTileDetail([NotNull] Tile tile)

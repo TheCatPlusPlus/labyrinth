@@ -109,6 +109,11 @@ namespace Labyrinth.Map
 				flags &= ~TileFlag.Walkable;
 			}
 
+			if (!flags.Contains(TileFlag.Walkable))
+			{
+				flags &= ~TileFlag.SpawnCandidate;
+			}
+
 			// 3. force enabled flags (FOV, terraforming, etc)
 			flags |= EnabledFlags;
 

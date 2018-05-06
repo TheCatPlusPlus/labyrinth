@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 using Labyrinth.Geometry;
 
@@ -26,6 +27,8 @@ namespace Labyrinth.Map.Gen
 
 		public void Box(TileType fill, TileType border, Rect rect)
 		{
+			ForEach(t => t.Type = fill, rect);
+			ForEach(t => t.Type = border, rect.EdgePoints);
 		}
 
 		public void Box(TileType fill, Rect rect)
@@ -41,17 +44,17 @@ namespace Labyrinth.Map.Gen
 		public void ForEach(Action<Tile> action, Rect? rect = null)
 		{
 			rect = rect ?? Grid.Rect;
+			ForEach(action, rect.Value.Points);
+		}
 
-			for (var dx = 0; dx < rect.Value.Width; ++dx)
+		public void ForEach(Action<Tile> action, IEnumerable<Int2> points)
+		{
+			foreach (var point in points)
 			{
-				for (var dy = 0; dy < rect.Value.Height; ++dy)
+				var tile = Grid[point];
+				if (tile != null)
 				{
-					var point = rect.Value.Origin + new Int2(dx, dy);
-					var tile = Grid[point];
-					if (tile != null)
-					{
-						action(tile);
-					}
+					action(tile);
 				}
 			}
 		}

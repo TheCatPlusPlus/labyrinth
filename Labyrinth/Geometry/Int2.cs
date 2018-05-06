@@ -68,6 +68,12 @@ namespace Labyrinth.Geometry
 			Y = other.Height;
 		}
 
+		public void Deconstruct(out int x, out int y)
+		{
+			x = X;
+			y = Y;
+		}
+
 		public static explicit operator Int2(Point other)
 		{
 			return new Int2(other);

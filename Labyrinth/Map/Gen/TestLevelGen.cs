@@ -11,7 +11,7 @@ namespace Labyrinth.Map.Gen
 
 		protected override void Fill(LevelBuilder builder)
 		{
-			const int margin = 3;
+			const int margin = 5;
 
 			var room = new Rect(margin, margin, builder.Width - margin * 2, builder.Height - margin * 2);
 

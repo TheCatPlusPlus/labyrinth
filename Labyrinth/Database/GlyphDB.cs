@@ -3,6 +3,7 @@ using System.Drawing;
 
 using Labyrinth.Entities;
 using Labyrinth.Map;
+using Labyrinth.Utils;
 
 namespace Labyrinth.Database
 {
@@ -21,6 +22,54 @@ namespace Labyrinth.Database
 				{
 					Back = Color.FromArgb(0x50, 0x50, 0x50)
 				}
+			},
+			{
+				TileType.DeepWall, new GlyphData(' ')
+			},
+			{
+				TileType.DoorOpen, new GlyphData('/')
+				{
+					Fore = Color.FromArgb(0xC9, 0x76, 0x00)
+				}
+			},
+			{
+				TileType.DoorClosed, new GlyphData('+')
+				{
+					Fore = Color.FromArgb(0xC9, 0x76, 0x00)
+				}
+			},
+			{
+				TileType.Water, new GlyphData('~')
+				{
+					Fore = Color.SteelBlue.Lighten(0.25f),
+					AlwaysDrawBack = true
+				}
+			},
+			{
+				TileType.DeepWater, new GlyphData('~')
+				{
+					Fore = Color.SteelBlue.Darken(0.25f),
+					AlwaysDrawBack = true
+				}
+			},
+			{
+				TileType.Lava, new GlyphData('~')
+				{
+					Fore = Color.DarkRed,
+					AlwaysDrawBack = true
+				}
+			},
+			{
+				TileType.GlassWall, new GlyphData(' ')
+				{
+					Back = Color.SteelBlue
+				}
+			},
+			{
+				TileType.StairsUp, new GlyphData('<')
+			},
+			{
+				TileType.StairsDown, new GlyphData('>')
 			}
 		};
 

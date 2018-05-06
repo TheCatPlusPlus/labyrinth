@@ -138,5 +138,10 @@ namespace Labyrinth.UI
 				Terminal.Put(point, ch);
 			}
 		}
+
+		public static string EscapeTags(this string s)
+		{
+			return s.Replace("[", "[[").Replace("]", "]]");
+		}
 	}
 }

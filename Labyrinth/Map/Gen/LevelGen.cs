@@ -23,7 +23,7 @@ namespace Labyrinth.Map.Gen
 			void FixWalls(Tile tile)
 			{
 				// every wall that's surrounded by other walls should be a deep wall
-				if ((tile.Type == TileType.Wall) && tile.Neighbours.All(t => t.Type == TileType.Wall))
+				if (tile.Type.IsOpaqueWall() && tile.Neighbours.All(t => t.Type.IsOpaqueWall()))
 				{
 					tile.Type = TileType.DeepWall;
 				}
