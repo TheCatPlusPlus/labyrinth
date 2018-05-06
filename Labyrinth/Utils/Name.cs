@@ -10,6 +10,7 @@ namespace Labyrinth.Utils
 		private readonly bool _isCountable;
 		private readonly bool _isProper;
 		private readonly bool _isThing;
+		private readonly bool _isUnique;
 
 		public Name(
 			string singular,
@@ -29,6 +30,7 @@ namespace Labyrinth.Utils
 			_plural = plural;
 			_article = string.IsNullOrEmpty(article) ? GetDefaultArticle(singular) : article;
 			_isCountable = countable && !unique;
+			_isUnique = unique;
 			_isProper = proper;
 			_isThing = thing;
 		}
@@ -41,9 +43,11 @@ namespace Labyrinth.Utils
 				return _singular;
 			}
 
-			if (_isCountable && !definite)
+			if (!definite && !_isUnique)
 			{
-				return $"{_article} {_singular}";
+				return _isCountable
+					? $"{_article} {_singular}"
+					: _singular;
 			}
 
 			return $"the {_singular}";

@@ -67,9 +67,15 @@ namespace Labyrinth.Database
 			},
 			{
 				TileType.StairsUp, new GlyphData('<')
+				{
+					Fore = Color.White
+				}
 			},
 			{
 				TileType.StairsDown, new GlyphData('>')
+				{
+					Fore = Color.White
+				}
 			}
 		};
 

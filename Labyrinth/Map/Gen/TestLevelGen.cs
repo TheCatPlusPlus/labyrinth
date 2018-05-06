@@ -1,4 +1,5 @@
 using Labyrinth.Geometry;
+using Labyrinth.Utils;
 
 namespace Labyrinth.Map.Gen
 {
@@ -17,6 +18,25 @@ namespace Labyrinth.Map.Gen
 
 			builder.Fill(TileType.Wall);
 			builder.Box(TileType.Floor, room);
+
+			var types = new[]
+			{
+				TileType.Wall,
+				TileType.DoorOpen,
+				TileType.DoorClosed,
+				TileType.Water,
+				TileType.DeepWater,
+				TileType.Lava,
+				TileType.GlassWall,
+				TileType.StairsUp,
+				TileType.StairsDown
+			};
+
+			for (var idx = 0; idx < 50; ++idx)
+			{
+				var tile = builder.Level.FindSpawnTile(TileFlag.Walkable);
+				tile.Type = Game.RNG.Pick(types);
+			}
 		}
 	}
 }

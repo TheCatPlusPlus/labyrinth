@@ -11,6 +11,8 @@ namespace Labyrinth.Map
 {
 	public sealed class Level : ILevelEntity
 	{
+		public const TileFlag DefaultSpawnFlags = TileFlag.SpawnCandidate | TileFlag.Walkable;
+
 		private readonly Game _game;
 
 		public string Name { get; }
@@ -72,7 +74,25 @@ namespace Labyrinth.Map
 			}
 		}
 
-		public Int2 FindSpawnPoint(TileFlag flags = TileFlag.SpawnCandidate | TileFlag.Walkable)
+		public Int2 FindSpawnPoint(TileFlag flags = DefaultSpawnFlags)
+		{
+			return TryFindSpawnPoint(flags) ??
+				throw new InvalidOperationException("Could not find a suitable spawn point");
+		}
+
+		public Int2? TryFindSpawnPoint(TileFlag flags = DefaultSpawnFlags)
+		{
+			return TryFindSpawnTile(flags)?.Position;
+		}
+
+		public Tile FindSpawnTile(TileFlag flags = DefaultSpawnFlags)
+		{
+			return TryFindSpawnTile(flags) ??
+				throw new InvalidOperationException("Could not find a suitable spawn point");
+		}
+
+		[CanBeNull]
+		public Tile TryFindSpawnTile(TileFlag flags = DefaultSpawnFlags)
 		{
 			var attempts = 5000;
 			while (attempts-- > 0)
@@ -85,11 +105,11 @@ namespace Labyrinth.Map
 				Debug.Assert(tile != null, "tile != null");
 				if (tile.EffectiveFlags.Contains(flags))
 				{
-					return p;
+					return tile;
 				}
 			}
 
-			throw new InvalidOperationException("Could not find a suitable spawn point");
+			return null;
 		}
 
 		public void Tick(float dt)
