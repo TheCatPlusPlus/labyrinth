@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 namespace Labyrinth.Entities.Attrs
 {
-	public sealed class Attribute
+	public sealed class Attribute : IAttribute
 	{
 		private readonly string _name;
 		private readonly Func<int, int> _getEffective;

@@ -4,6 +4,7 @@ using JetBrains.Annotations;
 
 using Labyrinth.Database;
 using Labyrinth.Entities.Attrs;
+using Labyrinth.Entities.Damage;
 using Labyrinth.Geometry;
 using Labyrinth.Map;
 
@@ -73,14 +74,36 @@ namespace Labyrinth.Entities
 			return CanWalkOn(tile);
 		}
 
-		public void Attack(Creature target)
+		public virtual void Attack(Creature target)
 		{
 		}
 
-		public void TakeDamage([CanBeNull] Creature attacker)
+		protected virtual void ResistDamage([CanBeNull] Creature attacker, DamageSpec damage)
 		{
+		}
+
+		public void TakeDamage([CanBeNull] Creature attacker, DamageSpec damage)
+		{
+			damage = damage.Copy();
+			ResistDamage(attacker, damage);
+
+			HP.Value -= damage.Final;
+
+			var name = DB.Entities.Get(this).Name;
+			if (attacker != null)
+			{
+				var attackerName = DB.Entities.Get(attacker).Name;
+				Game.Message($"{attackerName} hits {name} for {damage.Final} damage ({damage.Elements})");
+			}
+			else
+			{
+				// TODO: structure messages so all formatting stays in UI (Message class, subclasses with data)
+				Game.Message($"{name} takes {damage.Final} damage ({damage.Elements})");
+			}
+
 			if (!IsAlive)
 			{
+				Game.Message($"{name} dies");
 				Despawn();
 			}
 		}

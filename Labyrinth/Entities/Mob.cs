@@ -1,5 +1,6 @@
 using Labyrinth.AI;
 using Labyrinth.Database;
+using Labyrinth.Entities.Damage;
 
 namespace Labyrinth.Entities
 {
@@ -17,6 +18,11 @@ namespace Labyrinth.Entities
 		public void Act()
 		{
 			Brain.Act(this);
+		}
+
+		private DamageSpec CalcMeleeDamage()
+		{
+			return new DamageSpec();
 		}
 	}
 }
