@@ -48,6 +48,7 @@ namespace Labyrinth
 			var level = gen.Create("Test", 66, 23, 0);
 
 			Player.Spawn(level);
+			Player.FOV.Recalculate();
 
 			Message("Welcome to [color=yellow]the Labyrinth[/color].");
 		}
@@ -108,6 +109,8 @@ namespace Labyrinth
 			// timers (regen etc) tick at the base speed so doing an action
 			// that takes 3x base time will advance them by 3 ticks
 			Level.Tick(actualCost / (float)Scheduler.BaseSpeed);
+
+			Player.FOV.Recalculate();
 		}
 	}
 }
