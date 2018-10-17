@@ -16,11 +16,9 @@ namespace Labyrinth.Entities
 			FOV = new FieldOfView(this);
 		}
 
-		public override void Attack(Creature target)
+		protected override void AddMeleeDamage(DamageSpec damage)
 		{
-			var damage = new DamageSpec();
 			damage.Inflict(DamageType.Blunt, 5);
-			target.TakeDamage(this, damage);
 		}
 	}
 }

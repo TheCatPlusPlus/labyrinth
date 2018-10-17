@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 
 using JetBrains.Annotations;
@@ -16,6 +17,7 @@ namespace Labyrinth.Map
 
 		private readonly Player _player;
 		private readonly List<Tile> _visible;
+		public IReadOnlyList<Tile> Visible => _visible;
 
 		public FieldOfView(Player player)
 		{

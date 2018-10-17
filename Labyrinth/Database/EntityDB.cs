@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Drawing;
 
 using Labyrinth.Entities;
+using Labyrinth.Entities.Damage;
+using Labyrinth.Utils;
 
 namespace Labyrinth.Database
 {
@@ -23,6 +25,9 @@ namespace Labyrinth.Database
 			{
 				DB.CreatureRat, new CreatureData("rat")
 				{
+					HP = 10,
+					MeleeDamage = new Dice(1, 6),
+					MeleeDamageType = DamageType.Piercing,
 					Glyph = new GlyphData('r')
 					{
 						Fore = Color.White

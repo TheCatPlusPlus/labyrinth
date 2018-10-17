@@ -115,6 +115,9 @@ namespace Labyrinth.Map
 
 			// 4. force disabled flags (magic effects etc)
 			flags &= ~DisabledFlags;
+
+			// TODO debug
+			flags |= TileFlag.Seen | TileFlag.Lit;
 			return flags;
 		}
 

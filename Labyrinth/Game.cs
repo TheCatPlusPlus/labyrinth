@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
+using Labyrinth.AI;
+using Labyrinth.Database;
 using Labyrinth.Entities;
 using Labyrinth.Geometry;
 using Labyrinth.Journal;
@@ -49,6 +51,12 @@ namespace Labyrinth
 
 			Player.Spawn(level);
 			Player.FOV.Recalculate();
+
+			var rat1 = Mob.Create(this, DB.CreatureRat);
+			var rat2 = Mob.Create(this, DB.CreatureRat);
+
+			rat1.Spawn(level);
+			rat2.Spawn(level);
 
 			Message("Welcome to [color=yellow]the Labyrinth[/color].");
 		}

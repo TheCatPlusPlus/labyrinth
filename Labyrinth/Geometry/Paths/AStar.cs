@@ -108,6 +108,7 @@ namespace Labyrinth.Geometry.Paths
 		public static Path? Find(Level level, Int2 start, Int2 goal, Func<Tile, bool> canGetThrough)
 		{
 			var aStar = new AStar(level, start, goal, canGetThrough);
+			aStar._path.Reverse();
 
 			if (aStar._path.Count == 0)
 			{

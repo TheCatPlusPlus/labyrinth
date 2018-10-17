@@ -76,6 +76,13 @@ namespace Labyrinth.Entities
 
 		public virtual void Attack(Creature target)
 		{
+			var damage = new DamageSpec();
+			AddMeleeDamage(damage);
+			target.TakeDamage(this, damage);
+		}
+
+		protected virtual void AddMeleeDamage(DamageSpec damage)
+		{
 		}
 
 		protected virtual void ResistDamage([CanBeNull] Creature attacker, DamageSpec damage)
@@ -110,25 +117,30 @@ namespace Labyrinth.Entities
 
 		public int TryMove(Direction direction)
 		{
+			return TryMove(Int2.Movement[direction]);
+		}
+
+		public int TryMove(Int2 delta)
+		{
 			Debug.Assert(Position != null, "Position != null");
 			Debug.Assert(Level != null, "Level != null");
 
 			var from = Position.Value;
-			var to = from + Int2.Movement[direction];
+			var to = from + delta;
 			var fromTile = Level.Grid[from];
 			var toTile = Level.Grid[to];
 
 			// 1. if target is not in bounds, do nothing
 			if (toTile == null)
 			{
-				Log.Debug($"TryMove({direction}): from {from} to {to}: target out of bounds");
+				Log.Debug($"{this}: TryMove({delta}): from {from} to {to}: target out of bounds");
 				return 0;
 			}
 
 			// 2. if tile has another creature, fight
 			if (toTile.Creature != null)
 			{
-				Log.Debug($"TryMove({direction}): from {from} to {to}: fighting {toTile.Creature}");
+				Log.Debug($"{this}: TryMove({delta}): from {from} to {to}: fighting {toTile.Creature}");
 				Attack(toTile.Creature);
 				return AttackSpeed.EffectiveValue;
 			}
@@ -136,7 +148,7 @@ namespace Labyrinth.Entities
 			// 3. if tile is a door and we're capable of opening doors, open it
 			if (toTile.EffectiveFlags.Contains(TileFlag.Door) && CanOpenDoors)
 			{
-				Log.Debug($"TryMove({direction}): from {from} to {to}: opening the door");
+				Log.Debug($"{this}: TryMove({delta}): from {from} to {to}: opening the door");
 				toTile.Type = toTile.Type.GetOpened();
 				return Speed.EffectiveValue;
 			}
@@ -146,13 +158,13 @@ namespace Labyrinth.Entities
 			Debug.Assert(fromTile != null, "fromTile != null");
 			if (CanWalkOn(fromTile, toTile, out var multiplier))
 			{
-				Log.Debug($"TryMove({direction}): from {from} to {to}: {multiplier}x");
+				Log.Debug($"{this}: TryMove({delta}): from {from} to {to}: {multiplier}x");
 				Move(to);
 				return Speed.EffectiveValue * multiplier;
 			}
 
 			// 3. otherwise, do nothing
-			Log.Debug($"TryMove({direction}): from {from} to {to}: target not walkable");
+			Log.Debug($"{this}: TryMove({delta}): from {from} to {to}: target not walkable");
 			return 0;
 		}
 
