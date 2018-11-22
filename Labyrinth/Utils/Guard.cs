@@ -2,7 +2,7 @@ using System;
 
 namespace Labyrinth.Utils
 {
-	public sealed class Guard : IDisposable
+	public struct Guard : IDisposable
 	{
 		private readonly Action _action;
 
@@ -13,7 +13,7 @@ namespace Labyrinth.Utils
 
 		public void Dispose()
 		{
-			_action();
+			_action?.Invoke();
 		}
 	}
 }

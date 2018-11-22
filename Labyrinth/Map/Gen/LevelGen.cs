@@ -4,9 +4,9 @@ namespace Labyrinth.Map.Gen
 {
 	public abstract class LevelGen
 	{
-		protected Game Game { get; }
+		protected GamePrev Game { get; }
 
-		protected LevelGen(Game game)
+		protected LevelGen(GamePrev game)
 		{
 			Game = game;
 		}

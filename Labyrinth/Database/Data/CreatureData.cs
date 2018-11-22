@@ -7,7 +7,7 @@ namespace Labyrinth.Database
 	public sealed class CreatureData : EntityData
 	{
 		public DamageType MeleeDamageType { get;set; }
-		public Dice MeleeDamage { get; set; }
+		public Die MeleeDamage { get; set; }
 		public int HP { get; set; }
 		public int Speed { get; set; } = Scheduler.BaseSpeed;
 

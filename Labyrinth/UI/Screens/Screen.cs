@@ -6,7 +6,7 @@ namespace Labyrinth.UI
 {
 	public abstract class Screen : Element
 	{
-		protected Screen(Game game, UI ui)
+		protected Screen(GamePrev game, UI ui)
 			: base(game, ui)
 		{
 		}

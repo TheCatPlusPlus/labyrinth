@@ -1,6 +1,11 @@
 using System;
 using System.Globalization;
 
+using BearLib;
+
+using Labyrinth.Geometry;
+using Labyrinth.UI;
+
 using NLog;
 using NLog.Config;
 using NLog.Targets;
@@ -34,10 +39,31 @@ namespace Labyrinth
 
 			SetupLogging();
 
-			var game = new Game();
-			game.Start();
-			var ui = new UI.UI(game, 120, 45);
-			ui.Run();
+			var state = new GameState();
+//
+			TerminalExt.Setup("Labyrinth", 80, 35);
+			Terminal.Print(1, 1, "@.R.x.A._.#");
+			TerminalExt.Box(new Rect(5, 5, 10, 10));
+			Terminal.Refresh();
+			while(Terminal.Read() != Code.Close);
+
+//			var loop = new Loop();
+//			loop.Run();
+
+//			TerminalExt.Setup("Labyrinth", 120, 45);
+//			Tileset.Load();
+//			Terminal.Refresh();
+//
+//			Terminal.Print(0, 0, "main font test [font=italic]italic[/font] [font=bold]bold[/font] [font=bold-italic]bold italic[/font]");
+//			Terminal.Put(0, 3, Tileset.Get("Player/PlayerTemp"));
+//			Terminal.Refresh();
+//
+//			while (true)Terminal.Read();
+
+//			var game = new Game();
+//			game.Start();
+//			var ui = new UI.UI(game, 120, 45);
+//			ui.Run();
 		}
 	}
 }

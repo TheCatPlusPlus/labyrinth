@@ -24,7 +24,7 @@ namespace Labyrinth.UI
 		[CanBeNull]
 		private Tile _cursorTile;
 
-		public GameScreen(Game game, UI ui)
+		public GameScreen(GamePrev game, UI ui)
 			: base(game, ui)
 		{
 			var messageLog = new Rect(0, 0, ui.Width, 4);

@@ -6,7 +6,7 @@ namespace Labyrinth.UI
 {
 	public abstract class Dialog : Element
 	{
-		protected Dialog(Game game, UI ui)
+		protected Dialog(GamePrev game, UI ui)
 			: base(game, ui)
 		{
 		}

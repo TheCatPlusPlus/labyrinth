@@ -10,7 +10,7 @@ namespace Labyrinth.Entities
 		public int VisionRange => 5;
 		public FieldOfView FOV { get; }
 
-		public Player(Game game)
+		public Player(GamePrev game)
 			: base(game, DB.CreaturePlayer, 50)
 		{
 			FOV = new FieldOfView(this);

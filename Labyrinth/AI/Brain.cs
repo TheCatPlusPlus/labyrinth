@@ -4,9 +4,9 @@ namespace Labyrinth.AI
 {
 	public abstract class Brain
 	{
-		protected Game Game { get; }
+		protected GamePrev Game { get; }
 
-		protected Brain(Game game)
+		protected Brain(GamePrev game)
 		{
 			Game = game;
 		}

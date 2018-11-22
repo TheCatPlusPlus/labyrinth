@@ -73,5 +73,10 @@ namespace Labyrinth.Utils
 
 			return value > max ? max : value;
 		}
+
+		public static bool ApproxEquals(float x, float y)
+		{
+			return MathF.Abs(x - y) <= 0.00001f;
+		}
 	}
 }

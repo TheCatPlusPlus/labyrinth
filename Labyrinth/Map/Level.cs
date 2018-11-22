@@ -13,7 +13,7 @@ namespace Labyrinth.Map
 	{
 		public const TileFlag DefaultSpawnFlags = TileFlag.SpawnCandidate | TileFlag.Walkable;
 
-		private readonly Game _game;
+		private readonly GamePrev _game;
 
 		public string Name { get; }
 		public int Width { get; }
@@ -23,7 +23,7 @@ namespace Labyrinth.Map
 		public Scheduler Scheduler { get; }
 		public Grid Grid { get; }
 
-		public Level(Game game, string name, int width, int height, int depth)
+		public Level(GamePrev game, string name, int width, int height, int depth)
 		{
 			_game = game;
 			Name = name;

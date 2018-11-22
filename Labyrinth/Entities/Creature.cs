@@ -26,7 +26,7 @@ namespace Labyrinth.Entities
 		public bool IsAlive => HP.Value > 0;
 		public virtual bool CanOpenDoors => false;
 
-		protected Creature(Game game, EntityID id, int maxHP, int speed = Scheduler.BaseSpeed)
+		protected Creature(GamePrev game, EntityID id, int maxHP, int speed = Scheduler.BaseSpeed)
 			: base(game, id)
 		{
 			id.RequireNamespace(EntityID.Creatures);

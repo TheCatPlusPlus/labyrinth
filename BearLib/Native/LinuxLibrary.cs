@@ -9,7 +9,7 @@ namespace BearLib.Native
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	internal sealed class LinuxLibrary : LibraryImpl
 	{
-		private const string LibDL = "kernel32.dll";
+		private const string LibDL = "libdl";
 		private const int RTLD_NOW = 2;
 
 		public override string Platform => "linux";

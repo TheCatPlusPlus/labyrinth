@@ -67,6 +67,7 @@ namespace BearLib.Native
 		}
 
 		public void Get<T>([NotNull] out T function, string name)
+			where T : Delegate
 		{
 			Check();
 
@@ -85,8 +86,7 @@ namespace BearLib.Native
 				throw new InvalidOperationException($"Failed to get symbol {name}");
 			}
 
-			var @delegate = (object)Marshal.GetDelegateForFunctionPointer(ptr, typeof(T));
-			function = (T)@delegate;
+			function = Marshal.GetDelegateForFunctionPointer<T>(ptr);
 		}
 
 		[Conditional("DEBUG")]

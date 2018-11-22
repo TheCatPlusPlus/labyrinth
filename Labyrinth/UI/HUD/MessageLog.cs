@@ -9,11 +9,11 @@ namespace Labyrinth.UI.HUD
 {
 	public sealed class MessageLog
 	{
-		private readonly Game _game;
+		private readonly GamePrev _game;
 
 		public Rect Rect { get; }
 
-		public MessageLog(Game game, Rect rect)
+		public MessageLog(GamePrev game, Rect rect)
 		{
 			_game = game;
 			Rect = rect;

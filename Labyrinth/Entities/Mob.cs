@@ -8,14 +8,14 @@ namespace Labyrinth.Entities
 	{
 		public Brain Brain { get; }
 
-		private Mob(Game game, EntityID id, Brain brain, int maxHP, int speed = Scheduler.BaseSpeed)
+		private Mob(GamePrev game, EntityID id, Brain brain, int maxHP, int speed = Scheduler.BaseSpeed)
 			: base(game, id, maxHP, speed)
 		{
 			id.RequireNamespace(EntityID.Mobs);
 			Brain = brain;
 		}
 
-		public static Mob Create(Game game, EntityID id)
+		public static Mob Create(GamePrev game, EntityID id)
 		{
 			var data = DB.Entities.GetCreature(id);
 			return new Mob(game, id, new TestBrain(game), data.HP, data.Speed);

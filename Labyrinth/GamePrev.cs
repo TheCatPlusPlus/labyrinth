@@ -14,7 +14,7 @@ using NLog;
 
 namespace Labyrinth
 {
-	public sealed class Game
+	public sealed class GamePrev
 	{
 		private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
@@ -37,7 +37,7 @@ namespace Labyrinth
 			}
 		}
 
-		public Game()
+		public GamePrev()
 		{
 			RNG = new Xoshiro256StarStar();
 			Messages = new LinkedList<Message>();

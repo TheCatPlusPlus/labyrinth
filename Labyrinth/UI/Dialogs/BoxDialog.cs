@@ -11,7 +11,7 @@ namespace Labyrinth.UI
 		protected abstract string Message { get; }
 		protected virtual string Footer { get; } = "";
 
-		protected BoxDialog(Game game, UI ui)
+		protected BoxDialog(GamePrev game, UI ui)
 			: base(game, ui)
 		{
 		}

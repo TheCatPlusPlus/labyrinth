@@ -4,7 +4,7 @@ VisualStudioVersion = 15.0.26228.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Labyrinth", "Labyrinth\Labyrinth.csproj", "{E2DE8DAE-FDFF-42FA-B5E7-6BFCF868CBF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BearLib", "BearLib\BearLib.csproj", "{B0B87F0B-88D3-4C4D-A8B8-8DC35C44F901}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BearLib", "BearLib\BearLib.csproj", "{A84146FF-E3EB-4D65-BBCE-4810BB403CE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,12 +14,12 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{E2DE8DAE-FDFF-42FA-B5E7-6BFCF868CBF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E2DE8DAE-FDFF-42FA-B5E7-6BFCF868CBF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E2DE8DAE-FDFF-42FA-B5E7-6BFCF868CBF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E2DE8DAE-FDFF-42FA-B5E7-6BFCF868CBF2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B0B87F0B-88D3-4C4D-A8B8-8DC35C44F901}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B0B87F0B-88D3-4C4D-A8B8-8DC35C44F901}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B0B87F0B-88D3-4C4D-A8B8-8DC35C44F901}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B0B87F0B-88D3-4C4D-A8B8-8DC35C44F901}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2DE8DAE-FDFF-42FA-B5E7-6BFCF868CBF2}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2DE8DAE-FDFF-42FA-B5E7-6BFCF868CBF2}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{A84146FF-E3EB-4D65-BBCE-4810BB403CE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A84146FF-E3EB-4D65-BBCE-4810BB403CE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A84146FF-E3EB-4D65-BBCE-4810BB403CE8}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{A84146FF-E3EB-4D65-BBCE-4810BB403CE8}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

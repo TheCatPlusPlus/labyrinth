@@ -1,16 +1,19 @@
+using System.Runtime.Serialization;
+
 using JetBrains.Annotations;
 
 namespace Labyrinth.Utils
 {
-	public struct Dice
+	[DataContract]
+	public struct Die
 	{
 		// (<Multiplier> * <Times>d<Sides>) + <Offset>
 		public readonly int Times;
 		public readonly int Sides;
-		public readonly int Offset;
 		public readonly int Multiplier;
+		public readonly int Offset;
 
-		public Dice(int times, int sides, int multiplier = 1, int offset = 0)
+		public Die(int times, int sides, int multiplier = 1, int offset = 0)
 		{
 			Times = times;
 			Sides = sides;

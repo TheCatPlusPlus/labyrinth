@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 
 using JetBrains.Annotations;
@@ -34,7 +33,7 @@ namespace Labyrinth.Map
 
 			_visible.Clear();
 
-			if (_player.Position == null || _player.Level == null)
+			if ((_player.Position == null) || (_player.Level == null))
 			{
 				return;
 			}
@@ -54,7 +53,7 @@ namespace Labyrinth.Map
 
 				Visit(tile);
 
-				if (!tile.EffectiveFlags.Contains(TileFlag.Transparent) && point != position)
+				if (!tile.EffectiveFlags.Contains(TileFlag.Transparent) && (point != position))
 				{
 					break;
 				}

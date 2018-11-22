@@ -5,7 +5,7 @@ namespace Labyrinth.Map.Gen
 {
 	public sealed class TestLevelGen : LevelGen
 	{
-		public TestLevelGen(Game game)
+		public TestLevelGen(GamePrev game)
 			: base(game)
 		{
 		}

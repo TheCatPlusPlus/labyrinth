@@ -26,7 +26,7 @@ namespace Labyrinth.Database
 				DB.CreatureRat, new CreatureData("rat")
 				{
 					HP = 10,
-					MeleeDamage = new Dice(1, 6),
+					MeleeDamage = new Die(1, 6),
 					MeleeDamageType = DamageType.Piercing,
 					Glyph = new GlyphData('r')
 					{

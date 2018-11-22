@@ -13,7 +13,7 @@ namespace Labyrinth.UI.HUD
 {
 	public sealed class Viewport
 	{
-		private readonly Game _game;
+		private readonly GamePrev _game;
 		private readonly Rect _rect;
 		private Int2? _cursor;
 
@@ -23,7 +23,7 @@ namespace Labyrinth.UI.HUD
 			set => _cursor = value != null && _rect.Contains(value.Value) ? value : null;
 		}
 
-		public Viewport(Game game, Rect rect)
+		public Viewport(GamePrev game, Rect rect)
 		{
 			_game = game;
 			_rect = rect;

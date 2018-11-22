@@ -12,7 +12,7 @@ namespace Labyrinth.UI
 	{
 		private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
-		private readonly Game _game;
+		private readonly GamePrev _game;
 
 		private Screen _screen;
 		[CanBeNull]
@@ -22,21 +22,13 @@ namespace Labyrinth.UI
 		public int Width { get; }
 		public int Height { get; }
 
-		public UI(Game game, int width, int height)
+		public UI(GamePrev game, int width, int height)
 		{
+
 			_game = game;
 			Width = width;
 			Height = height;
 
-			Terminal.Open();
-			Terminal.Set(
-				$"window: title=Labyrinth, size={Width}x{Height};" +
-				"input: precise-mouse=false, filter=[keyboard, mouse, system], alt-functions=false;" +
-				"log: level=fatal;"
-			);
-			Terminal.Color(Color.White);
-			Terminal.BkColor(Color.Black);
-			Terminal.Refresh();
 
 			_screen = new GameScreen(_game, this);
 		}

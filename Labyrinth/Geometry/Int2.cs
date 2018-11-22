@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime.Serialization;
 
 using JetBrains.Annotations;
 
@@ -8,6 +9,7 @@ using Labyrinth.Utils;
 
 namespace Labyrinth.Geometry
 {
+	[DataContract]
 	public struct Int2
 	{
 		public static readonly Int2 Zero = new Int2(0, 0);

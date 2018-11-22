@@ -13,7 +13,7 @@ namespace Labyrinth.AI
 	{
 		private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
-		public TestBrain(Game game)
+		public TestBrain(GamePrev game)
 			: base(game)
 		{
 		}

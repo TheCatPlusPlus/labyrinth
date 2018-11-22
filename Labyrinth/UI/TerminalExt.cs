@@ -4,8 +4,6 @@ using System.Drawing;
 
 using BearLib;
 
-using JetBrains.Annotations;
-
 using Labyrinth.Geometry;
 using Labyrinth.Utils;
 
@@ -29,7 +27,23 @@ namespace Labyrinth.UI
 		public const char BoxHLineUSplit = '\u2534';
 		public const char BoxCrossSplit = '\u253C';
 
-		[NotNull]
+		public static void Setup(string title, int width, int height)
+		{
+			var font = System.IO.Path.Combine(Data.AssetsPath, "Fonts", "Inconsolata-Regular.ttf");
+			var icon = System.IO.Path.Combine(Data.AssetsPath, "Labyrinth.ico");
+
+			Terminal.Open();
+			Terminal.Set(
+				$"window: title={title}, size={width}x{height}, icon={icon};" +
+				"input: precise-mouse=false, filter=[keyboard, mouse, system], alt-functions=false;" +
+				"log: level=debug;" +
+				$"font: {font}, size=16, use-box-drawing=false, use-block-elements=false;"
+			);
+			Terminal.Color(Color.White);
+			Terminal.BkColor(Color.Black);
+			Terminal.Refresh();
+		}
+
 		private static Guard ColorGuard(Color? color, Code state, Action<Color> set)
 		{
 			var previous = Color.FromArgb(Terminal.State(state));
@@ -41,19 +55,16 @@ namespace Labyrinth.UI
 			return new Guard(() => set(previous));
 		}
 
-		[NotNull]
 		public static Guard Background(Color? color)
 		{
 			return ColorGuard(color, Code.BkColor, Terminal.BkColor);
 		}
 
-		[NotNull]
 		public static Guard Foreground(Color? color)
 		{
 			return ColorGuard(color, Code.Color, Terminal.Color);
 		}
 
-		[NotNull]
 		public static Guard Colors(Color? fg, Color? bg)
 		{
 			var fgGuard = Foreground(fg);
@@ -108,7 +119,6 @@ namespace Labyrinth.UI
 			}
 		}
 
-		[NotNull]
 		public static Guard Composition(bool enabled = true)
 		{
 			var current = Terminal.State(Code.Composition) != 0;
@@ -116,7 +126,6 @@ namespace Labyrinth.UI
 			return new Guard(() => Terminal.Composition(current));
 		}
 
-		[NotNull]
 		public static Guard Layer(int layer)
 		{
 			Debug.Assert(layer.Within(0, 256));

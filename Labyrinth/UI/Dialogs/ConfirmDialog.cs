@@ -16,7 +16,7 @@ namespace Labyrinth.UI
 		public event Action Yes;
 		public event Action No;
 
-		public ConfirmDialog(Game game, UI ui, string message)
+		public ConfirmDialog(GamePrev game, UI ui, string message)
 			: base(game, ui)
 		{
 			Message = message;

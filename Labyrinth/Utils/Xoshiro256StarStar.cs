@@ -20,9 +20,11 @@ Original C implementation of splitmix64:
 */
 
 using System;
+using System.Runtime.Serialization;
 
 namespace Labyrinth.Utils
 {
+	[DataContract]
 	public sealed class Xoshiro256StarStar
 	{
 		private struct SplitMix64
@@ -43,20 +45,26 @@ namespace Labyrinth.Utils
 			}
 		}
 
+		[DataMember]
 		private ulong _s0;
+		[DataMember]
 		private ulong _s1;
+		[DataMember]
 		private ulong _s2;
+		[DataMember]
 		private ulong _s3;
 
-		public Xoshiro256StarStar(ulong? seed = null)
+		public static Xoshiro256StarStar FromSeed(ulong? seed = null)
 		{
-			seed = seed ?? (ulong)DateTime.UtcNow.Ticks;
+			var rng = new Xoshiro256StarStar();
+			var mix = new SplitMix64(seed ?? (ulong)DateTime.UtcNow.Ticks);
 
-			var mix = new SplitMix64(seed.Value);
-			_s0 = mix.Next();
-			_s1 = mix.Next();
-			_s2 = mix.Next();
-			_s3 = mix.Next();
+			rng._s0 = mix.Next();
+			rng._s1 = mix.Next();
+			rng._s2 = mix.Next();
+			rng._s3 = mix.Next();
+
+			return rng;
 		}
 
 		public ulong NextULong()
