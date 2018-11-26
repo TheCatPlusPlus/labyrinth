@@ -6,7 +6,18 @@ namespace Labyrinth.Gameplay.Actions
 {
 	public abstract class ActionBase
 	{
-		public virtual ActionResult Perform(Entity self)
+		protected readonly GameState State;
+		protected readonly EntityID Self;
+
+		protected World World => State.World;
+
+		protected ActionBase(GameState state, EntityID self)
+		{
+			State = state;
+			Self = self;
+		}
+
+		public virtual ActionResult Perform()
 		{
 			return Failure();
 		}

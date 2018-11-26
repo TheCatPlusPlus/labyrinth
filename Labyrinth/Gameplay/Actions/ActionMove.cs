@@ -8,33 +8,34 @@ namespace Labyrinth.Gameplay.Actions
 {
 	public sealed class ActionMove : ActionBase
 	{
-		public Int2 From { get; }
-		public Int2 To { get; }
+		private readonly Int2 _from;
+		private readonly Int2 _to;
 
-		public ActionMove(Int2 from, Int2 to)
+		public ActionMove(GameState state, EntityID self, Int2 from, Int2 to)
+			: base(state, self)
 		{
-			From = from;
-			To = to;
+			_from = from;
+			_to = to;
 		}
 
-		public override ActionResult Perform(Entity self)
+		public override ActionResult Perform()
 		{
-			var mobile = self.Get<Mobile>();
-			var position = self.Get<Spawned>();
+			var mobile = World.Get<Mobile>(Self);
+			var position = World.Get<Spawned>(Self);
 
 			// TODO move in level cache
 			// TODO attacking
 			// TODO opening doors
 
-			Debug.Assert(position.Position == From, "position.Position == From");
-			position.Position = To;
+			Debug.Assert(position.Position == _from, "position.Position == From");
+			position.Position = _to;
 
 			return Success(mobile.MoveSpeed);
 		}
 
 		public override string ToString()
 		{
-			return $"move from {From} to {To}";
+			return $"move from {_from} to {_to}";
 		}
 	}
 }

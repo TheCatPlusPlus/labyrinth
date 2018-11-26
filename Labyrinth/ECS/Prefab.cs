@@ -1,52 +1,34 @@
-using System;
+using System.Collections;
+using System.Collections.Generic;
 
 using JetBrains.Annotations;
 
 namespace Labyrinth.ECS
 {
-	public struct Prefab : IEquatable<Prefab>
+	public sealed class Prefab : IEnumerable<IEntityComponent>
 	{
-		public readonly string Name;
+		private readonly List<IEntityComponent> _components;
 
-		public Prefab(string name)
+		public Prefab()
 		{
-			Name = name;
+			_components = new List<IEntityComponent>();
 		}
 
-		public bool Equals(Prefab other)
+		public void Add(IEntityComponent component)
 		{
-			return string.Equals(Name, other.Name);
-		}
-
-		public override bool Equals([CanBeNull] object obj)
-		{
-			if (ReferenceEquals(null, obj))
-			{
-				return false;
-			}
-
-			return obj is Prefab other && Equals(other);
-		}
-
-		public override int GetHashCode()
-		{
-			return Name?.GetHashCode() ?? 0;
-		}
-
-		public static bool operator==(Prefab left, Prefab right)
-		{
-			return left.Equals(right);
-		}
-
-		public static bool operator!=(Prefab left, Prefab right)
-		{
-			return !left.Equals(right);
+			_components.Add(component);
 		}
 
 		[NotNull]
-		public override string ToString()
+		public IEnumerator<IEntityComponent> GetEnumerator()
 		{
-			return $"{Name}";
+			return _components.GetEnumerator();
+		}
+
+		[NotNull]
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
 		}
 	}
 }

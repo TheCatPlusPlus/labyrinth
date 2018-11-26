@@ -8,6 +8,6 @@ namespace Labyrinth.Gameplay.Components
 	[DataContract]
 	public sealed class Loot : IEntityComponent
 	{
-		public List<(Prefab Item, float Chance)> Drops { get; private set; } = new List<(Prefab, float)>();
+		public List<(PrefabID Item, float Chance)> Drops { get; private set; } = new List<(PrefabID, float)>();
 	}
 }

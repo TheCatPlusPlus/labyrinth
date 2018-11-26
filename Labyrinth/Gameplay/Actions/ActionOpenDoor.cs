@@ -5,16 +5,22 @@ namespace Labyrinth.Gameplay.Actions
 {
 	public sealed class ActionOpenDoor : ActionBase
 	{
-		public Int2 Position { get; }
+		private readonly Int2 _position;
 
-		public override ActionResult Perform(Entity self)
+		public ActionOpenDoor(GameState state, EntityID self, Int2 position)
+			: base(state, self)
 		{
-			return base.Perform(self);
+			_position = position;
+		}
+
+		public override ActionResult Perform()
+		{
+			return base.Perform();
 		}
 
 		public override string ToString()
 		{
-			return $"open door at {Position}";
+			return $"open door at {_position}";
 		}
 	}
 }
