@@ -1,5 +1,6 @@
 using Labyrinth.ECS;
 using Labyrinth.Gameplay.Actions.Player;
+using Labyrinth.Gameplay.Database;
 using Labyrinth.Utils;
 
 using NLog;
@@ -11,6 +12,7 @@ namespace Labyrinth
 		private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
 		public Xoshiro256StarStar RNG { get; }
+		public PrefabRegistry Prefabs { get; }
 		public World World { get; }
 		public EntityID Player { get; }
 		public InputBase CurrentInput { get; set; }
@@ -18,7 +20,8 @@ namespace Labyrinth
 		public GameState()
 		{
 			RNG = new Xoshiro256StarStar();
-			World = new World();
+			Prefabs = PrefabDatabase.Collect();
+			World = new World(Prefabs);
 			Player = World.Create("Player");
 		}
 	}

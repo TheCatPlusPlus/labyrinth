@@ -3,15 +3,24 @@ using System.Collections.Generic;
 
 using JetBrains.Annotations;
 
+using Labyrinth.Utils;
+
 namespace Labyrinth.ECS
 {
 	public sealed class Prefab : IEnumerable<IEntityComponent>
 	{
 		private readonly List<IEntityComponent> _components;
 
+		public PrefabID ID { get; set; }
+
 		public Prefab()
 		{
 			_components = new List<IEntityComponent>();
+		}
+
+		public Prefab(Prefab @base)
+		{
+			_components = @base._components.DeepClone();
 		}
 
 		public void Add(IEntityComponent component)

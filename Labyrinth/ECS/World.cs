@@ -30,35 +30,31 @@ namespace Labyrinth.ECS
 				_components = components;
 			}
 
-			public void Add<T>(T component)
-				where T : class, IEntityComponent
+			public void Add(IEntityComponent component)
 			{
-				_components[typeof(T)] = component;
+				_components[component.GetType()] = component;
 			}
 
-			public T Get<T>()
-				where T : class, IEntityComponent
+			public IEntityComponent Get(Type type)
 			{
-				var component = TryGet<T>();
+				var component = TryGet(type);
 				if (component == null)
 				{
-					throw new Exception($"Entity {ID} {Name} doesn't have a {typeof(T).Name} component");
+					throw new Exception($"Entity {ID} {Name} doesn't have a {type.Name} component");
 				}
 
 				return component;
 			}
 
 			[CanBeNull]
-			public T TryGet<T>()
-				where T : class, IEntityComponent
+			public IEntityComponent TryGet(Type type)
 			{
-				return !_components.TryGetValue(typeof(T), out var component) ? default : (T)component;
+				return !_components.TryGetValue(type, out var component) ? default : component;
 			}
 
-			public void Remove<T>()
-				where T : class, IEntityComponent
+			public void Remove(Type type)
 			{
-				_components.Remove(typeof(T));
+				_components.Remove(type);
 			}
 
 			public Entity Clone(EntityID id)
@@ -105,6 +101,19 @@ namespace Labyrinth.ECS
 			return id;
 		}
 
+		public EntityID Create(PrefabID prefab)
+		{
+			var id = Create(prefab.Name);
+			var entity = _entities[id];
+
+			foreach (var component in _prefabs[prefab])
+			{
+				entity.Add(component.DeepClone());
+			}
+
+			return id;
+		}
+
 		public void Destroy(EntityID id)
 		{
 			_entities.Remove(id);
@@ -117,11 +126,6 @@ namespace Labyrinth.ECS
 			return cloneID;
 		}
 
-		public EntityID Clone(PrefabID prefab)
-		{
-
-		}
-
 		public T Add<T>(EntityID id, T component)
 			where T : class, IEntityComponent
 		{
@@ -132,20 +136,20 @@ namespace Labyrinth.ECS
 		public void Remove<T>(EntityID id)
 			where T : class, IEntityComponent
 		{
-			_entities[id].Remove<T>();
+			_entities[id].Remove(typeof(T));
 		}
 
 		public T Get<T>(EntityID id)
 			where T : class, IEntityComponent
 		{
-			return _entities[id].Get<T>();
+			return (T)_entities[id].Get(typeof(T));
 		}
 
 		[CanBeNull]
 		public T TryGet<T>(EntityID id)
 			where T : class, IEntityComponent
 		{
-			return _entities[id].TryGet<T>();
+			return (T)_entities[id].TryGet(typeof(T));
 		}
 
 		public string Describe(EntityID id)

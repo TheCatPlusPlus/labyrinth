@@ -10,7 +10,7 @@ using Labyrinth.Utils;
 
 namespace Labyrinth.Gameplay.Database
 {
-	public static class Prefabs
+	public static class PrefabDatabase
 	{
 		[MeansImplicitUse]
 		private sealed class CollectedAttribute : Attribute
@@ -21,7 +21,7 @@ namespace Labyrinth.Gameplay.Database
 		{
 			var registry = new PrefabRegistry();
 			var methods =
-				from method in typeof(Prefabs).GetMethods(BindingFlags.NonPublic | BindingFlags.Static)
+				from method in typeof(PrefabDatabase).GetMethods(BindingFlags.NonPublic | BindingFlags.Static)
 				where method.ReturnType == typeof(Prefab)
 				where method.GetParameters().Length == 0
 				where method.GetCustomAttribute<CollectedAttribute>() != null
@@ -50,19 +50,23 @@ namespace Labyrinth.Gameplay.Database
 
 		private static Prefab Creature()
 		{
-			return new Prefab();
+			return new Prefab
+			{
+				new Killable()
+			};
 		}
 
 		[Collected]
 		private static Prefab Creatures_Rat()
 		{
-			var @base = Creature();
-			var prefab = new Prefab
+			return new Prefab(Creature())
 			{
-				new Killable()
+				new Creature
+				{
+					Name = "rat",
+					Description = "a rat"
+				}
 			};
-
-			return Merge(@base, prefab);
 		}
 	}
 }
